@@ -1,0 +1,141 @@
+.m-criteriaCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background-color: $color-white;
+    border-radius: 8px;
+
+    .m-criteriaCard__toggleSwitch {
+        display: none; // Hidden by default
+    }
+}
+
+.m-criteriaCard__top {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.m-criteriaCard__top__left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.m-criteriaCard__criteriaNumber {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.m-criteriaCard__verification {
+    &:empty {
+        display: none;
+    }
+
+    border: 1px solid currentColor;
+    background-color: var(--color-grey-6);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+
+    span {
+        font-weight: 700;
+    }
+}
+.m-criteriaCard__text {
+    font-size: 12px;
+    line-height: 1.2;
+    color: var(--color-grey-2);
+}
+
+.m-criteriaCard__seeTestsLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-color-1);
+    text-decoration: underline;
+
+    &[aria-expanded='true'] {
+        .m-criteriaCard__seeTestsLink__chevron {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.m-criteriaCard__seeTestsLink__chevron {
+    width: 12px;
+    height: 12px;
+    transition: transform 220ms $easing-standard;
+}
+
+.m-criteriaCard__testListWrapper {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 220ms $easing-standard;
+
+    &:not(.-expanded) {
+        grid-template-rows: 0fr;
+    }
+}
+
+.m-criteriaCard__testList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+}
+
+.m-criteriaCard__test {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 16px;
+    font-size: 10px;
+    line-height: 1.2;
+    color: var(--color-grey-2);
+    text-align: left;
+}
+
+.m-criteriaCard__test__number {
+    padding: 4px;
+    border-radius: 4px;
+    background-color: var(--color-grey-6);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.2;
+
+    &[data-status='C'] {
+        background-color: var(--secondary-color-green-soft);
+        color: var(--secondary-color-green);
+    }
+
+    &[data-status='NC'] {
+        background-color: var(--secondary-color-red-soft);
+        color: var(--secondary-color-red);
+    }
+
+    &[data-status='NA'] {
+        background-color: var(--secondary-color-orange-soft);
+        color: var(--secondary-color-orange);
+    }
+}
+
+.m-criteriaCard__test__content {
+    p {
+        &:not(:last-child) {
+            margin-bottom: 4px;
+        }
+    }
+
+    a {
+        pointer-events: none;
+        font-weight: 700;
+    }
+}

@@ -1,0 +1,40 @@
+{% import 'macros/status.nunj' as status %}
+
+<p>Welcome to the {{ frctl.get('project.title') | default('Component Library') }}. This is powered by <a href="https://fractal.build/" target="_blank">Fractal</a>, a frontend workshop environment for builidng and cataloging web components. Documentation on how to use and add to your Fractal library can be found <a href="https://fractal.build/guide/" target="_blank">here</a>.</p>
+
+<p>You can browse the component library using the navigation on the left.</p>
+
+<div class="overview-statuses">
+    <div class="overview-status">
+        <h2>Component Statuses</h2>
+        <p>Components and their variants have been given statuses reflecting their state of completion. The available statuses are listed below.</p>
+        <table>
+        <tr>
+            <th>Label</th>
+            <th>Description</th>
+        </tr>
+        {% for handle, st in frctl.get('components.statuses') %}
+        <tr>
+            <td>{{ status.tag(st) }}</td>
+            <td>{{ st.description }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+    </div>
+    <div class="overview-status">
+        <h2>Documentation Statuses</h2>
+        <p>Documentation pages have been given statuses reflecting their state of completion. The available statuses are listed below.</p>
+        <table>
+        <tr>
+            <th>Label</th>
+            <th>Description</th>
+        </tr>
+        {% for handle, st in frctl.get('docs.statuses') %}
+        <tr>
+            <td>{{ status.tag(st) }}</td>
+            <td>{{ st.description }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+    </div>
+</div>

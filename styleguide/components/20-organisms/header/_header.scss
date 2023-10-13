@@ -1,0 +1,47 @@
+.o-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 6px 8px;
+    background-color: $color-white;
+}
+
+.o-header__left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.o-header__logo {
+    width: 24px;
+    height: 24px;
+}
+
+.o-header__right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.o-header__settingsButton {
+    display: flex;
+    padding: 0;
+}
+
+.o-header__settingsIcon {
+    width: 24px;
+    height: 24px;
+}
+
+.o-header__closeButton {
+    display: flex;
+    padding: 0;
+}
+
+.o-header__closeIcon {
+    width: 24px;
+    height: 24px;
+}

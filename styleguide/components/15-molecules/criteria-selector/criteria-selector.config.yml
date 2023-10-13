@@ -1,0 +1,14 @@
+context:
+  criteriaSelector:
+    zone: 1.1
+    current:
+      slug: 'C'
+    statusList:
+      - slug: 'C'
+        title: Conforme
+      - slug: 'NC'
+        title: Non conforme
+      - slug: 'NA'
+        title: Non applicable
+      - slug: 'NT'
+        title: Non traité

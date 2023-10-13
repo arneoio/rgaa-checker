@@ -1,0 +1,64 @@
+<div class="Header">
+  <div class="Header-Left">
+    <button class="Header-button Header-navToggle" data-action="toggle-sidebar">
+        <div class="Header-navToggleIcon Header-navToggleIcon--open">
+            <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"></path>
+            </svg>
+        </div>
+        <div class="Header-navToggleIcon Header-navToggleIcon--closed">
+            <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+          </svg>
+        </div>
+    </button>
+    <a class="Header-Title" href="{{ path('/') }}">
+        {% include 'img/logo.svg' %} Guide des composants
+    </a>
+  </div>
+    {% if frctl.get('project.repository') %}
+    <div class="Header-Utils">
+        <label for="dark-mode-switch" class="Header-Utils-toggleSwitch">
+          <span class="Header-Utils-toggleSwitch__label">Dark mode</span>
+          <input class="Header-Utils-toggleSwitch__checkbox" type="checkbox" id="dark-mode-switch" name="name">
+          <span class="Header-Utils-toggleSwitch__switch" aria-hidden="true"></span>
+        </label>
+        <span>{{ frctl.get('project.version') }}</span>
+        <a href="{{ frctl.get('project.repository') }}" target="blank">
+        	{% include 'icons/icon-gitlab.svg' %}
+        </a>
+    </div>
+    {% endif %}
+</div>
+<script>
+  const btn = document.getElementById("dark-mode-switch");
+  const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const currentTheme = localStorage.getItem("theme");
+  if (currentTheme == "dark") {
+    btn.setAttribute('checked', 'checked');
+  } else if (currentTheme == "light") {
+    btn.removeAttribute('checked');
+  } else {
+    if(prefersDarkScheme.matches) {
+      btn.setAttribute('checked', 'checked');
+    }
+  }
+
+  btn.addEventListener("click", function () {
+    if (prefersDarkScheme.matches) {
+      document.body.classList.toggle("-lightTheme");
+      var theme = document.body.classList.contains("-lightTheme")
+        ? "light"
+        : "dark";
+    } else {
+      document.body.classList.toggle("-darkTheme");
+      var theme = document.body.classList.contains("-darkTheme")
+        ? "dark"
+        : "light";
+    }
+    localStorage.setItem("theme", theme);
+  });
+</script>

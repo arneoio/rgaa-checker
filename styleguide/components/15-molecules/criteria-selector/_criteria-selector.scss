@@ -1,0 +1,89 @@
+.m-criteriaSelector {
+    display: inline-block;
+    position: relative;
+    padding: 4px;
+    background-color: $color-white;
+    cursor: pointer;
+}
+
+.m-criteriaSelector__toggler {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 42px;
+    gap: 8px;
+    padding: 4px 4px;
+    border-radius: 4px;
+
+    &[aria-expanded='true'] {
+        .m-criteriaSelector__chevron {
+            transform: rotate(180deg);
+        }
+
+        + .m-criteriaSelector__content {
+            border-radius: 0 0 4px 4px;
+        }
+    }
+}
+
+.m-criteriaSelector__toggler,
+.m-criteriaSelector__link {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    background-color: var(--color-grey-6);
+    color: var(--color-grey-3);
+
+    &[data-status='C'] {
+        background-color: var(--secondary-color-green-soft);
+        color: var(--secondary-color-green);
+    }
+
+    &[data-status='NC'] {
+        background-color: var(--secondary-color-red-soft);
+        color: var(--secondary-color-red);
+    }
+
+    &[data-status='NA'] {
+        background-color: var(--secondary-color-orange-soft);
+        color: var(--secondary-color-orange);
+    }
+}
+
+.m-criteriaSelector__chevron {
+    width: 8px;
+    height: 8px;
+    transform: rotate(0deg);
+    transition: transform 250ms $easing-standard;
+}
+
+.m-criteriaSelector__content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 4px 4px;
+    gap: 4px;
+    max-height: 250px;
+    overflow: hidden;
+    border-radius: 0 0 8px 8px;
+    z-index: 1;
+    background-color: $color-white;
+    transition: max-height 250ms $easing-accelerate,
+        padding 250ms $easing-accelerate;
+
+    &:not(.-expanded) {
+        padding: 0 4px;
+        max-height: 0;
+        transition-timing-function: $easing-decelerate;
+    }
+}
+
+.m-criteriaSelector__link {
+    display: block;
+    width: 100%;
+    padding: 4px;
+    border-radius: 4px;
+}

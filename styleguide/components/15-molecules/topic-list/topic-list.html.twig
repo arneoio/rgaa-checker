@@ -1,0 +1,40 @@
+{% set componentClass = 'm-topicList -expanded js-topicList' %}
+{% set defaultTag = 'div' %}
+{% set attributeList = attributeList is defined ? attributeList : {} %}
+{% set attributeList = attributeList|merge({'id': 'arneo-accessibility-checker__aside', 'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
+{% set tag = tag is defined ? tag : defaultTag %}
+
+{% set total = 0 %}
+{% for topic in topicList %}
+    {% set total = total + topic.criteria | length %}
+{% endfor %}
+
+<{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
+    <button class="m-topicList__reduceButton" aria-expanded="true" aria-controls="arneo-accessibility-checker__aside">
+        <span class="-hiddenAsideReduced">Réduire la fenêtre</span>
+        {% include '@atom/icon/icon.html.twig' with {
+          name: 'arrow-left',
+          attributeList: {
+            class: 'm-topicList__reduceButton__icon',
+          },
+        } only %}
+    </button>
+    <ul class="m-topicList__list">
+        <li class="m-topicList__item -all -active js-topicList__item" data-topic="all" role="button">
+            Tous <span class="m-topic__item__number -hiddenAsideReduced">({{ total }})</span>
+        </li>
+{% for topic in topicList %}
+        <li class="m-topicList__item js-topicList__item" data-topic="{{ topic.slug }}" role="button">
+            {% include '@atom/icon/icon.html.twig' with {
+                name: 'topic-' ~ topic.slug,
+                attributeList: {
+                    class: 'm-topicList__icon',
+                }
+            } only %}
+            <p class="-hiddenAsideReduced">
+                {{ topic.topic }} <span class="m-topic__item__number">({{ topic.criteria | length }})</span>
+            </p>
+        </li>
+{% endfor %}
+    </ul>
+</{{ tag }}>

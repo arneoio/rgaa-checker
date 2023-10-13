@@ -1,0 +1,156 @@
+@use 'sass:math';
+
+@function rem($size) {
+    $remSize: math.div($size, 16px);
+
+    @return #{$remSize}rem;
+}
+
+// ----------
+// Media Queries mixins
+// ----------
+
+@mixin mobile-down {
+    @media screen and (max-width: #{$xs-max}) {
+        @content;
+    }
+}
+
+@mixin mobile-up {
+    @media screen and (min-width: #{$sm-min}) {
+        @content;
+    }
+}
+
+@mixin tablet-down {
+    @media screen and (max-width: #{$sm-max}) {
+        @content;
+    }
+}
+
+@mixin tablet-up {
+    @media screen and (min-width: #{$md-min}) {
+        @content;
+    }
+}
+
+@mixin desktop-down {
+    @media screen and (max-width: #{$md-max}) {
+        @content;
+    }
+}
+
+@mixin desktop-up {
+    @media screen and (min-width: #{$lg-min}) {
+        @content;
+    }
+}
+
+@mixin desktop-large-up {
+    @media screen and (min-width: #{$lg-max}) {
+        @content;
+    }
+}
+
+// ----------
+// Shortcut / Utils
+// ----------
+
+@mixin overlay {
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: $overlay-color;
+        mix-blend-mode: multiply;
+        z-index: 1;
+    }
+}
+
+@mixin outline($color: $primary-color-1) {
+    &:focus {
+        outline: 1px solid $color;
+        outline-offset: 2px;
+    }
+}
+
+// ----------
+// Fluid size mixins
+// ----------
+
+@function strip-unit($value) {
+    @return math.div($value, $value * 0 + 1);
+}
+
+@mixin fluid-font-size(
+    $min-font-size,
+    $max-font-size,
+    $min-vw: $sm-min,
+    $max-vw: $lg-min
+) {
+    $u1: unit($min-vw);
+    $u2: unit($max-vw);
+    $u3: unit($min-font-size);
+    $u4: unit($max-font-size);
+
+    @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+        & {
+            font-size: rem($min-font-size);
+
+            @media screen and (min-width: $min-vw) {
+                font-size: calc(
+                    #{$min-font-size} + #{strip-unit(
+                            $max-font-size - $min-font-size
+                        )} *
+                        (
+                            (100vw - #{$min-vw}) / #{strip-unit(
+                                    $max-vw - $min-vw
+                                )}
+                        )
+                );
+            }
+
+            @media screen and (min-width: $max-vw) {
+                font-size: rem($max-font-size);
+            }
+        }
+    }
+}
+
+@mixin fluid-size(
+    $property,
+    $min-size,
+    $max-size,
+    $min-vw: $sm-min,
+    $max-vw: $lg-min
+) {
+    $u1: unit($min-vw);
+    $u2: unit($max-vw);
+    $u3: unit($min-size);
+    $u4: unit($max-size);
+
+    @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+        & {
+            #{$property}: $min-size;
+
+            @media screen and (min-width: $min-vw) {
+                #{$property}: calc(
+                    #{$min-size} + #{strip-unit($max-size - $min-size)} *
+                        (
+                            (100vw - #{$min-vw}) / #{strip-unit(
+                                    $max-vw - $min-vw
+                                )}
+                        )
+                ); // scss-lint:disable indentation
+            }
+
+            @media screen and (min-width: $max-vw) {
+                #{$property}: $max-size;
+            }
+        }
+    }
+}

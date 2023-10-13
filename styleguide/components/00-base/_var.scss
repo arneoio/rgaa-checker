@@ -1,0 +1,76 @@
+// Noms de couleurs génériques
+$color-black: #252525;
+$color-grey-darker: #333;
+$color-grey-dark: #4f4f4f;
+$color-grey: #828282;
+$color-grey-medium: #bdbdbd;
+$color-grey-light: #e0e0e0;
+$color-grey-lighter: #f2f2f2;
+$color-white: #fff;
+
+$color-coral: #fe5e55;
+$color-soft-pink: #ffe4e0;
+$color-light-pink: #fff3f2;
+
+$color-green: #219653;
+$color-green-soft: #e4f2ea;
+$color-red: #eb5757;
+$color-red-soft: #fceaea;
+$color-orange: #de6106;
+$color-orange-soft: #fdf2e9;
+
+// Couleurs des éléments du site, pris du design system
+$primary-color-1: $color-coral;
+$secondary-color-1: $color-soft-pink;
+
+// Couleurs spécifiques
+$text-color: $color-black;
+$error-color: $color-red;
+
+.l-extension,
+:root {
+    --primary-color-1: #{$color-coral};
+    --primary-color-2: #{$color-soft-pink};
+    --primary-color-3: #{$color-light-pink};
+    --color-grey-1: #{$color-grey-darker};
+    --color-grey-2: #{$color-grey-dark};
+    --color-grey-3: #{$color-grey};
+    --color-grey-4: #{$color-grey-medium};
+    --color-grey-5: #{$color-grey-light};
+    --color-grey-6: #{$color-grey-lighter};
+
+    --secondary-color-green: #{$color-green};
+    --secondary-color-green-soft: #{$color-green-soft};
+    --secondary-color-red: #{$color-red};
+    --secondary-color-red-soft: #{$color-red-soft};
+    --secondary-color-orange: #{$color-orange};
+    --secondary-color-orange-soft: #{$color-orange-soft};
+
+    --text-color: #{$text-color};
+}
+
+$image-background: $color-grey-light;
+
+// Polices utilisées sur le site
+$font-default: -apple-system, Roboto, Helvetica, Arial, sans-serif;
+
+// Police à appliquer sur les éléments
+$text-font: $font-default;
+$heading-font: $font-default;
+
+// Easings
+$easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+$easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+$easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
+
+// Tailles de certains éléments
+$header-height: 36px;
+
+// Media queries breakpoints, possibilité d'ajouter du $xxs, $xl, $xxl si besoin
+$xs-max: 600px;
+$sm-min: $xs-max + 1px;
+$sm-max: 900px;
+$md-min: $sm-max + 1px;
+$md-max: 1200px;
+$lg-min: $md-max + 1px;
+$lg-max: 1440px;

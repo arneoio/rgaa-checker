@@ -1,0 +1,20 @@
+{% set componentClass = 'a-picture' %}
+{% set defaultImageClass = 'a-picture__image' %}
+
+{% set lazyloadClassName = '-lazy' %}
+  {% set emptyImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' %}
+{% set isLazyLoaded = isLazyLoaded is defined ? isLazyLoaded : true %}
+{% if isLazyLoaded %}
+  {% set componentClass = componentClass ~ ' ' ~ lazyloadClassName %}
+{% endif %}
+{% set attributeList = attributeList is defined ? attributeList : {} %}
+{% set attributeList = attributeList|merge({'class': (attributeList.class is defined ? attributeList.class ~ ' ' ~ componentClass : componentClass)}) %}
+
+<picture {% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
+{% for source in picture.sourceList %}
+    <source{% for attribute, value in source %} {{ attribute }}="{{ value }}"{% endfor %}>
+{% endfor %}
+{% set defaultImage = picture.defaultImage is defined ? picture.defaultImage : {} %}
+{% set defaultImageAttributeList = {alt: '', src: emptyImage}|merge(defaultImage)|merge({'class': (defaultImage.class is defined ? defaultImage.class ~ ' ' ~ defaultImageClass : defaultImageClass)}) %}
+    <img{% for attribute, value in defaultImageAttributeList %} {{ attribute }}="{{ value }}"{% endfor %} />
+</picture>

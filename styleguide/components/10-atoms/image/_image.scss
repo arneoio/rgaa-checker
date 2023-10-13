@@ -1,0 +1,5 @@
+.a-image {
+    display: inline-block; // Évite un bug de marge sous l'image dans certains cas
+    vertical-align: top;
+    max-width: 100%; // Empêche l'image de sortir du cadre de la page
+}

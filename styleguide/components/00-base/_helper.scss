@@ -1,0 +1,70 @@
+.-hidden {
+    display: none !important;
+}
+
+@include mobile-down {
+    .-hidden-xs-down {
+        display: none !important;
+    }
+}
+
+@include mobile-up {
+    .-hidden-sm-up {
+        display: none !important;
+    }
+}
+
+@include tablet-down {
+    .-hidden-sm-down {
+        display: none !important;
+    }
+}
+
+@include tablet-up {
+    .-hidden-md-up {
+        display: none !important;
+    }
+}
+
+@include desktop-down {
+    .-hidden-md-down {
+        display: none !important;
+    }
+}
+
+@include desktop-up {
+    .-hidden-lg-up {
+        display: none !important;
+    }
+}
+
+@media not print {
+    .-visible-print {
+        display: none !important;
+    }
+}
+
+.-hidden-print {
+    @extend %hidden-print;
+}
+
+%hidden-print {
+    @media print {
+        display: none !important;
+    }
+}
+
+// Generic class for screen reader only
+.-sr-only {
+    border: 0 !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    -webkit-clip-path: inset(50%) !important;
+    clip-path: inset(50%) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    white-space: nowrap !important;
+}

@@ -1,0 +1,76 @@
+// Common elements, css reset
+.l-extension {
+    box-sizing: border-box; // applies a natural box layout model to all elements, but allowing components to change
+    font-size: 62.5%;
+    color: var(--text-color, #252525);
+    background-color: $color-white;
+    font-family: $text-font;
+}
+
+body {
+    min-height: 100vh;
+}
+
+* {
+    &,
+    &::before,
+    &::after {
+        box-sizing: inherit;
+    }
+}
+
+video {
+    max-width: 100%;
+}
+
+a,
+button,
+[role='button'] {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit; // Avoid blue/purple default links color
+
+    &:hover,
+    &:focus {
+        opacity: 0.8;
+    }
+}
+
+img,
+picture {
+    display: inline-block; // To avoid margin bug under images
+    vertical-align: top;
+    max-width: 100%; // Avoid overflow for big images
+}
+
+// Form, input and select generic style
+input,
+textarea,
+button,
+select {
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    appearance: none;
+    border-radius: 0;
+}
+
+a,
+button,
+input,
+select,
+[role='tabpanel'],
+[role='button'] {
+    @include outline;
+}
+
+button {
+    color: currentColor;
+    cursor: pointer;
+}
+
+::selection {
+    background-color: $primary-color-1;
+    color: $color-white;
+}

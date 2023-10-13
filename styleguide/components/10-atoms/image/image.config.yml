@@ -1,0 +1,10 @@
+title: Image
+context:
+  attributeList:
+    src: https://via.placeholder.com/450x320/06c/fff
+variants:
+  - name: Image without lazyloading
+    context:
+      isLazyLoaded: false
+      attributeList:
+        src: https://via.placeholder.com/450x320/06c/fff

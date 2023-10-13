@@ -1,0 +1,12 @@
+title: Icon from SVG Sprite
+context:
+  name: arrow
+  notes: Default icon are hidden for screenreaders
+variants:
+  - name: icon-title
+    notes: Icon made visible for screenreaders. Adds a title to let it accessible
+    context:
+      isAriaHidden: false
+      attributeList:
+        title: Précédent
+        name: arrow

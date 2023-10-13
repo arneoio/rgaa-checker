@@ -1,0 +1,35 @@
+{% set componentClass = 'o-header js-header' %}
+{% set defaultTag = 'header' %}
+{% set attributeList = attributeList is defined ? attributeList : {} %}
+{% set attributeList = attributeList|merge({'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
+{% set tag = tag is defined ? tag : defaultTag %}
+
+<{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
+    <div class="o-header__left">
+        {% include '@atom/icon/icon.html.twig' with {
+          name: 'arneo-logo',
+          attributeList: {
+            class: 'o-header__logo'
+          }
+        } only %}
+        <span class="-hiddenClosed">Accessibility audit helper</span>
+    </div>
+    <div class="o-header__right">
+        <button class="o-header__settingsButton -hiddenClosed" title="Paramètres">
+            {% include '@atom/icon/icon.html.twig' with {
+              name: 'settings',
+              attributeList: {
+                class: 'o-header__settingsIcon'
+              }
+            } only %}
+        </button>
+        <button class="o-header__closeButton js-header__closeButton" title="Fermer">
+            {% include '@atom/icon/icon.html.twig' with {
+              name: 'cross',
+              attributeList: {
+                class: 'o-header__closeIcon'
+              }
+            } only %}
+        </button>
+    </div>
+</{{ tag }}>

@@ -1,0 +1,11 @@
+context:
+  picture:
+    sourceList:
+      - srcset: https://via.placeholder.com/1200/09f/fff
+        media: "(min-width: 1200px)"
+      - srcset: https://via.placeholder.com/900/08e/fff
+        media: "(min-width: 900px)"
+      - srcset: https://via.placeholder.com/600/07d/fff
+        media: "(min-width: 600px)"
+    defaultImage:
+      src: https://via.placeholder.com/320/06c/fff

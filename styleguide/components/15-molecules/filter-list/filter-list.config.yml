@@ -1,0 +1,14 @@
+variants:
+- name: default
+  context:
+    filterList:
+        filterList:
+        - slug: C
+          title: Conforme
+        - slug: NC
+          title: Non Conforme
+        - slug: NA
+          title: Non Applicable
+        - slug: NT
+          title: Non Traité
+

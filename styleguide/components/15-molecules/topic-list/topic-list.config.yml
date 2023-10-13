@@ -1,0 +1,19 @@
+display:
+  max-width: 134px
+variants:
+- name: default
+  context:
+    topicList:
+    - '@topic.topic'
+    - '@topic--frames.topic'
+    - '@topic--colors.topic'
+    - '@topic--multimedia.topic'
+    - '@topic--tables.topic'
+    - '@topic--links.topic'
+    - '@topic--scripts.topic'
+    - '@topic--mandatory.topic'
+    - '@topic--structure.topic'
+    - '@topic--presentation.topic'
+    - '@topic--forms.topic'
+    - '@topic--navigation.topic'
+    - '@topic--consultation.topic'

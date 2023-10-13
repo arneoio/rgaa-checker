@@ -1,0 +1,28 @@
+{% set componentClass = 'm-criteriaSelector js-criteriaSelector' %}
+{% set defaultTag = 'div' %}
+{% set attributeList = attributeList is defined ? attributeList : {} %}
+{% set attributeList = attributeList|merge({'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
+{% set tag = tag is defined ? tag : defaultTag %}
+
+{% set zone = criteriaSelector.zone %}
+
+<{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
+		<button class="m-criteriaSelector__toggler js-criteriaSelector__toggler" data-status="{{ criteriaSelector.current.slug }}" aria-expanded="false" aria-controls="criteria-selector-{{ criteriaSelector.zone }}">
+				<span class="js-criteriaSelector__togglerText">{{ criteriaSelector.current.slug }}</span>
+				{% include '@atom/icon/icon.html.twig' with {
+					name: 'chevron',
+					attributeList: {
+						class: 'm-criteriaSelector__chevron'
+					}
+				} only %}
+		</button>
+  	<ul class="m-criteriaSelector__content js-criteriaSelector__content" id="criteria-selector-{{ criteriaSelector.zone }}">
+{% for status in criteriaSelector.statusList %}
+				<li class="m-criteriaSelector__item">
+						<button class="m-criteriaSelector__link js-criteriaSelector__link" data-status="{{ status.slug }}" title="{{ status.title }}">
+								{{ status.slug }}
+						</button>
+				</li>
+{% endfor %}
+  	</ul>
+</{{ tag }}>

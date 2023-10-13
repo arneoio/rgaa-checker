@@ -1,0 +1,5 @@
+context:
+  toggleSwitch:
+    name: input-name
+    id: unique-input-id
+    text: Highlight

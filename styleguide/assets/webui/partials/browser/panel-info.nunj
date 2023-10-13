@@ -1,0 +1,77 @@
+{% set usesPartialList = frctl.get('project.usesPartialList') %}
+{% set usedPartialList = frctl.get('project.usedPartialList') %}
+{% set componentPath = entity.viewPath | componentPath %}
+
+<div class="Browser-panel" data-role="tab-panel" id="browser-{{ entity.id }}-panel-info">
+    <ul class="Meta">
+        <li class="Meta-item">
+            <strong class="Meta-key">{{ frctl.theme.get('labels.components.handle') }}:</strong>
+            <span class="Meta-value">@{{ entity.handle }}</span>
+        </li>
+        {% if entity.tags.length > 1 %}
+        <li class="Meta-item">
+            <strong class="Meta-key">{{ frctl.theme.get('labels.components.tags') }}:</strong>
+            <span class="Meta-value">
+                {% for tag in entity.tags %}
+                    <span>{% if tag %}{{ tag }}</span>{% if not loop.last %}, {% endif %}{% endif %}
+                {% endfor %}
+            </span>
+        </li>
+        {% endif %}
+        <li class="Meta-item">
+            <strong class="Meta-key">{{ frctl.theme.get('labels.components.preview.label') }}:</strong>
+            <span class="Meta-value">
+                <ul>
+                    <li><a data-no-pjax href="{{ path(frctl.theme.urlFromRoute('preview', { handle: entity.handle })) }}"><span>{{ frctl.theme.get('labels.components.preview.withLayout') }}</span> {% include "icons/open-in-browser.svg" %}</a></li>
+                    <li><a data-no-pjax href="{{ path(frctl.theme.urlFromRoute('render', { handle: entity.handle })) }}"><span>{{ frctl.theme.get('labels.components.preview.componentOnly') }}</span> {% include "icons/open-in-browser.svg" %}</a></li>
+                </ul>
+            </span>
+        </li>
+        <li class="Meta-item">
+            <strong class="Meta-key">{{ frctl.theme.get('labels.components.path') }}:</strong>
+            <span class="Meta-value">{{ entity.viewPath | componentPath }}</span>
+        </li>
+         {% if usesPartialList[componentPath].length %}
+        <li class="Meta-item">
+            <strong class="Meta-key">Utilisé dans :</strong>
+            <ul class="Meta-value">
+
+              {% for line in usesPartialList[componentPath] %}
+                <li><a href="{{ path(line.url) }}">{{ line.name }}</a></li>
+              {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+        {% if usedPartialList[componentPath].length %}
+        <li class="Meta-item">
+            <strong class="Meta-key">Utilise :</strong>
+            <ul class="Meta-value">
+
+              {% for line in usedPartialList[componentPath] %}
+                <li><a href="{{ path(line.url) }}">{{ line.name }}</a></li>
+              {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+        {% if entity.references.length %}
+        <li class="Meta-item">
+            <strong class="Meta-key">{{ frctl.theme.get('labels.components.references') }} <em class="Meta-count">({{ entity.references.length }})</em>:</strong>
+            <span class="Meta-value Meta-value--linkList">
+            {% for ref in entity.references %}
+                <a href="{{ path(frctl.theme.urlFromRoute('component', { handle: ref.handle })) }}">@<span>{{ ref.handle }}</span></a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            </span>
+        </li class="Meta-item">
+        {% endif %}
+        {% if entity.referencedBy.length %}
+        <li class="Meta-item">
+            <strong class="Meta-key">{{ frctl.theme.get('labels.components.referenced') }} <em class="Meta-count">({{ entity.referencedBy.length }})</em>:</strong>
+            <span class="Meta-value Meta-value--linkList">
+            {% for ref in entity.referencedBy %}
+                <a href="{{ path(frctl.theme.urlFromRoute('component', { handle: ref.handle })) }}">@<span>{{ ref.handle }}</span></a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            </span>
+        </li>
+        {% endif %}
+    </ul>
+</div>

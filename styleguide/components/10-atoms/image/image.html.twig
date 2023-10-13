@@ -1,0 +1,28 @@
+{% set componentClass = 'a-image' %}
+{% set attributeList = attributeList is defined ? attributeList : {} %}
+{% set attributeList = attributeList|merge({'class': (attributeList.class is defined ? attributeList.class ~ ' ' ~ componentClass : componentClass), 'alt': attributeList.alt is defined ? attributeList.alt : ''}) %}
+{% set lazyloadClassName = '-lazy' %}
+{# default images are lazy loaded #}
+{% set isLazyLoaded = isLazyLoaded is defined ? isLazyLoaded : true %}
+{% set hasNoScript = hasNoScript is defined ? hasNoScript : false %}
+{% if isLazyLoaded %}
+    {% set emptyImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' %}
+    {% if hasNoScript %}
+        {% set noScriptAttributeList = attributeList %}
+    {% endif %}
+
+    {% if attributeList.src is defined %}
+        {% set attributeList = attributeList|merge({'src': emptyImage, 'data-src': attributeList.src, 'class': attributeList.class ~ ' ' ~ lazyloadClassName }) %}
+    {% else %}
+        {% set attributeList = attributeList|merge({'src': emptyImage, 'class': attributeList.class ~ ' ' ~ lazyloadClassName}) %}
+    {% endif %}
+{% endif %}
+
+{% if attributeList.src is defined %}
+<img {% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %} />
+    {% if hasNoScript and isLazyLoaded and noScriptAttributeList.src is defined %}
+<noscript>
+    <img {% for attribute, value in noScriptAttributeList %} {{ attribute }}="{{ value }}"{% endfor %} />
+</noscript>
+    {% endif %}
+{% endif %}

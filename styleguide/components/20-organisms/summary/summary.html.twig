@@ -1,0 +1,54 @@
+{% set componentClass = 'o-summary' %}
+{% set defaultTag = 'div' %}
+{% set attributeList = attributeList is defined ? attributeList : {} %}
+{% set attributeList = attributeList|merge({'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
+{% set tag = tag is defined ? tag : defaultTag %}
+
+{% set statusList = [{'slug': 'C', 'title': 'Conforme'}, {'slug': 'NC', 'title': 'Non conforme'}, {'slug': 'NA', 'title': 'Non applicable'}, {'slug': 'NT', 'title': 'Non traité'}] %}
+{% set total = 0 %}
+{% set score = 0 %}
+{% for status in statusList %}
+    {% if status.slug != 'NA' %}
+        {% set total = total + summary.scoreList[status.slug] %}
+        {% if status.slug != 'NC' %}
+            {% set score = score + summary.scoreList[status.slug] %}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+<{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
+    <div class="o-summary__top">
+        <h2 class="o-summary__top__title">Votre audit en un clic</h2>
+        <a href="#" class="o-summary__top__download">Télécharger l'audit</a>
+    </div>
+    <div class="o-summary__score o-summary__frame">
+        <p class="o-summary__score__title">
+            Score
+            {% include '@atom/icon/icon.html.twig' with {
+                name: 'speed',
+                attributeList: {
+                class: 'o-summary__score__icon'
+                }
+            } only %}
+        </p>
+        <p class="o-summary__score__value">
+          <span class="js-summary__score">{{ (score / total * 100) | round }}</span>%</p>
+        <progress class="o-summary__score__progress js-summary__score__progress" max="{{ total }}" value="{{ score }}"></progress>
+    </div>
+    <ul class="o-summary__list o-summary__frame">
+{% for status in statusList %}
+        <li class="o-summary__item -status-{{ status.slug | lower }}">
+            <div class="o-summary__item__heading">
+                {% include '@atom/icon/icon.html.twig' with {
+                    name: 'status-' ~ status.slug | lower,
+                    attributeList: {
+                    class: 'o-summary__item__icon'
+                    }
+                } only %}
+                <p class="o-summary__item__title">{{ status.title }}</p>
+            </div>
+            <progress class="o-summary__item__progress js-summary__progress" data-status="{{ status.slug }}" max="{{ total }}" value="{{ summary.scoreList[status.slug] }}"></progress>
+        </li>
+{% endfor %}
+    </ul>
+</{{ tag }}>

@@ -1,0 +1,9 @@
+variants:
+- name: default
+  context:
+    summary:
+      scoreList:
+        C: 42
+        NC: 24
+        NA: 34
+        NT: 18

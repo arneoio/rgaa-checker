@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "outDir": "./styleguide/",
+        "noImplicitAny": true,
+        "module": "es2020",
+        "target": "es5",
+        "jsx": "react",
+        "allowJs": true,
+        "moduleResolution": "node",
+        "sourceMap": true
+    },
+    "exclude": [
+        "vendor",
+        "wp-admin",
+        "wp-includes",
+        "wp-content/plugins"
+    ],
+    "include": [
+        "styleguide/assets/scripts/**/*.ts"
+    ]
+}

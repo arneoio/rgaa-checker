@@ -1,0 +1,61 @@
+$toggleSwitch-height: 19px;
+$toggleSwitch-padding: 3px;
+
+.m-toggleSwitch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    // Augmente la taille du swtich si actif pour indiquer l'état
+    &:active {
+        .m-toggleSwitch__switch {
+            &::after {
+                width: ($toggleSwitch-height - $toggleSwitch-padding * 2) * 1.2;
+            }
+        }
+    }
+}
+
+.m-toggleSwitch__label {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.m-toggleSwitch__checkbox {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+
+    &:checked {
+        + .m-toggleSwitch__switch {
+            background: $primary-color-1;
+
+            &::after {
+                left: calc(100% - #{$toggleSwitch-padding});
+                transform: translateX(-100%);
+            }
+        }
+    }
+}
+
+.m-toggleSwitch__switch {
+    position: relative;
+    display: block;
+    width: $toggleSwitch-height * 1.7;
+    height: $toggleSwitch-height;
+    background: var(--color-grey-4);
+    border-radius: $toggleSwitch-height;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: $toggleSwitch-padding;
+        left: $toggleSwitch-padding;
+        width: $toggleSwitch-height - $toggleSwitch-padding * 2;
+        height: $toggleSwitch-height - $toggleSwitch-padding * 2;
+        background: #fff;
+        border-radius: $toggleSwitch-height - $toggleSwitch-padding;
+        transition: all 200ms ease;
+    }
+}

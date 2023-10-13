@@ -1,0 +1,39 @@
+{% set componentClass = 'o-topic js-topic' %}
+{% set defaultTag = 'div' %}
+{% set attributeList = attributeList is defined ? attributeList : {} %}
+{% set attributeList = attributeList|merge({'data-topic': topic.slug, 'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
+{% set tag = tag is defined ? tag : defaultTag %}
+
+<{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
+    <div class="o-topic__top">
+        {{ topic.number }}. {{ topic.topic }} ({{ topic.criteria | length }})
+        {% include '@atom/icon/icon.html.twig' with {
+          name: 'topic-' ~ topic.slug,
+          attributeList: {
+            class: 'o-topic__top__icon'
+          }
+        } only %}
+    </div>
+    <div class="o-topic__top -sticky js-topic__top">
+        {{ topic.number }}. {{ topic.topic }} ({{ topic.criteria | length }})
+        {% include '@atom/icon/icon.html.twig' with {
+          name: 'topic-' ~ topic.slug,
+          attributeList: {
+            class: 'o-topic__top__icon'
+          }
+        } only %}
+    </div>
+    <ul class="o-topic__criteriaList">
+{% for criteria in topic.criteria %}
+        {% set criteriaCard = {
+          topic: topic.slug,
+          topicNumber: topic.number,
+          criterium: criteria.criterium,
+        } %}
+        {% include '@molecule/criteria-card/criteria-card.html.twig' with {
+          criteriaCard: criteriaCard,
+          tag: 'li',
+        } only %}
+{% endfor %}
+    </ul>
+</{{ tag }}>

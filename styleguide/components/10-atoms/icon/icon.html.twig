@@ -1,0 +1,11 @@
+{% set isAriaHidden = isAriaHidden is defined ? isAriaHidden : true %}
+{% set componentClass = 'a-icon' %}
+{% set attributeList = attributeList is defined ? attributeList : {} %}
+{% if isAriaHidden %}
+  {% set attributeList = attributeList|merge({ 'aria-hidden': 'true' }) %}
+{% endif %}
+{% set attributeList = attributeList|merge({'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
+
+<svg{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
+    <use xlink:href="{{ '/dist/icons.svg' | path }}#i-{{ name }}"/>
+</svg>

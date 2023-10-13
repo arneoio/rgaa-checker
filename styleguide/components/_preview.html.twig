@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{# Doctype en premier élément de la page #}
+<html lang="fr">
+	{# Langue obligatoire sur html #}
+	<head>
+		<meta charset="UTF-8"/>
+		<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+		<meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+		<title>Arnéo Front starter</title>
+		{# Titre obligatoire et unique sur chaque page du site #}
+		<link rel="stylesheet" href="{{ '/dist/app.css' | path }}"/>
+	</head>
+	<body>
+		{% spaceless %}
+        {% block body %}{{ yield | raw }}{% endblock %}
+		{% endspaceless %}
+    {% block javascripts %}
+    <script src="{{ '/dist/icons.js' | path }}"></script>
+    <script src="{{ '/dist/app.js' | path }}"></script>
+    {% endblock %}
+	</body>
+</html>

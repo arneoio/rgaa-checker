@@ -1,0 +1,118 @@
+variants:
+- name: default
+  context:
+    topic:
+      slug: images
+      topic: Images
+      number: 1
+      criteria:
+      - criterium: "@criteria-card.criteriaCard.criterium"
+      - criterium: "@criteria-card--images-1.criteriaCard.criterium"
+- name: frames
+  context:
+    topic:
+      slug: frames
+      topic: Cadres
+      number: 1
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: colors
+  context:
+    topic:
+      number: 3
+      slug: colors
+      topic: Couleurs
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: multimedia
+  context:
+    topic:
+      number: 4
+      slug: multimedia
+      topic: Multimédias
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: tables
+  context:
+    topic:
+      number: 5
+      slug: tables
+      topic: Tableaux
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: links
+  context:
+    topic:
+      number: 6
+      slug: links
+      topic: Liens
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: scripts
+  context:
+    topic:
+      number: 7
+      slug: scripts
+      topic: Scripts
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: mandatory
+  context:
+    topic:
+      number: 8
+      slug: mandatory
+      topic: Éléments obligatoires
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: structure
+  context:
+    topic:
+      number: 9
+      slug: structure
+      topic: Structure de l'information
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: presentation
+  context:
+    topic:
+      number: 10
+      slug: presentation
+      topic: Présentation de l'information
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: forms
+  context:
+    topic:
+      number: 11
+      slug: forms
+      topic: Formulaires
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: navigation
+  context:
+    topic:
+      number: 12
+      slug: navigation
+      topic: Navigation
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
+- name: consultation
+  context:
+    topic:
+      number: 13
+      slug: consultation
+      topic: Consultation
+      criteria:
+      - criterium: "@criteria-card--frames-1.criteriaCard.criterium"
+      - criterium: "@criteria-card--frames-2.criteriaCard.criterium"
