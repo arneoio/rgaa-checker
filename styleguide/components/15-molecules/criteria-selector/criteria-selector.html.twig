@@ -7,15 +7,15 @@
 {% set zone = criteriaSelector.zone %}
 
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
-		<button class="m-criteriaSelector__toggler js-criteriaSelector__toggler" data-status="{{ criteriaSelector.current.slug }}" aria-expanded="false" aria-controls="criteria-selector-{{ criteriaSelector.zone }}">
-				<span class="js-criteriaSelector__togglerText">{{ criteriaSelector.current.slug }}</span>
-				{% include '@atom/icon/icon.html.twig' with {
-					name: 'chevron',
-					attributeList: {
-						class: 'm-criteriaSelector__chevron'
-					}
-				} only %}
-		</button>
+	<button class="m-criteriaSelector__toggler js-criteriaSelector__toggler" data-status="{{ criteriaSelector.current.slug }}" aria-expanded="false" aria-controls="criteria-selector-{{ criteriaSelector.zone }}">
+			<span class="js-criteriaSelector__togglerText">{{ criteriaSelector.current.slug }}</span>
+			{% include '@atom/icon/icon.html.twig' with {
+				name: 'chevron',
+				attributeList: {
+					class: 'm-criteriaSelector__chevron'
+				}
+			} only %}
+	</button>
   	<ul class="m-criteriaSelector__content js-criteriaSelector__content" id="criteria-selector-{{ criteriaSelector.zone }}">
 {% for status in criteriaSelector.statusList %}
 				<li class="m-criteriaSelector__item">

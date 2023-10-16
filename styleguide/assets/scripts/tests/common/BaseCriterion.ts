@@ -35,6 +35,11 @@ export default abstract class BaseCriterion implements Criterion {
 
   abstract runTest(): void;
 
+  setHighLightSelector(criteriaNumber: string, querySelector: string): void {
+    let $criteriaHighlightSwitch = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"] .js-criteriaCard__highlightSwitch`) as HTMLElement;
+    $criteriaHighlightSwitch.dataset.rule = querySelector;
+  }
+
   logResults(title: string, log: any): void {
     console.groupCollapsed(title);
     console.log(log);
