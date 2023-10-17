@@ -7,7 +7,7 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion8_7 extends BaseCriterion {
   constructor($wrapper: HTMLElement) {
     super($wrapper);
-    this.querySelector = '[lang], [xml:lang]';
+    this.querySelector = '*[lang]:not(html), *[xml\\:lang]:not(html)';
   }
 
   runTest() {
@@ -15,8 +15,11 @@ export default class Criterion8_7 extends BaseCriterion {
     let message = "Vérifiez si les changements de langue sont correctement indiqués.";
     let $elementList = document.querySelectorAll(this.querySelector);
 
-    // 8.7.1
+    if($elementList.length === 0) {
+      message = "Aucun changement de langue n'a été détecté. Vérifiez si les changements de langue sont correctement indiqués.";
+    }
 
+    // 8.7.1
     this.updateCriteria('8.7', status, message);
     this.updateTest('8.7.1', $elementList.length > 0 ? 'NT' : 'NA');
 
@@ -26,7 +29,7 @@ export default class Criterion8_7 extends BaseCriterion {
   }
 
   getHighlightLabel($element: HTMLElement) {
-    return ``;
+    return $element.getAttribute('lang') || $element.getAttribute('xml:lang');
   }
 }
 
