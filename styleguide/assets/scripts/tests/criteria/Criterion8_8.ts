@@ -20,7 +20,6 @@ export default class Criterion8_8 extends BaseCriterion {
       message = "Aucun changement de langue n'a été détecté.";
     }
 
-    // 8.7.1
     this.updateCriteria('8.8', status, message);
     this.updateTest('8.8.1', status);
 
