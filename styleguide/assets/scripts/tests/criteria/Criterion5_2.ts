@@ -8,6 +8,7 @@ import TableUtils from '../utils/TableUtils';
 export default class Criterion5_2 extends BaseCriterion {
   constructor($wrapper: HTMLElement) {
     super($wrapper);
+    this.querySelector = 'table';
   }
 
   runTest() {
@@ -35,6 +36,10 @@ export default class Criterion5_2 extends BaseCriterion {
     if(describedTableList.length > 0) {
       this.logResults('5.2 - Description des tableaux complexes', describedTableList);
     }
+  }
+
+  getHighlightLabel($element: HTMLElement) {
+    return $element.getAttribute('summary');
   }
 }
 

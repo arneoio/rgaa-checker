@@ -8,6 +8,8 @@ import TableUtils from '../utils/TableUtils';
 export default class Criterion5_1 extends BaseCriterion {
   constructor($wrapper: HTMLElement) {
     super($wrapper);
+    // TODO: à améliorer pour n'avoir que les tableaux complexes
+    this.querySelector = 'table';
   }
 
   runTest() {
@@ -33,6 +35,10 @@ export default class Criterion5_1 extends BaseCriterion {
     if(notDescribedTableList.length > 0) {
       this.logResults('5.1 - Tableaux complexes non décrits', notDescribedTableList);
     }
+  }
+
+  getHighlightLabel($element: HTMLElement) {
+    return $element.getAttribute('summary');
   }
 }
 

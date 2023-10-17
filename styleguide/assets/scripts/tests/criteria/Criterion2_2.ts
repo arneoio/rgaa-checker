@@ -7,13 +7,14 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion2_2 extends BaseCriterion {
   constructor($wrapper: HTMLElement) {
     super($wrapper);
+    this.querySelector = 'iframe, frame';
   }
 
   runTest() {
     let status = 'NA';
     let frameTitleList: Array<any> = [];
 
-    let $frameList = document.querySelectorAll('iframe, frame');
+    let $frameList = document.querySelectorAll(this.querySelector);
     if($frameList.length) {
       $frameList.forEach(($frame: HTMLTableElement) => {
         if($frame.title) {
@@ -33,6 +34,10 @@ export default class Criterion2_2 extends BaseCriterion {
     if(frameTitleList.length > 0) {
       this.logResults('2.2 - Liste des titres des cadres', frameTitleList);
     }
+  }
+
+  getHighlightLabel($element: HTMLElement) {
+    return $element.getAttribute('title');
   }
 }
 
