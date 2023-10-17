@@ -49,6 +49,11 @@ $error-color: $color-red;
     --text-color: #{$text-color};
 }
 
+#arneo-browser-highlight,
+:root {
+    --highLight-color: #{$color-coral};
+}
+
 $image-background: $color-grey-light;
 
 // Polices utilisées sur le site

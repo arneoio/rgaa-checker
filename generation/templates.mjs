@@ -96,6 +96,7 @@ const getHtmlHeader = () => {
     htmlHeader = `
           <style>${appCss}</style>
           <div class="-hidden">${icons}</div>
+          <div id="arneo-browser-highlight"></div>
         `;
   }
   return htmlHeader;

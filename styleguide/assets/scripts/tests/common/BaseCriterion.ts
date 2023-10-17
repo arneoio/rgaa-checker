@@ -2,9 +2,11 @@ import { Criterion } from "./Criterion";
 
 export default abstract class BaseCriterion implements Criterion {
   $wrapper: HTMLElement;
+  querySelector: string;
 
   constructor($wrapper: HTMLElement) {
     this.$wrapper = $wrapper;
+    this.querySelector = '';
   }
 
   updateCriteria(criteriaNumber: string, status: string, verification?: string) {
@@ -35,9 +37,12 @@ export default abstract class BaseCriterion implements Criterion {
 
   abstract runTest(): void;
 
-  setHighLightSelector(criteriaNumber: string, querySelector: string): void {
-    let $criteriaHighlightSwitch = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"] .js-criteriaCard__highlightSwitch`) as HTMLElement;
-    $criteriaHighlightSwitch.dataset.rule = querySelector;
+  getHighlightSelector(): string {
+    return this.querySelector;
+  }
+
+  getHighlightLabel($element: HTMLElement) {
+    return '';
   }
 
   logResults(title: string, log: any): void {

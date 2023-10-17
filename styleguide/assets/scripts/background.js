@@ -26,7 +26,7 @@ chrome.action.onClicked.addListener(async (tab) => {
           );
           const panelHtmlText = await panelHtmlResponse.text();
 
-          // Créer un élément shadow DOM
+          // Créer un élément shadow DOM pour l'extension
           const shadow = document.createElement('div');
           shadow.id = 'arneo-browser-extension';
           shadow.attachShadow({ mode: 'open' });

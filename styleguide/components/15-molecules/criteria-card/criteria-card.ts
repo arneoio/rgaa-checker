@@ -4,16 +4,22 @@ export default class CriteriaCard {
   $statusSelector: HTMLElement;
   $toggler: HTMLElement;
   $highlightSwitch: HTMLElement;
+  $highLightWrapper: HTMLElement;
   $summaryScore: HTMLElement;
   $summaryScoreProgress: HTMLElement;
+  highlightSelector: string;
+  criterion: any;
 
-  constructor($wrapper: HTMLElement, $element: HTMLElement) {
+  constructor($wrapper: HTMLElement, $element: HTMLElement, criterion: any, $highLightWrapper: HTMLElement) {
     this.$wrapper = $wrapper;
     this.$element = $element;
     this.$statusSelector = this.$element.querySelector('.js-criteriaSelector');
     this.$toggler = this.$statusSelector.querySelector('.js-criteriaSelector__toggler');
     this.$highlightSwitch = this.$element.querySelector('.js-criteriaCard__highlightSwitch');
-    
+    this.$highLightWrapper = $highLightWrapper;
+    this.criterion = criterion;
+    this.highlightSelector = (this.criterion && this.criterion.getHighlightSelector()) || '';
+
     this.$summaryScore = this.$wrapper.querySelector('.js-summary__score');
     this.$summaryScoreProgress = this.$wrapper.querySelector('.js-summary__score__progress');
 
@@ -25,9 +31,13 @@ export default class CriteriaCard {
       $link.addEventListener('click', this.updateCardStatus.bind(this));
     });
 
-    this.$highlightSwitch.querySelector('input').addEventListener('click', () => {
-      this.switchHighlightedElements();
-    })
+    console.log(this.highlightSelector);
+    if(this.highlightSelector) {
+      this.$highlightSwitch.classList.remove('-hidden');
+      this.$highlightSwitch.querySelector('input').addEventListener('change', () => {
+        this.switchHighlightedElements();
+      })
+    }
   }
 
   updateCardStatus(event: Event) {
@@ -46,16 +56,22 @@ export default class CriteriaCard {
   }
 
   switchHighlightedElements() {
-    if (!this.$highlightSwitch.dataset.rule) {
-      return;
-    }
-
     document.querySelectorAll('*').forEach(($element: HTMLElement) => {
       $element.style.opacity = null; $element.style.outline = null; }
     );
+    // Remove all highlights
+    this.$highLightWrapper.innerHTML = '';
+
+    // uncheck all other highlightSwitch
+    Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard__highlightSwitch input')).forEach(($input: HTMLInputElement) => {
+      if($input !== this.$highlightSwitch.querySelector('input')) {
+        $input.checked = false;
+      }
+    });
 
     if(this.$highlightSwitch.querySelector('input').checked) {
-      this.hideRecursive(document.body, this.$highlightSwitch.dataset.rule);
+
+      this.hideRecursive(document.body, this.highlightSelector);
     }
   }
 
@@ -70,8 +86,23 @@ export default class CriteriaCard {
 
     // L'élément matche la recherche: mise en avant
     if($element.matches(querySelector)) {
-        $element.style.outline = "2px solid #fe5e55";
-        $element.style.outlineOffset = "-2px";
+        if(this.$highLightWrapper) {
+          // On créé un élément dans le wrapper à la même position que l'élément matchant pour le mettre en avant
+          let $highlight = document.createElement('div');
+          let bounding = $element.getBoundingClientRect();
+          let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+          $highlight.style.top = `${bounding.top + scrollTop}px`;
+          $highlight.style.left = `${bounding.left}px`;
+          $highlight.style.width = `${bounding.width}px`;
+          $highlight.style.height = `${bounding.height}px`;
+          this.$highLightWrapper.appendChild($highlight);
+
+          // Ajoute un label à l'élément mis en avant
+          let $label = document.createElement('p');
+          $label.innerText = this.criterion.getHighlightLabel($element);
+          $highlight.appendChild($label);
+        }
         return false;
     }
 

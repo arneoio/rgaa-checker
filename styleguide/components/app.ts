@@ -11,11 +11,16 @@ var App = {
   init: function () {
     // Get element in shadow DOM if extension mode
     this.ID = 'arneo-accessibility-checker';
+    this.HIGHLIGHT_ID = 'arneo-browser-highlight';
+
     this.documentRoot = document;
     if (document.getElementById('arneo-browser-extension')) {
       this.documentRoot = document.getElementById('arneo-browser-extension').shadowRoot;
     }
     this.$wrapper = this.documentRoot.getElementById(this.ID);
+    this.$highLightWrapper = this.documentRoot.getElementById(this.HIGHLIGHT_ID);
+
+    this.tester = new AccessibilityTester(this.$wrapper);
 
     // Inits elements common to every pages
     this.initLayout();
@@ -26,8 +31,7 @@ var App = {
 
     this.initOrganisms();
 
-    const tester = new AccessibilityTester(this.$wrapper);
-    tester.runTests();
+    this.tester.runTests();
   },
 
   initLayout: function () {
@@ -84,7 +88,8 @@ var App = {
     const $criteriaCardList = Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard'));
     if ($criteriaCardList.length) {
       $criteriaCardList.forEach(($criteriaCard: HTMLElement) => {
-        new CriteriaCard(this.$wrapper, $criteriaCard);
+        const criteriaNumber = $criteriaCard.dataset.criteria;
+        new CriteriaCard(this.$wrapper, $criteriaCard, this.tester.criterionList[criteriaNumber], this.$highLightWrapper);
       });
     }
 

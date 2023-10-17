@@ -6,12 +6,6 @@
     padding: 16px;
     background-color: $color-white;
     border-radius: 8px;
-
-    .m-criteriaCard__highlightSwitch {
-        &:not([data-rule])  {
-            display: none; // Hidden by default
-        }
-    }
 }
 
 .m-criteriaCard__top {
