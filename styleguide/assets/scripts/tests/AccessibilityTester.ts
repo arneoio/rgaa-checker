@@ -11,6 +11,7 @@ import Criterion8_4 from "./criteria/Criterion8_4";
 import Criterion8_5 from "./criteria/Criterion8_5";
 import Criterion8_6 from "./criteria/Criterion8_6";
 import Criterion8_7 from "./criteria/Criterion8_7";
+import Criterion8_8 from "./criteria/Criterion8_8";
 import Criterion9_1 from "./criteria/Criterion9_1";
 import Criterion9_2 from "./criteria/Criterion9_2";
 import Criterion9_3 from "./criteria/Criterion9_3";
@@ -37,6 +38,7 @@ export default class AccessibilityTester {
       "8.5": new Criterion8_5(this.$wrapper),
       "8.6": new Criterion8_6(this.$wrapper),
       "8.7": new Criterion8_7(this.$wrapper),
+      "8.8": new Criterion8_8(this.$wrapper),
       "9.1": new Criterion9_1(this.$wrapper),
       "9.2": new Criterion9_2(this.$wrapper),
       "9.3": new Criterion9_3(this.$wrapper),

@@ -31,7 +31,6 @@ export default class CriteriaCard {
       $link.addEventListener('click', this.updateCardStatus.bind(this));
     });
 
-    console.log(this.highlightSelector);
     if(this.highlightSelector) {
       this.$highlightSwitch.classList.remove('-hidden');
       this.$highlightSwitch.querySelector('input').addEventListener('change', () => {
