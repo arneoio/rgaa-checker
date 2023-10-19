@@ -41,8 +41,8 @@ export default class Criterion6_2 extends BaseCriterion {
       }
 
       isCriteriaValid = linkListWithoutLabel.length === 0;
-      let status = isCriteriaValid ? 'C' : 'NC';
-      let message = isCriteriaValid ? "Tous les liens ont un intitulé." : "Certains liens n'ont pas d'intitulé.";
+      status = isCriteriaValid ? 'C' : 'NC';
+      message = isCriteriaValid ? "Tous les liens ont un intitulé." : "Certains liens n'ont pas d'intitulé.";
     }
 
     this.updateCriteria('6.2', status, message);
@@ -52,5 +52,4 @@ export default class Criterion6_2 extends BaseCriterion {
   getHighlightLabel($element: HTMLElement) {
     return LinkUtils.getLinkLabel($element);
   }
-}
 }
