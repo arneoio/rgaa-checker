@@ -12,6 +12,7 @@ export default class Criterion2_2 extends BaseCriterion {
 
   runTest() {
     let status = 'NA';
+    let message = "Aucun cadre n'a été trouvé.";
     let frameTitleList: Array<any> = [];
 
     let $frameList = document.querySelectorAll(this.querySelector);

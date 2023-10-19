@@ -29,17 +29,17 @@ export default class Criterion8_1 extends BaseCriterion {
       }
     }
     let status = isCriteriaValid ? 'C' : 'NC';
-    let $criteriaCard = this.$wrapper.querySelector('.js-criteriaCard[data-criteria="8.1"') as HTMLElement;
-    if(!$criteriaCard) {
-      return;
-    }
+    let message = isCriteriaValid ? "Le type de document est valide."
+      : !hasDoctype ? "La balise DOCTYPE est manquante."
+      : !isDoctypeBeforeHtml ? "La balise DOCTYPE n'est pas placée avant la balise <html>."
+      : "Le type de document n'est pas valide.";
 
+    this.updateCriteria('8.1', status, message);
     // Pour chaque page web, le type de document (balise doctype) est-il présent ?
     this.updateTest('8.1.1', !hasDoctype ? 'NC' : 'C');
     // Pour chaque page web, le type de document (balise doctype) est-il valide ?
-    this.updateTest('8.1.2', isDoctypeBeforeHtml ? 'C' : 'NC');
+    this.updateTest('8.1.2', isValidDoctype ? 'C' : 'NC');
     // Pour chaque page web possédant une déclaration de type de document, celle-ci est-elle située avant la balise <html> dans le code source ?
-    this.updateTest('8.1.3', isValidDoctype ? 'C' : 'NC');
-    this.updateCriteria('8.1', status);
+    this.updateTest('8.1.3', isDoctypeBeforeHtml ? 'C' : 'NC');
   }
 }

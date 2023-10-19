@@ -14,6 +14,7 @@ export default class Criterion5_1 extends BaseCriterion {
 
   runTest() {
     let status = 'NA';
+    let message = "Aucun tableau n'a été trouvé.";
 
     let $complexTableList = TableUtils.getComplexTableList();
     let notDescribedTableList: Array<HTMLTableElement> = [];
@@ -27,9 +28,10 @@ export default class Criterion5_1 extends BaseCriterion {
       });
 
       status = notDescribedTableList.length === 0 ? 'C' : 'NC';
+      message = notDescribedTableList.length === 0 ? "Tous les tableaux complexes ont un résumé." : "Certains tableaux complexes n'ont pas de résumé.";
     }
 
-    this.updateCriteria('5.1', status);
+    this.updateCriteria('5.1', status, message);
     this.updateTest('5.1.1', status);
 
     if(notDescribedTableList.length > 0) {
