@@ -18,10 +18,10 @@ export default class Criterion9_2 extends BaseCriterion {
 
     if($main.length === 0) {
       status = 'NC';
-      message = 'La balise <main> est absente.';
+      message = 'La balise &lt;main&gt; est absente.';
     } else if($main.length > 1) {
       status = 'NC';
-      message = 'La balise <main> est présente plusieurs fois.';
+      message = 'La balise &lt;main&gt; est présente plusieurs fois.';
     }
 
     this.updateCriteria('9.2', status, message);

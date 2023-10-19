@@ -1,3 +1,5 @@
+import Criterion11_1 from "./criteria/Criterion11_1";
+import Criterion11_2 from "./criteria/Criterion11_2";
 import Criterion1_1 from "./criteria/Criterion1_1";
 import Criterion2_1 from "./criteria/Criterion2_1";
 import Criterion2_2 from "./criteria/Criterion2_2";
@@ -45,6 +47,8 @@ export default class AccessibilityTester {
       "9.2": new Criterion9_2(this.$wrapper),
       "9.3": new Criterion9_3(this.$wrapper),
       "9.4": new Criterion9_4(this.$wrapper),
+      "11.1": new Criterion11_1(this.$wrapper),
+      "11.2": new Criterion11_2(this.$wrapper),
     }
   }
 
