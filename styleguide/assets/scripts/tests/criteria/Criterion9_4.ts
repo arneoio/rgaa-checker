@@ -12,7 +12,7 @@ export default class Criterion9_4 extends BaseCriterion {
 
   runTest() {
     let status = 'NT';
-    let message = "Vérifiez si les citations correctes et s'il n'en manque pas.";
+    let message = "Vérifiez si les citations sont correctes et s'il n'en manque pas.";
     let $elementList = document.querySelectorAll(this.querySelector);
 
     // 9.4.1: q

@@ -2,7 +2,7 @@ import BaseCriterion from '../common/BaseCriterion';
 
 /**
  * Dans chaque page web, chaque changement de langue est-il indiqué dans le code source (hors cas particuliers) ?
- * Traite: NT (validation manuelle)
+ * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion8_7 extends BaseCriterion {
   constructor($wrapper: HTMLElement) {

@@ -33,11 +33,12 @@ export default class Criterion8_3 extends BaseCriterion {
         }
       });
 
-      isCriteriaValid = isLanguageDefinedForAllTextElements
+      isCriteriaValid = isLanguageDefinedForAllTextElements;
     }
 
     let status = isCriteriaValid ? 'C' : 'NC';
-    this.updateCriteria('8.3', status);
+    let message = isCriteriaValid ? "La langue par défaut est présente." : "La langue par défaut n'est pas présente.";
+    this.updateCriteria('8.3', status, message);
     this.updateTest('8.3.1', status);
   }
 }

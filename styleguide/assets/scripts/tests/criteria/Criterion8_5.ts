@@ -20,7 +20,8 @@ export default class Criterion8_5 extends BaseCriterion {
     }
 
     let status = isCriteriaValid ? 'C' : 'NC';
-    this.updateCriteria('8.5', status);
+    let message = isCriteriaValid ? "La page a un titre." : "La page n'a pas de titre.";
+    this.updateCriteria('8.5', status, message);
     this.updateTest('8.5.1', status);
   }
 }

@@ -3,7 +3,7 @@ import FormUtils from '../utils/FormUtils';
 
 /**
  * Chaque étiquette associée à un champ de formulaire est-elle pertinente (hors cas particuliers) ?
- * Traite: NC, C, NA, NT (validation manuelle)
+ * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion11_2 extends BaseCriterion {
   constructor($wrapper: HTMLElement) {

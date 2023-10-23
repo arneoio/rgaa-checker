@@ -6,6 +6,7 @@ import TopicList from './15-molecules/topic-list/topic-list';
 import Header from './20-organisms/header/header';
 import './app.scss';
 import AccessibilityTester from '../assets/scripts/tests/AccessibilityTester';
+import Summary from './20-organisms/summary/summary';
 
 var App = {
   init: function () {
@@ -105,6 +106,12 @@ var App = {
     const $header: HTMLElement = this.$wrapper.querySelector('.js-header');
     if ($header) {
       new Header(this.$wrapper, $header);
+    }
+
+    // Init summary
+    const $summary: HTMLElement = this.$wrapper.querySelector('.js-summary');
+    if ($summary) {
+      new Summary(this.$wrapper, $summary);
     }
   },
 

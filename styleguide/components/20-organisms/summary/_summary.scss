@@ -12,7 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .o-summary__top__title {
@@ -25,10 +25,6 @@
     font-weight: 700;
     color: var(--primary-color-1);
     text-decoration: underline;
-
-    // not active yet
-    pointer-events: none;
-    cursor: not-allowed;
 }
 
 .o-summary__frame {

@@ -1,4 +1,4 @@
-{% set componentClass = 'o-summary' %}
+{% set componentClass = 'o-summary js-summary' %}
 {% set defaultTag = 'div' %}
 {% set attributeList = attributeList is defined ? attributeList : {} %}
 {% set attributeList = attributeList|merge({'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
@@ -19,7 +19,8 @@
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
     <div class="o-summary__top">
         <h2 class="o-summary__top__title">Votre audit en un clic</h2>
-        <a href="#" class="o-summary__top__download">Télécharger l'audit</a>
+        <button class="o-summary__top__download js-summary__copyButton">Copier le résultat</button>
+        <textarea id="summary__result" class="js-summary__textarea" style="display: none;"></textarea>
     </div>
     <div class="o-summary__score o-summary__frame">
         <p class="o-summary__score__title">

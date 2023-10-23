@@ -24,7 +24,7 @@ export default class Criterion8_10 extends BaseCriterion {
         let dir = $element.getAttribute('dir');
         if(dir !== 'ltr' && dir !== 'rtl') {
           status = 'NC';
-          message = "L'attribut dir n'est pas correctement renseigné.";
+          message = `L'attribut dir <span>${dir}</span> n'est pas valide.`;
         }
       });
     }
