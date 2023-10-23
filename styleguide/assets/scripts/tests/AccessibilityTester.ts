@@ -1,8 +1,13 @@
-import Criterion11_1 from "./criteria/Criterion11_1";
-import Criterion11_2 from "./criteria/Criterion11_2";
 import Criterion1_1 from "./criteria/Criterion1_1";
 import Criterion2_1 from "./criteria/Criterion2_1";
 import Criterion2_2 from "./criteria/Criterion2_2";
+import Criterion4_1 from "./criteria/Criterion4_1";
+import Criterion4_2 from "./criteria/Criterion4_2";
+import Criterion4_3 from "./criteria/Criterion4_3";
+import Criterion4_4 from "./criteria/Criterion4_4";
+import Criterion4_5 from "./criteria/Criterion4_5";
+import Criterion4_6 from "./criteria/Criterion4_6";
+import Criterion4_7 from "./criteria/Criterion4_7";
 import Criterion5_1 from "./criteria/Criterion5_1";
 import Criterion5_2 from "./criteria/Criterion5_2";
 import Criterion5_3 from "./criteria/Criterion5_3";
@@ -20,6 +25,8 @@ import Criterion9_1 from "./criteria/Criterion9_1";
 import Criterion9_2 from "./criteria/Criterion9_2";
 import Criterion9_3 from "./criteria/Criterion9_3";
 import Criterion9_4 from "./criteria/Criterion9_4";
+import Criterion11_1 from "./criteria/Criterion11_1";
+import Criterion11_2 from "./criteria/Criterion11_2";
 
 export default class AccessibilityTester {
   $wrapper: HTMLElement;
@@ -32,6 +39,13 @@ export default class AccessibilityTester {
       "1.1": new Criterion1_1(this.$wrapper),
       "2.1": new Criterion2_1(this.$wrapper),
       "2.2": new Criterion2_2(this.$wrapper),
+      "4.1": new Criterion4_1(this.$wrapper),
+      "4.2": new Criterion4_2(this.$wrapper),
+      "4.3": new Criterion4_3(this.$wrapper),
+      "4.4": new Criterion4_4(this.$wrapper),
+      "4.5": new Criterion4_5(this.$wrapper),
+      "4.6": new Criterion4_6(this.$wrapper),
+      "4.7": new Criterion4_7(this.$wrapper),
       "5.1": new Criterion5_1(this.$wrapper),
       "5.2": new Criterion5_2(this.$wrapper),
       "5.3": new Criterion5_3(this.$wrapper),
