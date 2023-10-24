@@ -29,6 +29,7 @@ import Criterion9_4 from "./criteria/Criterion9_4";
 import Criterion10_2 from "./criteria/Criterion10_2";
 import Criterion11_1 from "./criteria/Criterion11_1";
 import Criterion11_2 from "./criteria/Criterion11_2";
+import Criterion10_1 from "./criteria/Criterion10_1";
 
 export default class AccessibilityTester {
   $wrapper: HTMLElement;
@@ -68,6 +69,7 @@ export default class AccessibilityTester {
       "9.2": new Criterion9_2(this.$wrapper, this.$highlightWrapper),
       "9.3": new Criterion9_3(this.$wrapper, this.$highlightWrapper),
       "9.4": new Criterion9_4(this.$wrapper, this.$highlightWrapper),
+      "10.1": new Criterion10_1(this.$wrapper, this.$highlightWrapper),
       "10.2": new Criterion10_2(this.$wrapper, this.$highlightWrapper),
       "11.1": new Criterion11_1(this.$wrapper, this.$highlightWrapper),
       "11.2": new Criterion11_2(this.$wrapper, this.$highlightWrapper),

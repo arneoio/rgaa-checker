@@ -7,7 +7,6 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion10_2 extends BaseCriterion {
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     super($wrapper, $highLightWrapper);
-    this.querySelector = `link[rel="stylesheet"]`;
     this.initHighlight();
   }
 
