@@ -3,11 +3,9 @@ export default class CriteriaCard {
   $element: HTMLElement;
   $statusSelector: HTMLElement;
   $toggler: HTMLElement;
-  $highlightSwitch: HTMLElement;
   $highLightWrapper: HTMLElement;
   $summaryScore: HTMLElement;
   $summaryScoreProgress: HTMLElement;
-  highlightSelector: string;
   criterion: any;
 
   constructor($wrapper: HTMLElement, $element: HTMLElement, criterion: any, $highLightWrapper: HTMLElement) {
@@ -15,10 +13,8 @@ export default class CriteriaCard {
     this.$element = $element;
     this.$statusSelector = this.$element.querySelector('.js-criteriaSelector');
     this.$toggler = this.$statusSelector.querySelector('.js-criteriaSelector__toggler');
-    this.$highlightSwitch = this.$element.querySelector('.js-criteriaCard__highlightSwitch');
     this.$highLightWrapper = $highLightWrapper;
     this.criterion = criterion;
-    this.highlightSelector = (this.criterion && this.criterion.getHighlightSelector()) || '';
 
     this.$summaryScore = this.$wrapper.querySelector('.js-summary__score');
     this.$summaryScoreProgress = this.$wrapper.querySelector('.js-summary__score__progress');
@@ -30,13 +26,6 @@ export default class CriteriaCard {
     Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link) => {
       $link.addEventListener('click', this.updateCardStatus.bind(this));
     });
-
-    if(this.highlightSelector) {
-      this.$highlightSwitch.classList.remove('-hidden');
-      this.$highlightSwitch.querySelector('input').addEventListener('change', () => {
-        this.switchHighlightedElements();
-      })
-    }
   }
 
   updateCardStatus(event: Event) {
@@ -53,82 +42,6 @@ export default class CriteriaCard {
     // Update global score
     this.updateGlobalScore();
   }
-
-  switchHighlightedElements() {
-    document.querySelectorAll('*').forEach(($element: HTMLElement) => {
-      $element.style.opacity = null; $element.style.outline = null; }
-    );
-    // Remove all highlights
-    this.$highLightWrapper.innerHTML = '';
-
-    // uncheck all other highlightSwitch
-    Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard__highlightSwitch input')).forEach(($input: HTMLInputElement) => {
-      if($input !== this.$highlightSwitch.querySelector('input')) {
-        $input.checked = false;
-      }
-    });
-
-    if(this.$highlightSwitch.querySelector('input').checked) {
-
-      this.hideRecursive(document.body, this.highlightSelector);
-    }
-  }
-
-  hideRecursive($element: HTMLElement, querySelector: string) {
-    if ($element.nodeType !== Node.ELEMENT_NODE) {
-        return true;
-    }
-
-    if($element.id === 'arneo-browser-extension') {
-      return false;
-    }
-
-    // L'élément matche la recherche: mise en avant
-    if($element.matches(querySelector)) {
-        if(this.$highLightWrapper) {
-          // On créé un élément dans le wrapper à la même position que l'élément matchant pour le mettre en avant
-          let $highlight = document.createElement('div');
-          let bounding = $element.getBoundingClientRect();
-          let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-          $highlight.style.top = `${bounding.top + scrollTop}px`;
-          $highlight.style.left = `${bounding.left}px`;
-          $highlight.style.width = `${bounding.width}px`;
-          $highlight.style.height = `${bounding.height}px`;
-          this.$highLightWrapper.appendChild($highlight);
-
-          // Ajoute un label à l'élément mis en avant
-          let $label = document.createElement('p');
-          $label.innerText = this.criterion.getHighlightLabel($element);
-          $highlight.appendChild($label);
-        }
-        return false;
-    }
-
-    // L'élément n'a pas d'enfant et ne match pas: on le masque
-    if($element.childElementCount === 0) {
-        $element.style.opacity = '0.2';
-        return true;
-    } else {
-        // On vérifie si parmis les enfants tous match ou pas pour ne masquer que le plus haut niveau ne matchant pas, on ne veut pas masquer récursivement
-        let hasAllChildrenHidden = true;
-        $element.childNodes.forEach((e: HTMLElement) => {
-            var isChildHidden = this.hideRecursive(e, querySelector);
-            if (!isChildHidden) {
-                hasAllChildrenHidden = false;
-            }
-        });
-
-        if (hasAllChildrenHidden) {
-            $element.style.opacity = '0.2';
-            $element.querySelectorAll('*').forEach((e: HTMLElement) => {
-                e.style.opacity = null;
-            });
-        }
-        return hasAllChildrenHidden;
-    }
-  }
-
 
   updateGlobalScore() {
     let $criteriaCards = this.$wrapper.querySelectorAll('.js-criteriaCard');

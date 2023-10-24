@@ -21,7 +21,7 @@ var App = {
     this.$wrapper = this.documentRoot.getElementById(this.ID);
     this.$highLightWrapper = this.documentRoot.getElementById(this.HIGHLIGHT_ID);
 
-    this.tester = new AccessibilityTester(this.$wrapper);
+    this.tester = new AccessibilityTester(this.$wrapper, this.$highLightWrapper);
 
     // Inits elements common to every pages
     this.initLayout();

@@ -5,9 +5,10 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion2_2 extends BaseCriterion {
-  constructor($wrapper: HTMLElement) {
-    super($wrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
+    super($wrapper, $highLightWrapper);
     this.querySelector = 'iframe, frame';
+    this.initHighlight();
   }
 
   runTest() {

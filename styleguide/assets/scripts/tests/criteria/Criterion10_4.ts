@@ -5,8 +5,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT (validation manuelle)
  */
 export default class Criterion10_4 extends BaseCriterion {
-  constructor($wrapper: HTMLElement) {
-    super($wrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
+    super($wrapper, $highLightWrapper);
 
     // // Zoom dans la page à 200%
     // chrome.tabs.getZoom(function(zoomFactor) {

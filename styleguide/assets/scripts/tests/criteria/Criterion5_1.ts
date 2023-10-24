@@ -6,10 +6,11 @@ import TableUtils from '../utils/TableUtils';
  * Traite: NA, C, NC
  */
 export default class Criterion5_1 extends BaseCriterion {
-  constructor($wrapper: HTMLElement) {
-    super($wrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
+    super($wrapper, $highLightWrapper);
     // TODO: à améliorer pour n'avoir que les tableaux complexes
     this.querySelector = 'table';
+    this.initHighlight();
   }
 
   runTest() {

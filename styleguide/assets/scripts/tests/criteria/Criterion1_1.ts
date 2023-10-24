@@ -5,9 +5,10 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NA, NT
  */
 export default class Criterion1_1 extends BaseCriterion {
-  constructor($wrapper: HTMLElement) {
-    super($wrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
+    super($wrapper, $highLightWrapper);
     this.querySelector = 'img, [role="img"], area, input[type="image"], svg, object[type^="image/"]';
+    this.initHighlight();
   }
 
   runTest() {

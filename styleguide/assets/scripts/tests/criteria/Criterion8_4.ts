@@ -7,8 +7,8 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion8_4 extends BaseCriterion {
   apiKey: string;
 
-  constructor($wrapper: HTMLElement) {
-    super($wrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
+    super($wrapper, $highLightWrapper);
   }
 
   runTest() {

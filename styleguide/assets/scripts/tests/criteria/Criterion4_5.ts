@@ -6,9 +6,10 @@ import MediaUtils from '../utils/MediaUtils';
  * Traite: NA, NT
  */
 export default class Criterion4_5 extends BaseCriterion {
-  constructor($wrapper: HTMLElement) {
-    super($wrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
+    super($wrapper, $highLightWrapper);
     this.querySelector = `audio, video, object, svg, canvas, [type='application/x-shockwave-flash'], bgsound`;
+    this.initHighlight();
   }
 
   runTest() {

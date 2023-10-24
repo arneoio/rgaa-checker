@@ -7,7 +7,7 @@
 {% set attributeList = ({for: id})|merge(attributeList)|merge({'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
 
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
-  <span class="m-toggleSwitch__label">{{ toggleSwitch.text }}</span>
+  <span class="m-toggleSwitch__label js-toggleSwitch__label">{{ toggleSwitch.text }}</span>
   <input class="m-toggleSwitch__checkbox" type="checkbox" id="{{ id }}" name="highlighted" />
   <span class="m-toggleSwitch__switch" aria-hidden="true"></span>
 </{{ tag }}>
