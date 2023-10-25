@@ -122,6 +122,7 @@ export default abstract class BaseCriterion implements Criterion {
       return true;
     }
 
+    // Ne pas cacher l'élément de l'extension
     if ($element.id === 'arneo-browser-extension') {
       return false;
     }
@@ -156,8 +157,8 @@ export default abstract class BaseCriterion implements Criterion {
       return false;
     }
 
-    // L'élément n'a pas d'enfant et ne match pas: on le masque
-    if ($element.childElementCount === 0 && canBeHidden) {
+    // L'élément n'a pas d'enfant ou est en aria hidden et ne match pas: on le masque
+    if (($element.childElementCount === 0 || $element.getAttribute('aria-hidden') === 'true') && canBeHidden) {
       $element.style.opacity = '0.2';
       return !canBeHidden;
     } else {

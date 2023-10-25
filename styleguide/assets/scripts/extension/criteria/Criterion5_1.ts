@@ -15,15 +15,15 @@ export default class Criterion5_1 extends BaseCriterion {
 
   runTest() {
     let status = 'NA';
-    let message = "Aucun tableau n'a été trouvé.";
+    let message = "Aucun tableau complexe n'a été trouvé.";
 
     let $complexTableList = TableUtils.getComplexTableList();
     let notDescribedTableList: Array<HTMLTableElement> = [];
-    if($complexTableList.length) {
+    if ($complexTableList.length) {
 
       $complexTableList.forEach(($table: HTMLTableElement) => {
         let tableDescription = TableUtils.getComplexTableDescription($table);
-        if(!tableDescription) {
+        if (!tableDescription) {
           notDescribedTableList.push($table);
         }
       });
@@ -35,7 +35,7 @@ export default class Criterion5_1 extends BaseCriterion {
     this.updateCriteria('5.1', status, message);
     this.updateTest('5.1.1', status);
 
-    if(notDescribedTableList.length > 0) {
+    if (notDescribedTableList.length > 0) {
       this.logResults('5.1 - Tableaux complexes non décrits', notDescribedTableList);
     }
 

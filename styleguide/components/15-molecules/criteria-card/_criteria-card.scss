@@ -47,6 +47,10 @@
     font-size: 12px;
     line-height: 1.2;
     color: var(--color-grey-2);
+
+    a {
+        font-weight: 700;
+    }
 }
 
 .m-criteriaCard__seeTestsLink {
@@ -132,7 +136,6 @@
     }
 
     a {
-        pointer-events: none;
         font-weight: 700;
     }
 }

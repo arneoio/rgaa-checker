@@ -122,6 +122,9 @@ export default class AccessibilityTester {
     const results = JSON.parse(localStorage.getItem(this.localStorageKey));
     const userResults = results.user[window.location.pathname] || {};
 
+    // TODO: à améliorer. Si possible appeler la méthode updateCriteria de chaque critère plutôt que de faire ça à la main
+    // Mais if faut dans ce cas une classe définie pour chaque critère
+    // TODO: s'il y a un conflit entre les résultats de l'utilisateur et ceux du runner suite au chargement, il faut indiquer le conflit
     Object.keys(userResults).forEach((key: string) => {
       let $criteriaCard: HTMLElement = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${key}"]`);
       if ($criteriaCard) {
