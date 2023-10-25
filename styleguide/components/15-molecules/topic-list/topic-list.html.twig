@@ -8,7 +8,7 @@
 {% for topic in topicList %}
     {% set total = total + topic.criteria | length %}
 {% endfor %}
-<main>
+
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
     <button class="m-topicList__reduceButton" aria-expanded="true" aria-controls="arneo-accessibility-checker__aside">
         <span class="-hiddenAsideReduced">Réduire la fenêtre</span>
@@ -38,5 +38,3 @@
 {% endfor %}
     </ul>
 </{{ tag }}>
-
-</main>
