@@ -7,6 +7,7 @@ export default class CriteriaCard {
   $summaryScore: HTMLElement;
   $summaryScoreProgress: HTMLElement;
   criterion: any;
+  criterionNumber: string;
 
   constructor($wrapper: HTMLElement, $element: HTMLElement, criterion: any, $highLightWrapper: HTMLElement) {
     this.$wrapper = $wrapper;
@@ -15,6 +16,7 @@ export default class CriteriaCard {
     this.$toggler = this.$statusSelector.querySelector('.js-criteriaSelector__toggler');
     this.$highLightWrapper = $highLightWrapper;
     this.criterion = criterion;
+    this.criterionNumber = this.$element.dataset.criteria;
 
     this.$summaryScore = this.$wrapper.querySelector('.js-summary__score');
     this.$summaryScoreProgress = this.$wrapper.querySelector('.js-summary__score__progress');
@@ -23,14 +25,17 @@ export default class CriteriaCard {
   }
 
   init() {
-    Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link) => {
-      $link.addEventListener('click', this.updateCardStatus.bind(this));
+    Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link: HTMLElement) => {
+      $link.addEventListener('loadclick', () => {
+        this.updateCardStatus($link);
+      });
+      $link.addEventListener('click', () => {
+        this.updateCardStatus($link, true);
+      });
     });
   }
 
-  updateCardStatus(event: Event) {
-    event.preventDefault();
-    let $link = event.target as HTMLElement;
+  updateCardStatus($link: HTMLElement, saveUserState: boolean = false) {
     let newStatus = $link.dataset.status;
 
     this.$toggler.setAttribute('aria-expanded', 'false');
@@ -39,8 +44,29 @@ export default class CriteriaCard {
     this.$statusSelector.querySelector('.js-criteriaSelector__content').classList.remove('-expanded');
     this.$element.dataset.status = newStatus;
 
+    if (saveUserState) {
+      this.saveStatus(newStatus);
+    }
+
     // Update global score
     this.updateGlobalScore();
+  }
+
+  saveStatus(newStatus: string) {
+    let savedStatus = JSON.parse(localStorage.getItem('accessibilityTesterResults')) || {
+      "user": {},
+      "runner": {},
+    };
+
+    // Créé une entrée pour la page courante si elle n'existe pas
+    savedStatus.user[window.location.pathname] = savedStatus.user[window.location.pathname] || {};
+
+    // Sauvegarde le status dans le user
+    savedStatus.user[window.location.pathname][this.criterionNumber] = newStatus;
+
+    // Met à jour le localStorage
+    console.log('savedStatus', savedStatus);
+    localStorage.setItem('accessibilityTesterResults', JSON.stringify(savedStatus));
   }
 
   updateGlobalScore() {
@@ -54,7 +80,10 @@ export default class CriteriaCard {
 
     $criteriaCards.forEach(($criteriaCard) => {
       let status = ($criteriaCard.querySelector('.js-criteriaSelector__toggler') as HTMLElement).dataset.status;
-      ++scoreList[status];
+
+      if (typeof status !== 'undefined') {
+        ++scoreList[status];
+      }
     });
 
     let total = $criteriaCards.length;

@@ -5,7 +5,7 @@ import FilterList from './15-molecules/filter-list/filter-list';
 import TopicList from './15-molecules/topic-list/topic-list';
 import Header from './20-organisms/header/header';
 import './app.scss';
-import AccessibilityTester from '../assets/scripts/tests/AccessibilityTester';
+import AccessibilityTester from '../assets/scripts/extension/AccessibilityTester';
 import Summary from './20-organisms/summary/summary';
 
 var App = {
@@ -124,7 +124,7 @@ var App = {
       let top = Math.max(0, -itemRect.top + offset);
       $title.style.setProperty('--topic-top', `${top}px`);
 
-  });
+    });
   }
 };
 
