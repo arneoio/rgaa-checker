@@ -12,6 +12,25 @@ export default class Criterion6_2 extends BaseCriterion {
     this.initHighlight();
   }
 
+  getHighlightedElements(): Array<HTMLElement> {
+    // Sélectionnez tous les liens sans intitulé
+    const linkListWithoutLabel: any = [];
+    const $linkList = document.querySelectorAll(this.querySelector);
+
+    if($linkList.length) {
+
+      $linkList.forEach(($link: HTMLElement) => {
+        let linkLabel = LinkUtils.getLinkLabel($link);
+
+        if(linkLabel.trim() === '') {
+          linkListWithoutLabel.push($link);
+        }
+      });
+    }
+
+    return linkListWithoutLabel;
+  }
+
   runTest() {
     let status = 'NA';
     let message = "Aucun lien n'a été trouvé.";
@@ -21,29 +40,18 @@ export default class Criterion6_2 extends BaseCriterion {
     const $linkList = document.querySelectorAll(this.querySelector);
 
     if($linkList.length) {
-      const linkListWithLabel: any = [];
-      const linkListWithoutLabel: any = [];
+      const $linkListWithoutLabel = this.getHighlightedElements();
 
-      $linkList.forEach(($link: HTMLElement) => {
-        let linkLabel = LinkUtils.getLinkLabel($link);
-
-        if(linkLabel.trim() === '') {
-          linkListWithoutLabel.push($link);
-        } else {
-          linkListWithLabel.push({ $link, label: linkLabel });
-        }
-      });
-
-      if(linkListWithLabel.length > 0) {
-        this.logResults('6.2 - Liens avec intitulé ', linkListWithLabel);
-      }
-      if(linkListWithoutLabel.length > 0) {
-        this.logResults('6.2 - Liens sans intitulé ', linkListWithoutLabel);
+      if($linkListWithoutLabel.length > 0) {
+        this.logResults('6.2 - Liens sans intitulé ', $linkListWithoutLabel);
       }
 
-      isCriteriaValid = linkListWithoutLabel.length === 0;
+      isCriteriaValid = $linkListWithoutLabel.length === 0;
       status = isCriteriaValid ? 'C' : 'NC';
       message = isCriteriaValid ? "Tous les liens ont un intitulé." : "Certains liens n'ont pas d'intitulé.";
+    } else {
+      status = 'NT';
+      message = "Aucun lien n'a été trouvé dans la page.";
     }
 
     this.updateCriteria('6.2', status, message);

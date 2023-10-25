@@ -12,6 +12,10 @@ export default class Criterion5_2 extends BaseCriterion {
     this.initHighlight();
   }
 
+  getHighlightedElements() {
+    return TableUtils.getComplexTableList();
+  }
+
   runTest() {
     let status = 'NA';
 

@@ -5,6 +5,7 @@ export default abstract class BaseCriterion implements Criterion {
   $highLightWrapper: HTMLElement;
   $criteriaCard: HTMLElement;
   querySelector: string;
+  querySelectorList: Array<HTMLElement>;
 
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     this.$wrapper = $wrapper;
@@ -15,15 +16,18 @@ export default abstract class BaseCriterion implements Criterion {
   }
 
   initHighlight() {
+    // Affiche le switch
     const $highlightSwitch = this.$criteriaCard.querySelector('.js-criteriaCard__highlightSwitch');
     ($highlightSwitch.querySelector('.js-toggleSwitch__label') as HTMLElement).innerText = this.getHighlightText();
     $highlightSwitch.classList.remove('-hidden');
+
+    // Ajoute le listener sur le switch
     const $input = $highlightSwitch.querySelector('input') as HTMLInputElement;
     $input.addEventListener('change', () => {
       if(!$input.checked) {
         this.resetHighlight();
       } else {
-        // uncheck all other highlightSwitch
+        // Désactive les autres highlight
         Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard__highlightSwitch input:checked')).forEach(($input: HTMLInputElement) => {
           if($input !== $highlightSwitch.querySelector('input')) {
             $input.checked = false;
@@ -65,8 +69,8 @@ export default abstract class BaseCriterion implements Criterion {
 
   abstract runTest(): void;
 
-  getHighlightSelector(): string {
-    return this.querySelector;
+  getHighlightedElements(): Array<HTMLElement> {
+    return Array.from(document.querySelectorAll(this.querySelector));
   }
 
   getHighlightText(): string {
@@ -95,12 +99,14 @@ export default abstract class BaseCriterion implements Criterion {
   activateHighlight() {
     const $highlightSwitch = this.$criteriaCard.querySelector('.js-criteriaCard__highlightSwitch');
 
+    // Retourne le tableau pour manipuler les éléments dans l'ordre inverse, optimisation pour le hideRecursive
+    this.querySelectorList = this.getHighlightedElements().reverse();
     if($highlightSwitch.querySelector('input').checked) {
-      this.hideRecursive(document.body, this.getHighlightSelector());
+      this.hideRecursive(document.body);
     }
   }
 
-  hideRecursive($element: HTMLElement, querySelector: string) {
+  hideRecursive($element: HTMLElement, canBeHidden: boolean = true): boolean {
     if ($element.nodeType !== Node.ELEMENT_NODE) {
         return true;
     }
@@ -110,7 +116,10 @@ export default abstract class BaseCriterion implements Criterion {
     }
 
     // L'élément matche la recherche: mise en avant
-    if($element.matches(querySelector)) {
+    // Les éléments matchant sont dans l'ordre inverse de la liste
+    if($element === this.querySelectorList[this.querySelectorList.length - 1]) {
+        // On supprime le dernier élément de la liste
+        this.querySelectorList.pop();
         if(this.$highLightWrapper) {
           // On créé un élément dans le wrapper à la même position que l'élément matchant pour le mettre en avant
           let $highlight = document.createElement('div');
@@ -128,24 +137,31 @@ export default abstract class BaseCriterion implements Criterion {
           $label.innerText = this.getHighlightLabel($element);
           $highlight.appendChild($label);
         }
+
+        $element.childNodes.forEach((e: HTMLElement) => {
+          console.log('hideRecursive', e);
+          this.hideRecursive(e, false);
+        });
+
         return false;
     }
 
     // L'élément n'a pas d'enfant et ne match pas: on le masque
-    if($element.childElementCount === 0) {
+    if($element.childElementCount === 0 && canBeHidden) {
         $element.style.opacity = '0.2';
-        return true;
+        console.log('hide', canBeHidden);
+        return !canBeHidden;
     } else {
         // On vérifie si parmis les enfants tous match ou pas pour ne masquer que le plus haut niveau ne matchant pas, on ne veut pas masquer récursivement
         let hasAllChildrenHidden = true;
         $element.childNodes.forEach((e: HTMLElement) => {
-            var isChildHidden = this.hideRecursive(e, querySelector);
+            var isChildHidden = this.hideRecursive(e, canBeHidden);
             if (!isChildHidden) {
                 hasAllChildrenHidden = false;
             }
         });
 
-        if (hasAllChildrenHidden) {
+        if (hasAllChildrenHidden && canBeHidden) {
             $element.style.opacity = '0.2';
             $element.querySelectorAll('*').forEach((e: HTMLElement) => {
                 e.style.opacity = null;

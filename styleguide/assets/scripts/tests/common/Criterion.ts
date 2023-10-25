@@ -3,7 +3,7 @@ export interface Criterion {
   runTest(): void;
 
   // get the highlight selector to use in querySelector
-  getHighlightSelector(): string;
+  getHighlightedElements(): Array<HTMLElement>;
 
   // get the highlight selector to use in querySelector
   getHighlightText(): string;

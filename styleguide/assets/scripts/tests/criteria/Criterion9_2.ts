@@ -13,7 +13,7 @@ export default class Criterion9_2 extends BaseCriterion {
 
   runTest() {
     let status = 'NT';
-    let message = 'Vérifiez si les éléments strcuturants sont présents et correctement balisés.';
+    let message = 'Vérifiez si les éléments structurants sont présents et correctement balisés.';
     let $elementList = document.querySelectorAll(this.querySelector);
     let $main = document.querySelectorAll('main');
 
