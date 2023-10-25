@@ -9,6 +9,7 @@ const Builder = () => {
   let criterieFilePath = path.join(__dirname, 'generation/data/criteres.json');
   // set path from current directory
 
+  let GLOSSARY_URL = 'https://accessibilite.numerique.gouv.fr/methode/glossaire/';
   let criteriaList = {};
   console.warn("Génération de l'extension d'accessibilité...");
 
@@ -24,7 +25,7 @@ const Builder = () => {
       criteriaList = JSON.parse(data);
 
       // Vous pouvez maintenant utiliser l'objet JSON chargé
-      console.log('Critères chargés avec succès');
+      console.warn('Critères chargés avec succès');
       // Build l'extension
       let params = formatData(criteriaList);
       Template.buildExtension(params);
@@ -38,20 +39,19 @@ const Builder = () => {
    * @param {object} criteriaList
    */
   const formatData = (criteriaList) => {
-    const md = new markdown();
     // Set title and tests from markdown to html
     criteriaList.topics.forEach((topic) => {
       topic.slug = getSlug(topic.number);
       topic.criteria.forEach((criterium) => {
-        criterium.criterium.title = md.render(criterium.criterium.title);
+        criterium.criterium.title = formatCriteriaText(criterium.criterium.title);
         // loop through tests object entries
         Object.entries(criterium.criterium.tests).forEach(([key, test]) => {
           // test is a string or an array of string
           if (typeof test === 'string') {
-            criterium.criterium.tests[key] = md.render(test);
+            criterium.criterium.tests[key] = formatCriteriaText(test);
           } else {
             test.forEach((t, testKey) => {
-              criterium.criterium.tests[key][testKey] = md.render(t);
+              criterium.criterium.tests[key][testKey] = formatCriteriaText(t);
             });
           }
         });
@@ -83,6 +83,12 @@ const Builder = () => {
     };
     return params;
   };
+
+  const formatCriteriaText = (criteriaText) => {
+    const md = new markdown();
+    // Format md text to html, then replace anchor links to glossary url and add target blank
+    return md.render(criteriaText).replace(/<a href="#([^"]*)">([^<]*)<\/a>/g, `<a href="${GLOSSARY_URL}#$1" target="_blank">$2</a>`);
+  }
 
   /**
    * Get slug from title
