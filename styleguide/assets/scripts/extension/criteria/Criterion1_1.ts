@@ -18,7 +18,7 @@ export default class Criterion1_1 extends BaseCriterion {
 
     let $allImageList = document.querySelectorAll(this.querySelector);
 
-    let $imageList = document.querySelectorAll('img, [role="img"]');
+    let $imageList = document.querySelectorAll('img, [role="img"]:not(object, embed, svg, canvas)');
     let imageHasLabel = true;
     Array.from($imageList).forEach(($image: HTMLElement) => {
       if (!ImageUtils.hasImageLabel($image)) {

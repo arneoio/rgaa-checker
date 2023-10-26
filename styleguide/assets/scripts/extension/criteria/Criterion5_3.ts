@@ -7,6 +7,8 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion5_3 extends BaseCriterion {
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     super($wrapper, $highLightWrapper);
+    this.querySelector = 'table[role="presentation"]';
+    this.initHighlight();
   }
 
   runTest() {
@@ -14,7 +16,7 @@ export default class Criterion5_3 extends BaseCriterion {
     let message = "Aucun tableau de présentation n'a été trouvé.";
 
     let $presentationTableList = document.querySelectorAll('table[role="presentation"]');
-    if($presentationTableList.length) {
+    if ($presentationTableList.length) {
       status = 'NT';
       message = "Vérifiez si les tableaux de présentation ont un contenu linéarisé compréhensible.";
     }
@@ -22,7 +24,7 @@ export default class Criterion5_3 extends BaseCriterion {
     this.updateCriteria('5.3', status, message);
     this.updateTest('5.3.1', status);
 
-    if($presentationTableList.length > 0) {
+    if ($presentationTableList.length > 0) {
       this.logResults('5.3 - Liste des tableaux de présentation', $presentationTableList);
     }
 

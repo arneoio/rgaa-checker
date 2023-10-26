@@ -31,8 +31,6 @@ export default class TableUtils {
   }
 
   static getComplexTableDescription($table: HTMLTableElement): string {
-    let description = '';
-
     // Vérifier si un élément <caption> existe et a du texte
     const captionElement = $table.querySelector('caption');
     if (captionElement && captionElement.textContent.trim() !== '') {
@@ -55,5 +53,34 @@ export default class TableUtils {
     }
 
     return '';
+  }
+
+  static getTableDescription($table: HTMLTableElement): string {
+    // Vérifier si un élément <caption> existe et a du texte
+    const captionElement = $table.querySelector('caption');
+    if (captionElement && captionElement.textContent.trim() !== '') {
+      return captionElement.textContent.trim();
+    }
+
+    // Vérifier si l'attribut "title" est défini
+    const titleAttribute = $table.getAttribute('title');
+    if (titleAttribute && titleAttribute.trim() !== '') {
+      return titleAttribute.trim();
+    }
+
+    // Vérifier si l'attribut "aria-label" est défini
+    const ariaLabelAttribute = $table.getAttribute('aria-label');
+    if (ariaLabelAttribute && ariaLabelAttribute.trim() !== '') {
+      return ariaLabelAttribute.trim();
+    }
+
+    // Vérifier si l'attribut "aria-describedby" est défini et lié à un élément avec du texte
+    const ariaDescribedByAttribute = $table.getAttribute('aria-describedby');
+    if (ariaDescribedByAttribute) {
+      const describedByElement = document.getElementById(ariaDescribedByAttribute);
+      if (describedByElement && describedByElement.textContent.trim() !== '') {
+        return describedByElement.textContent.trim();
+      }
+    }
   }
 }

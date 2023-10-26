@@ -49,6 +49,6 @@ export default class Criterion6_1 extends BaseCriterion {
   }
 
   getHighlightLabel($element: HTMLElement) {
-    return LinkUtils.getLinkLabel($element);
+    return LinkUtils.getLinkLabel($element) + ($element.getAttribute('aria-hidden') === 'true' ? ' (aria-hidden)' : '');
   }
 }

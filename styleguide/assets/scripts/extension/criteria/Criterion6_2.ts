@@ -58,6 +58,6 @@ export default class Criterion6_2 extends BaseCriterion {
   }
 
   getHighlightLabel($element: HTMLElement) {
-    return LinkUtils.getLinkLabel($element);
+    return ''; // Le lien n'a pas d'intitulé
   }
 }
