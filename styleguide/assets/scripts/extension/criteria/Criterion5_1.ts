@@ -8,9 +8,25 @@ import TableUtils from '../utils/TableUtils';
 export default class Criterion5_1 extends BaseCriterion {
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     super($wrapper, $highLightWrapper);
-    // TODO: à améliorer pour n'avoir que les tableaux complexes
-    this.querySelector = 'table';
+    this.querySelector = 'table, [role="table"]';
     this.initHighlight();
+  }
+
+  getHighlightedElements(): Array<HTMLElement> {
+    // Sélectionnez tous les tableaux complexes sans résumé
+    const complexTableListWithoutDescription: any = [];
+
+    const $complexTableList = TableUtils.getComplexTableList();
+    if ($complexTableList.length) {
+      $complexTableList.forEach(($table: HTMLTableElement) => {
+        let tableDescription = TableUtils.getComplexTableDescription($table);
+        if (!tableDescription) {
+          complexTableListWithoutDescription.push($table);
+        }
+      });
+    }
+
+    return complexTableListWithoutDescription;
   }
 
   runTest() {

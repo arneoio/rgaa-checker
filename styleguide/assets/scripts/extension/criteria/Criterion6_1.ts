@@ -8,7 +8,7 @@ import LinkUtils from '../utils/LinkUtils';
 export default class Criterion6_1 extends BaseCriterion {
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     super($wrapper, $highLightWrapper);
-    this.querySelector = 'a:not([aria-hidden="true"]), [role="link"]:not([aria-hidden="true"]';
+    this.querySelector = 'a:not([role]), [role="link"]';
     this.initHighlight();
   }
 
