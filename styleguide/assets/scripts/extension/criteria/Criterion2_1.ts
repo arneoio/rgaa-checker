@@ -17,9 +17,9 @@ export default class Criterion2_1 extends BaseCriterion {
     let untitledFrameList: Array<HTMLTableElement> = [];
 
     let $frameList = document.querySelectorAll(this.querySelector);
-    if($frameList.length) {
+    if ($frameList.length) {
       $frameList.forEach(($frame: HTMLTableElement) => {
-        if(!$frame.title) {
+        if (!$frame.title) {
           untitledFrameList.push($frame);
         }
       });
@@ -31,7 +31,7 @@ export default class Criterion2_1 extends BaseCriterion {
     this.updateCriteria('2.1', status, message);
     this.updateTest('2.1.1', status);
 
-    if(untitledFrameList.length > 0) {
+    if (untitledFrameList.length > 0) {
       this.logResults('2.1 - Cadres sans titre', untitledFrameList);
     }
 

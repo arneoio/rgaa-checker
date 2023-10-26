@@ -16,7 +16,7 @@ export default class Criterion4_2 extends BaseCriterion {
     let message = "Aucun média temporel.";
 
     let $temporalMediaList = MediaUtils.getTemporalMediaList();
-    if($temporalMediaList.length) {
+    if ($temporalMediaList.length) {
       status = 'NT';
       message = "Des médias temporels sont présents. Vérifier si leur transcription ou décription sont pertinentes.";
     }
@@ -26,7 +26,7 @@ export default class Criterion4_2 extends BaseCriterion {
     this.updateTest('4.2.2', status);
     this.updateTest('4.2.3', status);
 
-    if($temporalMediaList.length > 0) {
+    if ($temporalMediaList.length > 0) {
       this.logResults('4.2 - Médias temporels', $temporalMediaList);
     }
 

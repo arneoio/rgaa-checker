@@ -21,11 +21,11 @@ export default class Criterion5_2 extends BaseCriterion {
 
     let $complexTableList = TableUtils.getComplexTableList();
     let describedTableList: any = [];
-    if($complexTableList.length) {
+    if ($complexTableList.length) {
 
       $complexTableList.forEach(($table: HTMLTableElement) => {
         let tableDescription = TableUtils.getComplexTableDescription($table);
-        if(tableDescription) {
+        if (tableDescription) {
           describedTableList.push({
             caption: tableDescription,
             table: $table
@@ -38,7 +38,7 @@ export default class Criterion5_2 extends BaseCriterion {
     this.updateCriteria('5.2', status);
     this.updateTest('5.2.1', status);
 
-    if(describedTableList.length > 0) {
+    if (describedTableList.length > 0) {
       this.logResults('5.2 - Description des tableaux complexes', describedTableList);
     }
 
