@@ -1,26 +1,31 @@
-const TOGGLE_EVENT_NAME = 'buttonexpandtoggle';
-
 export default class ButtonExpand {
-  constructor(domNode) {
-    this.toggleEventName = TOGGLE_EVENT_NAME;
+  toggleEventName: string;
+  domNode: HTMLElement;
+  controlledNode: HTMLElement;
+  keyCode: { RETURN: string };
+  toggleEvent: Event;
+
+  constructor(domNode: HTMLElement) {
+    this.toggleEventName = 'buttonexpandtoggle';
     this.domNode = domNode;
     this.keyCode = Object.freeze({
-      RETURN: 13,
+      RETURN: 'Enter',
     });
     this.toggleEvent = document.createEvent('Event');
-    this.toggleEvent.initEvent(this.toggleEventName, true, true);
+    this.toggleEvent = new Event(this.toggleEventName, {
+      bubbles: true,
+      cancelable: true,
+    });
   }
 
   static get toggleEventName() {
-    return TOGGLE_EVENT_NAME;
+    return 'buttonexpandtoggle';
   }
 
-  init($rootElement) {
-    this.controlledNode = false;
-
+  init($rootElement: HTMLElement) {
     var id = this.domNode.getAttribute('aria-controls');
     if (id) {
-      this.controlledNode = $rootElement.getElementById(id);
+      this.controlledNode = $rootElement.querySelector(`#${id}`) as HTMLElement;
     }
 
     this.domNode.addEventListener('keydown', this.handleKeydown.bind(this));
@@ -52,8 +57,8 @@ export default class ButtonExpand {
     this.domNode.dispatchEvent(this.toggleEvent);
   }
 
-  handleKeydown(event) {
-    switch (event.keyCode) {
+  handleKeydown(event: KeyboardEvent) {
+    switch (event.key) {
       case this.keyCode.RETURN:
         this.toggleExpand();
         event.stopPropagation();

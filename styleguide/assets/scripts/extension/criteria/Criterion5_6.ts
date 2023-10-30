@@ -4,7 +4,7 @@ import BaseCriterion from '../common/BaseCriterion';
  * Pour chaque tableau de données ayant un titre, celui-ci est-il pertinent ?
  * Traite: NA, NT
  */
-export default class Criterion5_5 extends BaseCriterion {
+export default class Criterion5_6 extends BaseCriterion {
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     super($wrapper, $highLightWrapper);
     this.querySelector = 'table:not([role="presentation"])';
@@ -17,8 +17,6 @@ export default class Criterion5_5 extends BaseCriterion {
 
     let $tableList = document.querySelectorAll(this.querySelector);
     if ($tableList.length) {
-      status = 'NT';
-      message = "Vérifiez si les tableaux de données ont un titre pertinent.";
     }
 
     this.updateCriteria('5.5', status, message);
@@ -31,4 +29,3 @@ export default class Criterion5_5 extends BaseCriterion {
     return status;
   }
 }
-

@@ -15,8 +15,9 @@ var App = {
     this.HIGHLIGHT_ID = 'arneo-browser-highlight';
 
     this.documentRoot = document;
-    if (document.getElementById('arneo-browser-extension')) {
-      this.documentRoot = document.getElementById('arneo-browser-extension').shadowRoot;
+    const $shadowRoot = document.getElementById('arneo-browser-extension');
+    if ($shadowRoot) {
+      this.documentRoot = $shadowRoot.shadowRoot;
     }
     this.$wrapper = this.documentRoot.getElementById(this.ID);
     this.$highLightWrapper = this.documentRoot.getElementById(this.HIGHLIGHT_ID);
@@ -43,7 +44,7 @@ var App = {
 
     if ($expandButtonList.length) {
       $expandButtonList.forEach(($expandButton) => {
-        let $button = new ButtonExpand($expandButton);
+        let $button = new ButtonExpand($expandButton as HTMLElement);
         $button.init(this.documentRoot);
       });
     }
@@ -52,17 +53,17 @@ var App = {
     const $tabWrapperList = Array.from(this.$wrapper.querySelectorAll('[role="tablist"]'));
     if ($tabWrapperList.length) {
       $tabWrapperList.forEach(($tabWrapper) => {
-        TabUtil.init($tabWrapper, this.documentRoot);
+        new TabUtil($tabWrapper as HTMLElement, this.documentRoot);
       });
     }
 
     // When click outisde a criteriaSelector, reset its aria-expanded to false
-    this.$wrapper.addEventListener('click', (event: Event) => {
-      const $criteriaSelectorList = Array.from(this.$wrapper.querySelectorAll('.js-criteriaSelector'));
+    this.$wrapper.addEventListener('click', (event: MouseEvent) => {
+      const $criteriaSelectorList = Array.from(this.$wrapper.querySelectorAll('.js-criteriaSelector')) as HTMLElement[];
       $criteriaSelectorList.forEach(($criteriaSelector: HTMLElement) => {
         if (!$criteriaSelector.contains(event.target as Node)) {
-          $criteriaSelector.querySelector('.js-criteriaSelector__toggler').setAttribute('aria-expanded', 'false');
-          $criteriaSelector.querySelector('.js-criteriaSelector__content').classList.remove('-expanded');
+          $criteriaSelector?.querySelector('.js-criteriaSelector__toggler')?.setAttribute('aria-expanded', 'false');
+          $criteriaSelector?.querySelector('.js-criteriaSelector__content')?.classList.remove('-expanded');
         }
       });
     });
@@ -86,11 +87,13 @@ var App = {
     }
 
     // Init Criteria cards
-    const $criteriaCardList = Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard'));
+    const $criteriaCardList = Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard')) as HTMLElement[];
     if ($criteriaCardList.length) {
       $criteriaCardList.forEach(($criteriaCard: HTMLElement) => {
         const criteriaNumber = $criteriaCard.dataset.criteria;
-        new CriteriaCard(this.$wrapper, $criteriaCard, this.tester.criterionList[criteriaNumber], this.$highLightWrapper);
+        if (criteriaNumber) {
+          new CriteriaCard(this.$wrapper, $criteriaCard, this.tester.criterionList[criteriaNumber], this.$highLightWrapper);
+        }
       });
     }
 
@@ -116,14 +119,13 @@ var App = {
   },
 
   setStickyTitle: function () {
-    Array.from(this.$topicList).forEach(($topic: HTMLElement, index: number) => {
+    (Array.from(this.$topicList) as HTMLElement[]).forEach(($topic: HTMLElement, index: number) => {
       const $title: HTMLElement = $topic.querySelector('.js-topic__top');
       const itemRect = $topic.getBoundingClientRect();
 
       let offset = this.$filterList ? this.$filterList.getBoundingClientRect().bottom : 70;
       let top = Math.max(0, -itemRect.top + offset);
       $title.style.setProperty('--topic-top', `${top}px`);
-
     });
   }
 };

@@ -17,7 +17,7 @@
     "fractal:dev": "fractal start --sync",
     "fractal:build": "fractal build",
     "build": "yarn webpack:build && yarn fractal:build",
-    "lint": "eslint ./styleguide --ext .js",
+    "lint": "eslint ./styleguide/* --ext .ts",
     "generate": "node generation/index.mjs",
     "zip": "node zip",
     "buildExtension": "webpack --mode=production && node generation/index.mjs && node zip"
@@ -43,6 +43,7 @@
     "@frctl/fractal": "1.5.11",
     "@frctl/mandelbrot": "1.9.4",
     "@frctl/twig": "1.2.11",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
     "autoprefixer": "10.3.4",
     "babel-loader": "8.2.2",
     "concurrently": "6.2.1",
@@ -51,6 +52,7 @@
     "dotenv": "^16.3.1",
     "eslint": "7.32.0",
     "eslint-loader": "4.0.2",
+    "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-prettier": "4.0.0",
     "file-loader": "6.2.0",
     "lint-staged": "11.1.2",
@@ -80,6 +82,9 @@
   "lint-staged": {
     "*.js": [
       "eslint ./styleguide --ext .js"
+    ],
+    "*.ts": [
+      "eslint ./styleguide --ext .ts"
     ]
   }
 }

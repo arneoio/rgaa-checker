@@ -1,8 +1,15 @@
-var TabUtil = {
-  /*
-   * Inits tab system
-   */
-  init: function ($tabWrapper, $rootElement) {
+/*
+  * Inits tab system
+  */
+export default class TabUtil {
+  toggleEventName: string;
+  $tabWrapper: HTMLElement;
+  $rootElement: HTMLElement;
+  toggleEvent: Event;
+  KEYS: { end: string; home: string; left: string; up: string; right: string; down: string; delete: string; enter: string; space: string; };
+  DIRECTION: { [x: string]: number; };
+
+  constructor($tabWrapper: HTMLElement, $rootElement: HTMLElement) {
     this.toggleEventName = this.getToggleEventName();
     this.$tabWrapper = $tabWrapper;
     this.$rootElement = $rootElement;
@@ -12,37 +19,37 @@ var TabUtil = {
 
     // For easy reference
     this.KEYS = {
-      end: 35,
-      home: 36,
-      left: 37,
-      up: 38,
-      right: 39,
-      down: 40,
-      delete: 46,
-      enter: 13,
-      space: 32,
-    };
+      end: 'End',
+      home: 'Home',
+      left: 'ArrowLeft',
+      up: 'ArrowUp',
+      right: 'ArrowRight',
+      down: 'ArrowDown',
+      delete: 'Delete',
+      enter: 'Enter',
+      space: 'Space',
+    }
 
     // Add or subtract depending on key pressed
     this.DIRECTION = {
-      37: -1,
-      38: -1,
-      39: 1,
-      40: 1,
-    };
+      [this.KEYS.left]: -1,
+      [this.KEYS.up]: -1,
+      [this.KEYS.right]: 1,
+      [this.KEYS.down]: 1,
+    }
 
     this.bindEvents();
-  },
+  }
 
-  getToggleEventName: function () {
+  getToggleEventName() {
     return 'tabtoggle';
-  },
+  }
 
-  bindEvents: function () {
-    this.$tabWrapper.querySelectorAll('[role="tab"]').forEach(($tab, index) => {
-      $tab.index = index;
-      $tab.addEventListener('click', (e) =>
-        this.activateTab(e.currentTarget, false),
+  bindEvents() {
+    this.$tabWrapper.querySelectorAll('[role="tab"]').forEach(($tab: HTMLElement, index) => {
+      $tab.dataset.index = index.toString();
+      $tab.addEventListener('click', (e: Event) =>
+        this.activateTab(e.currentTarget as HTMLElement, true),
       );
       if (this.$tabWrapper.hasAttribute('data-automatic')) {
         $tab.addEventListener('keydown', (e) =>
@@ -51,60 +58,56 @@ var TabUtil = {
         $tab.addEventListener('keyup', (e) => this.autoKeyupEventListener(e));
         // TODO: essayer d'éviter le double trigger au focus dans certains cas.
         $tab.addEventListener('focus', (e) =>
-          this.activateTab(e.currentTarget, false),
+          this.activateTab(e.currentTarget as HTMLElement, false),
         );
       } else {
         $tab.addEventListener('keydown', (e) => this.keydownEventListener(e));
         $tab.addEventListener('keyup', (e) => this.keyupEventListener(e));
       }
     });
-  },
+  }
 
-  activateTab: function ($tab, setFocus) {
+  activateTab($tab: HTMLElement, setFocus: boolean = false) {
     this.deactivateTabs($tab.closest('[role="tablist"]'));
     $tab.removeAttribute('tabindex');
     $tab.setAttribute('aria-selected', 'true');
     $tab.dispatchEvent(this.toggleEvent);
 
-    this.$rootElement
-      .getElementById($tab.getAttribute('aria-controls'))
-      .removeAttribute('hidden');
+    this.$rootElement?.querySelector(`#${$tab.getAttribute('aria-controls')}`)?.removeAttribute('hidden');
 
     if (setFocus) {
       $tab.focus();
     }
-  },
+  }
 
-  deactivateTabs: function ($tabPanel) {
+  deactivateTabs($tabPanel: HTMLElement) {
     $tabPanel.querySelectorAll('[role="tab"]').forEach(($tab) => {
       $tab.setAttribute('tabindex', '-1');
       $tab.setAttribute('aria-selected', 'false');
-      this.$rootElement
-        .getElementById($tab.getAttribute('aria-controls'))
-        .setAttribute('hidden', 'hidden');
+      this.$rootElement?.querySelector(`#${$tab.getAttribute('aria-controls')}`)?.setAttribute('hidden', 'hidden');
     });
-  },
+  }
 
-  autoKeydownEventListener: function (event) {
-    var key = event.keyCode;
+  autoKeydownEventListener(event: KeyboardEvent) {
+    var key = event.key;
 
     switch (key) {
       case this.KEYS.end:
-        this.focusLastTab(event.currentTarget, true);
+        this.focusLastTab(event.currentTarget as HTMLElement, true);
         break;
       case this.KEYS.home:
         event.preventDefault();
-        this.focusFirstTab(event.currentTarget, true);
+        this.focusFirstTab(event.currentTarget as HTMLElement, true);
         break;
       case this.KEYS.up:
       case this.KEYS.down:
         this.determineOrientation(event, true);
         break;
     }
-  },
+  }
 
-  autoKeyupEventListener: function (event) {
-    var key = event.keyCode;
+  autoKeyupEventListener(event: KeyboardEvent) {
+    var key = event.key;
 
     switch (key) {
       case this.KEYS.left:
@@ -115,21 +118,21 @@ var TabUtil = {
         this.determineDeletable(event);
         break;
     }
-  },
+  }
 
-  keydownEventListener: function (event) {
-    var key = event.keyCode;
+  keydownEventListener(event: KeyboardEvent) {
+    var key = event.key;
 
     switch (key) {
       case this.KEYS.end:
         // Activate last tab
         event.preventDefault();
-        this.focusLastTab(event.currentTarget, false);
+        this.focusLastTab(event.currentTarget as HTMLElement, false);
         break;
       case this.KEYS.home:
         // Activate first tab
         event.preventDefault();
-        this.focusFirstTab(event.currentTarget, false);
+        this.focusFirstTab(event.currentTarget as HTMLElement, false);
         break;
       // Up and down are in keydown because we need to prevent page scroll
       case this.KEYS.up:
@@ -137,10 +140,10 @@ var TabUtil = {
         this.determineOrientation(event, false);
         break;
     }
-  },
+  }
 
-  keyupEventListener: function (event) {
-    var key = event.keyCode;
+  keyupEventListener(event: KeyboardEvent) {
+    var key = event.key;
 
     switch (key) {
       case this.KEYS.left:
@@ -152,36 +155,38 @@ var TabUtil = {
         break;
       case this.KEYS.enter:
       case this.KEYS.space:
-        this.activateTab(event.target);
+        this.activateTab(event.target as HTMLElement);
         break;
     }
-  },
+  }
 
-  focusFirstTab: function ($tab, activate) {
-    var $firstTab = $tab
-      .closest('[role="tablist"]')
-      .querySelector('[role="tab"]:first-child');
+  focusFirstTab($tab: HTMLElement, activate: boolean) {
+    var $firstTab = $tab?.closest('[role="tablist"]')?.querySelector('[role="tab"]:first-child') as HTMLElement;
     $firstTab.focus();
     if (activate) {
       this.activateTab($firstTab);
     }
-  },
+  }
 
-  focusLastTab: function ($tab, activate) {
-    var $lastTab = $tab
-      .closest('[role="tablist"]')
-      .querySelector('[role="tab"]:last-child');
+  focusLastTab($tab: HTMLElement, activate: boolean) {
+    var $lastTab = $tab?.closest('[role="tablist"]')?.querySelector('[role="tab"]:last-child') as HTMLElement;
+    if (!$lastTab) {
+      return;
+    }
     $lastTab.focus();
     if (activate) {
       this.activateTab($lastTab);
     }
-  },
+  }
 
   // When a tablist aria-orientation is set to vertical, only up and down arrow should function.
   // In all other cases only left and right arrow function.
-  determineOrientation: function (event, activate) {
-    var key = event.keyCode;
-    var $tabWrapper = event.currentTarget.closest('[role="tablist"]');
+  determineOrientation(event: KeyboardEvent, activate: boolean) {
+    var key = event.key;
+    var $tabWrapper = (event.currentTarget as HTMLElement).closest('[role="tablist"]');
+    if (!$tabWrapper) {
+      return;
+    }
     var isVertical =
       $tabWrapper.hasAttribute('aria-orientation') &&
       $tabWrapper.getAttribute('aria-orientation') == 'vertical';
@@ -200,24 +205,26 @@ var TabUtil = {
     if (proceed) {
       this.switchTabOnArrowPress(event, activate);
     }
-  },
+  }
 
-  switchTabOnArrowPress: function (event, activate) {
-    var pressed = event.keyCode;
+  switchTabOnArrowPress(event: KeyboardEvent, activate: boolean) {
+    var pressed = event.key;
     if (this.DIRECTION[pressed]) {
-      var $tab = event.target;
-      if ($tab.index !== undefined) {
-        var $tabList = $tab
-          .closest('[role="tablist"]')
-          .querySelectorAll('[role="tab"]');
-        if ($tabList[$tab.index + this.DIRECTION[pressed]]) {
+      var $tab = event.target as HTMLElement;
+      const index = parseInt($tab.dataset.index);
+      if (typeof index !== 'undefined') {
+        var $tabList = $tab?.closest('[role="tablist"]')?.querySelectorAll('[role="tab"]');
+        if (!$tabList) {
+          return;
+        }
+        if ($tabList[index + this.DIRECTION[pressed]]) {
           if (activate) {
             this.activateTab(
-              $tabList[$tab.index + this.DIRECTION[pressed]],
+              $tabList[index + this.DIRECTION[pressed]] as HTMLElement,
               true,
             );
           } else {
-            $tabList[$tab.index + this.DIRECTION[pressed]].focus();
+            ($tabList[index + this.DIRECTION[pressed]] as HTMLElement).focus();
           }
         } else if (pressed === this.KEYS.left || pressed === this.KEYS.up) {
           this.focusLastTab($tab, activate);
@@ -226,11 +233,9 @@ var TabUtil = {
         }
       }
     }
-  },
+  }
 
-  determineDeletable: function () {
+  determineDeletable(event: KeyboardEvent) {
     // TODO
-  },
+  }
 };
-
-export default TabUtil;
