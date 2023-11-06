@@ -40,47 +40,51 @@ export default class FormUtils {
   `;
   }
 
+  static getGroupFieldQuerySelector(): string {
+    return 'fieldset, [role="group"], [role="radiogroup"]';
+  }
+
   static getFormFieldLabel($formField: HTMLElement): string {
     // On récupère l'intitulé du champ de formulaire en suivant l'ordre spécifié dans le RGAA
     // D'abord, on vérifie si aria-labelledby est défini
     const ariaLabelledby = $formField.getAttribute('aria-labelledby');
-    if(ariaLabelledby) {
+    if (ariaLabelledby) {
       const describedByElement: HTMLElement = document.getElementById(ariaLabelledby);
-      if(describedByElement) {
+      if (describedByElement) {
         return describedByElement.textContent || '';
       }
     }
 
     // Sinon, on vérifie si aria-label est défini
     const ariaLabel = $formField.getAttribute('aria-label');
-    if(ariaLabel) {
+    if (ariaLabel) {
       return ariaLabel;
     }
 
     // Sinon, on vérifie si le champ de formulaire a un label associé
     const id = $formField.getAttribute('id');
-    if(id) {
+    if (id) {
       const labelElement: HTMLElement = document.querySelector(`label[for="${id}"]`);
-      if(labelElement) {
+      if (labelElement) {
         return labelElement.textContent || '';
       }
     }
 
     // On vérifie si le champ de formulaire est inclus dans un label
     const parentLabelElement: HTMLElement = $formField.closest('label');
-    if(parentLabelElement) {
+    if (parentLabelElement) {
       return parentLabelElement.textContent || '';
     }
 
     // Sinon, on vérifie si le champ de formulaire a un titre
     const title = $formField.getAttribute('title');
-    if(title) {
+    if (title) {
       return title;
     }
 
     // Sinon, on vérifie si le champ de formulaire a un placeholder
     const placeholder = $formField.getAttribute('placeholder');
-    if(placeholder) {
+    if (placeholder) {
       return placeholder;
     }
 
