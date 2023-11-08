@@ -9,6 +9,7 @@ export default class Criterion11_2 extends BaseCriterion {
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     super($wrapper, $highLightWrapper);
     this.querySelector = FormUtils.getFormFieldQuerySelector();
+    this.initHighlight();
   }
 
   runTest() {
@@ -22,7 +23,7 @@ export default class Criterion11_2 extends BaseCriterion {
       labelFieldList.push({ label: label, field: $formField });
     });
 
-    if($elementList.length > 0) {
+    if ($elementList.length > 0) {
       status = 'NT';
       message = "Vérifiez si les étiquettes des champs de formulaire sont pertinentes.";
     }
@@ -35,7 +36,7 @@ export default class Criterion11_2 extends BaseCriterion {
     this.updateTest('11.2.5', status);
     this.updateTest('11.2.6', status);
 
-    if($elementList.length > 0) {
+    if ($elementList.length > 0) {
       this.logResults('11.2 - Liste des étiquettes de formulaire', labelFieldList);
     }
 

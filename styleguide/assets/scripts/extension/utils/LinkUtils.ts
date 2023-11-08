@@ -55,6 +55,10 @@ export default class LinkUtils {
         // Pour d'autres éléments, récursivement traiter les enfants
         const children = currentElement.childNodes;
         for (const child of Array.from(children)) {
+          // Ignore les node de commentaire
+          if (child.nodeType === Node.COMMENT_NODE) {
+            continue;
+          }
           processElement(child as Element);
         }
       }

@@ -9,6 +9,7 @@ export default class Criterion11_1 extends BaseCriterion {
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     super($wrapper, $highLightWrapper);
     this.querySelector = FormUtils.getFormFieldQuerySelector();
+    this.initHighlight();
   }
 
   runTest() {
@@ -22,15 +23,15 @@ export default class Criterion11_1 extends BaseCriterion {
 
     $elementList.forEach(($formField: HTMLElement) => {
       let label = FormUtils.getFormFieldLabel($formField);
-      if(label.trim() === '') {
+      if (label.trim() === '') {
         isCriteriaValid = false;
       }
 
       // 11.1.2: on vérifie si les identifiants des champs de formulaire sont correctement associés à leurs étiquettes par un attribut for
       const id = $formField.getAttribute('id');
-      if(id) {
+      if (id) {
         const labelElement: HTMLElement = document.querySelector(`label[for="${id}"]`);
-        if(!labelElement) {
+        if (!labelElement) {
           areLabelsValid = false;
         }
       }
@@ -40,16 +41,16 @@ export default class Criterion11_1 extends BaseCriterion {
       const ariaLabelledby = $formField.getAttribute('aria-labelledby');
       const titleAttribute = $formField.getAttribute('title');
 
-      if(!ariaLabel && !ariaLabelledby && !titleAttribute) {
+      if (!ariaLabel && !ariaLabelledby && !titleAttribute) {
       } else {
         hasInvisibleLabel = true;
       }
     });
 
-    if($elementList.length > 0) {
-      if(isCriteriaValid) {
+    if ($elementList.length > 0) {
+      if (isCriteriaValid) {
         statusTest1 = 'C';
-        if(hasInvisibleLabel) {
+        if (hasInvisibleLabel) {
           status = 'NT';
           message = "Certains champs de formulaire ont une étiquette invisible pour les utilisateurs, vérifiez les manuellement";
         } else {
@@ -65,9 +66,9 @@ export default class Criterion11_1 extends BaseCriterion {
 
     this.updateCriteria('11.1', status, message);
     this.updateTest('11.1.1', statusTest1);
-    this.updateTest('11.1.2', $elementList.length > 0 ? (areLabelsValid ? 'C' : 'NC') : 'NA' );
+    this.updateTest('11.1.2', $elementList.length > 0 ? (areLabelsValid ? 'C' : 'NC') : 'NA');
 
-    if($elementList.length > 0) {
+    if ($elementList.length > 0) {
       this.logResults('11.1 - Liste des champs de formulaire', $elementList);
     }
 

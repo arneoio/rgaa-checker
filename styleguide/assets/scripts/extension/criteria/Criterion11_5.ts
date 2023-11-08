@@ -9,6 +9,7 @@ export default class Criterion11_5 extends BaseCriterion {
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     super($wrapper, $highLightWrapper);
     this.querySelector = FormUtils.getGroupFieldQuerySelector();
+    this.initHighlight();
   }
 
   runTest() {
