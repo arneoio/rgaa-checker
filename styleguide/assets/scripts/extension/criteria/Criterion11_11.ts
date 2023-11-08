@@ -2,7 +2,7 @@ import BaseCriterion from '../common/BaseCriterion';
 import FormUtils from '../utils/FormUtils';
 
 /**
- * Dans chaque formulaire, le contrôle de saisie est-il utilisé de manière pertinente (hors cas particuliers) ?
+ * Dans chaque formulaire, le contrôle de saisie est-il accompagné, si nécessaire, de suggestions facilitant la correction des erreurs de saisie ?
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion11_11 extends BaseCriterion {

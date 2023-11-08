@@ -2,7 +2,7 @@ import BaseCriterion from '../common/BaseCriterion';
 import FormUtils from '../utils/FormUtils';
 
 /**
- * Dans chaque formulaire, le contrôle de saisie est-il utilisé de manière pertinente (hors cas particuliers) ?
+ * Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou à un examen, ou dont la validation a des conséquences financières ou juridiques, les données saisies peuvent-elles être modifiées, mises à jour ou récupérées par l’utilisateur ?
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion11_12 extends BaseCriterion {

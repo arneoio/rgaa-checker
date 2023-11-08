@@ -2,7 +2,7 @@ import BaseCriterion from '../common/BaseCriterion';
 import FormUtils from '../utils/FormUtils';
 
 /**
- * Dans chaque formulaire, le contrôle de saisie est-il utilisé de manière pertinente (hors cas particuliers) ?
+ * La finalité d’un champ de saisie peut-elle être déduite pour faciliter le remplissage automatique des champs avec les données de l’utilisateur ?
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion11_13 extends BaseCriterion {
