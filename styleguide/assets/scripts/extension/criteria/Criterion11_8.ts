@@ -1,5 +1,4 @@
 import BaseCriterion from '../common/BaseCriterion';
-import FormUtils from '../utils/FormUtils';
 
 /**
  * Dans chaque formulaire, les items de même nature d’une liste de choix sont-ils regroupés de manière pertinente ?
@@ -17,7 +16,6 @@ export default class Criterion11_8 extends BaseCriterion {
     let message = "Aucun select n'a été trouvé.";
 
     let $elementList = Array.from(document.querySelectorAll(this.querySelector));
-    console.log(this.querySelector, $elementList);
     let hasAllOptiongroup = true;
     let hasAtLeastOneOptiongroup = false;
 

@@ -44,6 +44,10 @@ export default class FormUtils {
     return 'fieldset, [role="group"], [role="radiogroup"]';
   }
 
+  static getButtonQuerySelector(): string {
+    return 'button, input[type="button"], input[type="submit"], input[type="reset"], input[type="image"], [role="button"]';
+  }
+
   static getFormFieldLabel($formField: HTMLElement): string {
     // On récupère l'intitulé du champ de formulaire en suivant l'ordre spécifié dans le RGAA
     // D'abord, on vérifie si aria-labelledby est défini
@@ -86,6 +90,74 @@ export default class FormUtils {
     const placeholder = $formField.getAttribute('placeholder');
     if (placeholder) {
       return placeholder;
+    }
+
+    return '';
+  }
+
+  static getButtonAccessibleLabel($button: HTMLElement): string {
+    // On récupère l'intitulé du bouton en suivant l'ordre spécifié dans le RGAA
+    // D'abord, on vérifie si aria-labelledby est défini
+    const ariaLabelledby = $button.getAttribute('aria-labelledby');
+    if (ariaLabelledby) {
+      const describedByElement: HTMLElement = document.getElementById(ariaLabelledby);
+      if (describedByElement) {
+        return describedByElement.textContent || '';
+      }
+    }
+
+    // Sinon, on vérifie si aria-label est défini
+    const ariaLabel = $button.getAttribute('aria-label');
+    if (ariaLabel) {
+      return ariaLabel;
+    }
+
+    // Sinon, pour les boutons de type image, on vérifie si alt est défini
+    const tagName = $button.tagName.toLowerCase();
+    if (tagName === 'input' && $button.getAttribute('type') === 'image') {
+      const alt = $button.getAttribute('alt');
+      if (alt) {
+        return alt;
+      }
+    }
+
+    // Sinon pour les input de type submit, reset ou button on vérifie si value est défini
+    if (tagName === 'input' && ['submit', 'reset', 'button'].includes($button.getAttribute('type') || '')) {
+      const value = $button.getAttribute('value');
+      if (value) {
+        return value;
+      }
+    }
+
+    // Sinon pour un button ou role="button", on récupère le contenu textuel
+    if (['button', '[role="button"]'].includes(tagName)) {
+      return $button.textContent || '';
+    }
+
+    // Sinon on récupère l'attribut title
+    const title = $button.getAttribute('title');
+    if (title) {
+      return title;
+    }
+
+    return '';
+  }
+
+  static getButtonVisibleLabel($button: HTMLElement): string {
+    // On récupère l'intitulé du bouton en suivant l'ordre spécifié dans le RGAA
+    const tagName = $button.tagName.toLowerCase();
+
+    // Pour les input de type submit, reset ou button on vérifie si value est défini
+    if (tagName === 'input' && ['submit', 'reset', 'button'].includes($button.getAttribute('type') || '')) {
+      const value = $button.getAttribute('value');
+      if (value) {
+        return value;
+      }
+    }
+
+    // Sinon pour un button ou role="button", on récupère le contenu textuel
+    if (['button', '[role="button"]'].includes(tagName)) {
+      return $button.textContent || '';
     }
 
     return '';
