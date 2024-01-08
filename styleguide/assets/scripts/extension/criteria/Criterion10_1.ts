@@ -5,8 +5,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion10_1 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
-    super($wrapper, $highLightWrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($wrapper, $highLightWrapper, isTestMode);
     this.initHighlight();
   }
 

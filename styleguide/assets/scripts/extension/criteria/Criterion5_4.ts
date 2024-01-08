@@ -6,8 +6,8 @@ import TableUtils from '../utils/TableUtils';
  * Traite: NA, C, NC
  */
 export default class Criterion5_4 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
-    super($wrapper, $highLightWrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($wrapper, $highLightWrapper, isTestMode);
     this.querySelector = 'table:not([role="presentation"])';
     this.initHighlight();
   }

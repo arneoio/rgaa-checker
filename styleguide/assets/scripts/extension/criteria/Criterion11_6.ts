@@ -6,8 +6,8 @@ import FormUtils from '../utils/FormUtils';
  * Traite: C, NC, NA
  */
 export default class Criterion11_6 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
-    super($wrapper, $highLightWrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($wrapper, $highLightWrapper, isTestMode);
     this.querySelector = FormUtils.getGroupFieldQuerySelector();
     this.initHighlight();
   }

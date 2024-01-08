@@ -7,8 +7,8 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion10_4 extends BaseCriterion {
   zoomFactor: number = 1;
 
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
-    super($wrapper, $highLightWrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($wrapper, $highLightWrapper, isTestMode);
     this.initHighlight();
   }
 

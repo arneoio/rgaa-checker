@@ -5,8 +5,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NC, NA, NT (validation manuelle)
  */
 export default class Criterion8_8 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
-    super($wrapper, $highLightWrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($wrapper, $highLightWrapper, isTestMode);
     this.querySelector = '*[lang]:not(html), *[xml\\:lang]:not(html)';
     this.initHighlight();
   }

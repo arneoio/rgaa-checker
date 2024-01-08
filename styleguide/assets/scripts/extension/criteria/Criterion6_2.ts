@@ -3,12 +3,12 @@ import LinkUtils from '../utils/LinkUtils';
 
 /**
  * Dans chaque page web, chaque lien a-t-il un intitulé ?
- * Traite: C, NC
+ * Traite: NA, C, NC
  */
 export default class Criterion6_2 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
-    super($wrapper, $highLightWrapper);
-    this.querySelector = 'a:not([aria-hidden="true"]), [role="link"]:not([aria-hidden="true"]';
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($wrapper, $highLightWrapper, isTestMode);
+    this.querySelector = 'a:not([aria-hidden="true"]), [role="link"]:not([aria-hidden="true"])';
     this.initHighlight();
   }
 
