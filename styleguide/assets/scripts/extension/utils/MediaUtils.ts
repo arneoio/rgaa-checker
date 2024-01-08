@@ -4,12 +4,14 @@ export default class MediaUtils {
     const $mediaList = document.querySelectorAll(`audio, video, object, svg, canvas, [type="application/x-shockwave-flash"], bgsound`);
 
     $mediaList.forEach(($media: HTMLElement) => {
+      let tagName = $media.tagName.toLowerCase();
+
       // Pour les SVG on vérifie que l'élément est bien un média temporel
       if($media.getAttribute('aria-hidden') === 'true') {
         return;
       }
 
-      if($media.tagName === 'svg') {
+      if(tagName === 'svg') {
         const svgAnimations = $media.querySelectorAll("animate, animateTransform, animateMotion");
 
         if (svgAnimations.length === 0) {
@@ -17,21 +19,21 @@ export default class MediaUtils {
           return;
         }
       }
-
+console.log(tagName);
       // On vérifie que l'élément object est bien un média temporel
-      if($media.tagName === 'object') {
-        const $embed = $media.querySelector('embed');
-        if(!$embed) {
-          return;
+      if(tagName === 'object') {
+        const $embed = $media.querySelectorAll('embed');
+        if($embed.length === 0) {
+          return; // L'élément object ne contient pas de embed
         }
       }
 
       // On vérifie que l'élément canvas est bien un média temporel
-      if($media.tagName === 'canvas') {
-        const context = ($media as HTMLCanvasElement).getContext('2d');
+      if(tagName === 'canvas') {
+        const context = ($media as any).getContext('2d');
 
         // teste si on a une méthode animate ou requestAnimationFrame sur le contexte
-        if (context && ('animationFrame' in context ||'requestAnimationFrame' in context)) {
+        if (context && !('animationFrame' in context ||'requestAnimationFrame' in context)) {
           return;
         }
       }

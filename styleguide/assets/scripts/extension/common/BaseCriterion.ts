@@ -7,16 +7,27 @@ export default abstract class BaseCriterion implements Criterion {
   querySelector: string;
   querySelectorList: Array<HTMLElement>;
   isInitialTestDone: boolean = false;
+  isTestMode: boolean = false;
 
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
     this.$wrapper = $wrapper;
     this.$highLightWrapper = $highLightWrapper;
+    this.isTestMode = isTestMode;
+
+    if(isTestMode) {
+      return;
+    }
+
     let criteriaNumber = this.constructor.name.replace('Criterion', '').replace('_', '.');
     this.$criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     this.querySelector = '';
   }
 
   initHighlight() {
+    if(this.isTestMode) {
+      return;
+    }
+
     // Affiche le switch
     const $highlightSwitch = this.$criteriaCard.querySelector('.js-criteriaCard__highlightSwitch');
     ($highlightSwitch.querySelector('.js-toggleSwitch__label') as HTMLElement).innerText = this.getHighlightText();
@@ -43,6 +54,10 @@ export default abstract class BaseCriterion implements Criterion {
   }
 
   updateCriteria(criteriaNumber: string, status: string, verification?: string) {
+    if (this.isTestMode) {
+      return;
+    }
+
     let $criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     if (!$criteriaCard) {
       return;
@@ -70,6 +85,10 @@ export default abstract class BaseCriterion implements Criterion {
   }
 
   updateTest(testNumber: string, status: string) {
+    if (this.isTestMode) {
+      return;
+    }
+
     let $criteriaTest = this.$wrapper.querySelector(`.js-criteriaCard__test__number[data-test="${testNumber}"]`) as HTMLElement;
     if (!$criteriaTest) {
       return;
@@ -93,6 +112,9 @@ export default abstract class BaseCriterion implements Criterion {
   }
 
   logResults(title: string, log: any): void {
+    if (this.isTestMode) {
+      return;
+    }
     console.groupCollapsed(title);
     console.log(log);
     console.groupEnd();

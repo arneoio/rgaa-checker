@@ -5,19 +5,33 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT (validation manuelle)
  */
 export default class Criterion10_4 extends BaseCriterion {
+  zoomFactor: number = 1;
+
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
     super($wrapper, $highLightWrapper);
+    this.initHighlight();
+  }
 
-    // // Zoom dans la page à 200%
-    // chrome.tabs.getZoom(function(zoomFactor) {
-    //   // zoomFactor contient le facteur de zoom actuel (1.0 pour 100%)
+  getHighlightText() {
+    return "Zoomer le texte à 200%";
+  }
 
+  activateHighlight(): void {
+    // Zoom dans la page à 200%
+    // chrome.tabs.getZoom(function (zoomFactor: number) {
+    //   this.zoomFactor = zoomFactor;
     //   // Pour effectuer un zoom à 200% :
-    //   var newZoomFactor = 2;
-    //   chrome.tabs.setZoom(newZoomFactor);
+    //   chrome.tabs.setZoom(2);
     // });
+  }
 
-    // Pour le zoom texte only: https://github.com/lihanli/chrome-text-only-zoom
+  resetHighlight(): void {
+    // let chrome = window.chrome as any;
+    // // Zoom dans la page à 200%
+    // chrome.tabs.getZoom(function () {
+    //   // Pour effectuer un zoom à 200% :
+    //   chrome.tabs.setZoom(this.zoomFactor);
+    // });
   }
 
   runTest() {

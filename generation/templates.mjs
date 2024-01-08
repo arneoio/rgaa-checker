@@ -16,14 +16,16 @@ Twig.extendFilter('path', function (path) {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // set styleguide templates file path
-const extensionTemplate = `../styleguide/components/25-templates/extension/extension.html.twig`;
+const panelTemplate = `../styleguide/components/25-templates/panel/panel.html.twig`;
+const devtoolsTemplate = `../styleguide/components/25-templates/devtools/devtools.html.twig`;
 
 /**
  * Build Index page
  */
 const buildExtension = (params) => {
   console.warn('Build extension template...');
-  buildTemplate(extensionTemplate, 'panel.html', params);
+  buildTemplate(panelTemplate, 'panel.html', params);
+  buildTemplate(devtoolsTemplate, 'devtools.html', params);
 };
 
 /**

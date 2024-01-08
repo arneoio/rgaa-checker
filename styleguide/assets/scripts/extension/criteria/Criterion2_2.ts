@@ -5,8 +5,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion2_2 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement) {
-    super($wrapper, $highLightWrapper);
+  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($wrapper, $highLightWrapper, isTestMode);
     this.querySelector = 'iframe, frame';
     this.initHighlight();
   }
@@ -18,7 +18,7 @@ export default class Criterion2_2 extends BaseCriterion {
 
     let $frameList = document.querySelectorAll(this.querySelector);
     if ($frameList.length) {
-      $frameList.forEach(($frame: HTMLTableElement) => {
+      $frameList.forEach(($frame: HTMLElement) => {
         if ($frame.title) {
           frameTitleList.push({
             title: $frame.title,
