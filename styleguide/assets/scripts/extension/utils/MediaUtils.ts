@@ -19,7 +19,7 @@ export default class MediaUtils {
           return;
         }
       }
-console.log(tagName);
+
       // On vérifie que l'élément object est bien un média temporel
       if(tagName === 'object') {
         const $embed = $media.querySelectorAll('embed');

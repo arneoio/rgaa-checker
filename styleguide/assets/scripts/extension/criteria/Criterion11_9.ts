@@ -38,8 +38,6 @@ export default class Criterion11_9 extends BaseCriterion {
         if (accessibleLabel && visibleLabel && !accessibleLabel.includes(visibleLabel.trim())) {
           status = 'NC';
           message = "Certains libellés accessibles ne contiennent pas reprennent pas le libellé visible.";
-          console.log(accessibleLabel);
-          console.log(visibleLabel);
           noConcordantElementList.push({ $element, visibleLabel, accessibleLabel });
         }
       });

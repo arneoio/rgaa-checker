@@ -52,7 +52,7 @@ describe('Criterion4_1', function() {
       assert.strictEqual(result, 'NT');
     });
 
-    it(`should return "NA" when <object> tag doens't contain an embed tag element is present`, function() {
+    it(`should return "NA" when <object> tag doesn't contain an embed tag element is present`, function() {
       const dom = new JSDOM(`
         <html><body>
           <object></object>
