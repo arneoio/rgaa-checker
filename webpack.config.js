@@ -8,11 +8,21 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const STYLEGUIDE_PATH = path.resolve(__dirname, process.env.STYLEGUIDE_PATH);
 const ASSETS_PATH = path.resolve(__dirname, process.env.STYLEGUIDE_ASSETS_PATH);
 const SVG_ICON_PATH = path.resolve(ASSETS_PATH, 'icons/');
-const BUILD_FOLDER = path.resolve(__dirname, process.env.FRACTAL_STATIC_FOLDER);
+let BUILD_FOLDER = path.resolve(__dirname, process.env.FRACTAL_STATIC_FOLDER);
 const ENTRY_FILE = `${STYLEGUIDE_PATH}/components/app.ts`;
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== 'production';
+  let builtExtension = 'chrome';
+
+  if (!devMode) {
+    if(!argv.env || !argv.env.app || ['chrome', 'firefox'].indexOf(argv.env.app) < 0)
+    {
+      throw new Error('Please specify the extension type in the environment variable "app"');
+    }
+    builtExtension = argv.env.app;
+    BUILD_FOLDER = `${BUILD_FOLDER}/${builtExtension}`;
+  }
 
   const copyPatterns = [
     {
@@ -20,12 +30,16 @@ module.exports = (env, argv) => {
       to: path.resolve(`${BUILD_FOLDER}/images`),
     },
     {
-      from: path.resolve(`${ASSETS_PATH}/manifest.json`),
+      from: path.resolve(`${ASSETS_PATH}/manifest_${builtExtension}.json`),
       to: path.resolve(`${BUILD_FOLDER}/manifest.json`),
     },
     {
-      from: path.resolve(`${ASSETS_PATH}/scripts`),
-      to: path.resolve(`${BUILD_FOLDER}/scripts`),
+      from: path.resolve(`${ASSETS_PATH}/scripts/background_${builtExtension}.js`),
+      to: path.resolve(`${BUILD_FOLDER}/scripts/background.js`),
+    },
+    {
+      from: path.resolve(`${ASSETS_PATH}/scripts/extension`),
+      to: path.resolve(`${BUILD_FOLDER}/scripts/extension`),
     },
   ];
 
@@ -51,6 +65,9 @@ module.exports = (env, argv) => {
     },
     output: {
       path: BUILD_FOLDER,
+    },
+    optimization: {
+      minimize: false, // don't minify js even in production
     },
     stats: {
       children: true,

@@ -46,7 +46,6 @@
         'header header'
         'aside main';
     background-color: $color-white;
-    box-shadow: 0 0 16px rgba(254, 94, 85, 0.2);
 
     &.-closed {
         bottom: auto;
@@ -69,7 +68,6 @@
     position: relative;
     max-width: 134px;
     grid-area: aside;
-    box-shadow: 0 0 16px rgba(254, 94, 85, 0.2);
 
     .m-topicList {
         position: sticky;
@@ -84,7 +82,7 @@
     flex-direction: column;
     gap: 32px;
     padding: 40px 12px;
-    background-color: var(--primary-color-3);
+    background-color: var(--color-grey-6);
 }
 
 .l-extension__filters {
