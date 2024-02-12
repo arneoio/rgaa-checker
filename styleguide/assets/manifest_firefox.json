@@ -14,7 +14,8 @@
     }
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "scripting"
   ],
   "background": {
     "scripts": ["scripts/background.js"],
