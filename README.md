@@ -1,50 +1,30 @@
-# Prérequis
+# RGAA Checker
 
-- Node 16+
+## Description
 
-# Installation
+Accélérez et simplifiez vos audits d'accessibilité RGAA directement dans votre navigateur.
 
-Copier le fichier `.env.dist` en `.env` pour avoir les bons chemins du styleguide au build de webpabk et fractal.
+Conçue pour les auditeurs, développeurs, et tous les acteurs du web soucieux de l'accessibilité, notre extension Chrome/Firefox automatise la vérification des critères d'accessibilité RGAA, vous offrant un gain de temps significatif et une analyse précise.
 
-```bash
-cp .env.dist .env
-```
+Le RGAA, aligné sur les normes WCAG, vise à assurer l'accessibilité numérique pour les personnes handicapées, ciblant les services publics et les grandes entreprises en France avec un CA supérieur à 250 millions d'euros, pour un internet plus inclusif​​​​​​. Pour plus de détails, veuillez consulter le [site officiel du RGAA](https://accessibilite.numerique.gouv.fr/).
 
-```bash
-yarn install
-yarn build
-```
+Fonctionnalités clés :
 
-## Front
+- Analyse automatisée : Évaluez automatiquement une sélection de critères RGAA, respectant scrupuleusement les critères et tests du RGAA
+- Analyse simplifiée : Pour les critères ne pouvant être automatisés, mettez en avant dans la page les éléments impactés pour les vérifier facilement sans en oublier
+- Rapports Détaillés : Visualisez les résultats directement dans votre navigateur, avec la possibilité de filtrer, consulter, et comprendre chaque problème d'accessibilité identifié.
+- Validation des Critères : Grâce à la liste complète des critères à jour avec des raccourcis par thématique, vous pouvez valider ou invalider les critères. vos choix sont sauvegardés si vous revenez plus tard sur la page.
+- Export vers la grille : En un clic vous pouvez exporter les résultats de chaque page pour remplir les grilles d'audit officielles du RGAA
+- Compatibilité Étendue : Fonctionne sur toutes les pages web, y compris les intranets, les pages protégées par mot de passe, et les contenus dynamiquement générés.
 
-```bash
-yarn dev
-```
+Que vous travailliez sur des sites en développement ou que vous souhaitiez évaluer l'accessibilité de sites existants, notre extension est l'outil idéal pour intégrer les meilleures pratiques d'accessibilité dans votre workflow. Rejoignez-nous dans notre mission pour un web plus accessible à tous.
 
-Les assets sont dans le dossier `styleguide/assets/`.
+Réalisé par Arneo (https://arneo.io/)
+Github:
 
-Les éléments du styleguide sont dans le dossier `styleguide/`.
+## À venir
 
-## Génération de l'extension
-
-Pour générer juste l'extension, il faut lancer la commande suivante :
-
-```bash
-yarn buildChrome
-yarn buildFirefox
-```
-
-# Installation dans le navigateur
-
-## Chrome
-
-- Aller dans `chrome://extensions/`
-- Activer le mode développeur
-- Charger l'extension non empaquetée
-- Sélectionner le dossier `dist/chrome`
-
-## Firefox
-
-- Aller dans `about:debugging#/runtime/this-firefox`
-- Charger un module temporaire
-- Sélectionner le fichier `dist/firefox/manifest.json`
+- Afficher la liste des éléments mis en avant pour chaque critère dans la page
+- Afficher la différence trouvée entre 2 chargements de page
+- Permettre la configuration d'options pour l'extension
+- Automatiser la vérification de plus de critères
