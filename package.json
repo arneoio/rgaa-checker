@@ -16,12 +16,13 @@
     "webpack:build": "webpack --mode=production",
     "fractal:dev": "fractal start --sync",
     "fractal:build": "fractal build",
-    "build": "yarn webpack:build && yarn fractal:build",
+    "build": "yarn webpack:build --env app=chrome && yarn webpack:build --env app=firefox && yarn fractal:build",
     "lint": "eslint ./styleguide/* --ext .ts",
     "generate": "node generation/index.mjs",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --config mocha.config.js",
     "zip": "node zip",
-    "buildExtension": "webpack --mode=production && node generation/index.mjs && node zip"
+    "buildFirefox": "webpack --mode=production --env app=firefox && node generation/index.mjs firefox && node zip firefox",
+    "buildChrome": "webpack --mode=production --env app=chrome && node generation/index.mjs chrome && node zip chrome"
   },
   "browserslist": [
     ">0.25%",

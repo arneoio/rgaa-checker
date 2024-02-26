@@ -1,7 +1,0 @@
-display:
-  max-width: 480px
-variants:
-- name: default
-  context:
-    filterList: '@filter-list.filterList'
-    topicList: '@topic-list.topicList'

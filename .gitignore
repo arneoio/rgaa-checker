@@ -10,6 +10,7 @@
 # Project compiled
 /public
 /dist
+/zip
 node_modules
 
 # Eclipse

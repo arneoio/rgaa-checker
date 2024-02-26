@@ -1,31 +1,31 @@
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.action.setBadgeText({
-    text: 'OFF',
-  });
+// Set the badge to "OFF" when the extension is installed
+browser.runtime.onInstalled.addListener(() => {
+  browser.browserAction.setBadgeText({ text: 'OFF' });
 });
 
-chrome.action.onClicked.addListener(async (tab) => {
+browser.browserAction.onClicked.addListener(async (tab) => {
   // Next state will always be the opposite
-  const prevState = await chrome.action.getBadgeText({ tabId: tab.id });
+  const prevState = await browser.browserAction.getBadgeText({ tabId: tab.id });
   const nextState = prevState === 'ON' ? 'OFF' : 'ON';
 
   // Set the action badge to the next state
-  await chrome.action.setBadgeText({
+  await browser.browserAction.setBadgeText({
     tabId: tab.id,
     text: nextState,
   });
 
   if (nextState === 'ON') {
-    // Injecter le contenu de "panel.html" dans la page en cours en utilisant le Shadow DOM
-    chrome.scripting
-      .executeScript({
-        target: { tabId: tab.id },
-        function: async () => {
+    try {
+      await browser.scripting.executeScript({
+        target: {
+          tabId: tab.id,
+        },
+        func: async () => {
           const panelHtmlResponse = await fetch(
             chrome.runtime.getURL('../pages/panel.html'),
           );
           const panelHtmlText = await panelHtmlResponse.text();
-
+          console.log(panelHtmlText);
           // Créer un élément shadow DOM pour l'extension
           const shadow = document.createElement('div');
           shadow.id = 'arneo-browser-extension';
@@ -38,17 +38,22 @@ chrome.action.onClicked.addListener(async (tab) => {
           document.body.appendChild(shadow);
         },
       })
-      .then(() => {
-        chrome.scripting.executeScript({
-          target: { tabId: tab.id },
-          files: ['app.js'],
-        });
+
+      await browser.scripting.executeScript({
+        target: {
+          tabId: tab.id
+        },
+        files: ['app.js'],
       });
+    } catch (error) {
+      console.error('error', error);
+    }
   } else if (nextState === 'OFF') {
-    // Supprimer le shadow DOM
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      function: () => {
+    await browser.scripting.executeScript({
+      target: {
+        tabId: tab.id
+      },
+      func: () => {
         const shadow = document.getElementById('arneo-browser-extension');
         if (shadow) {
           shadow.remove();

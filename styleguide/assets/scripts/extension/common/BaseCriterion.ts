@@ -13,11 +13,9 @@ export default abstract class BaseCriterion implements Criterion {
     this.$wrapper = $wrapper;
     this.$highLightWrapper = $highLightWrapper;
     this.isTestMode = isTestMode;
-
-    if(isTestMode) {
+    if(this.isTestMode) {
       return;
     }
-
     let criteriaNumber = this.constructor.name.replace('Criterion', '').replace('_', '.');
     this.$criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     this.querySelector = '';
@@ -50,7 +48,7 @@ export default abstract class BaseCriterion implements Criterion {
 
         this.activateHighlight();
       }
-    })
+    });
   }
 
   updateCriteria(criteriaNumber: string, status: string, verification?: string) {

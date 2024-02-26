@@ -5,7 +5,14 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 dotenv.config();
 
-const BUILDER_FOLDER = `${process.env.WEBPACK_BUILDER_FOLDER}`;
+let BUILDER_FOLDER = `${process.env.WEBPACK_BUILDER_FOLDER}`;
+
+const args = process.argv.slice(2);
+const applicationType = args[0];
+if(applicationType) {
+  BUILDER_FOLDER = `${process.env.WEBPACK_BUILDER_FOLDER}/${applicationType}`;
+}
+
 const ASSETS_FOLDER = `${process.env.WEBPACK_BUILDER_FOLDER}`;
 
 Twig.extendFilter('path', function (path) {
@@ -17,7 +24,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // set styleguide templates file path
 const panelTemplate = `../styleguide/components/25-templates/panel/panel.html.twig`;
-const devtoolsTemplate = `../styleguide/components/25-templates/devtools/devtools.html.twig`;
 
 /**
  * Build Index page
@@ -25,7 +31,6 @@ const devtoolsTemplate = `../styleguide/components/25-templates/devtools/devtool
 const buildExtension = (params) => {
   console.warn('Build extension template...');
   buildTemplate(panelTemplate, 'panel.html', params);
-  buildTemplate(devtoolsTemplate, 'devtools.html', params);
 };
 
 /**
@@ -109,7 +114,7 @@ const getHtmlHeader = () => {
  */
 const getHtmlFooter = () => {
   return `
-        <script src="app.js"></script>
+        <script src="../app.js"></script>
     `;
 };
 

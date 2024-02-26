@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "Arneo RGAA Checker",
+  "description": "RGAA Checker by Arneo",
+  "version": "1.0",
+  "icons": {
+    "48": "images/icon48.png",
+    "96": "images/icon96.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "48": "images/icon48.png",
+      "96": "images/icon96.png"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "background": {
+    "scripts": ["scripts/background.js"],
+    "persistent": false
+  },
+  "web_accessible_resources": [
+    "pages/panel.html",
+    "app.js"
+  ]
+}

@@ -30,11 +30,21 @@ Les éléments du styleguide sont dans le dossier `styleguide/`.
 Pour générer juste l'extension, il faut lancer la commande suivante :
 
 ```bash
-yarn buildExtension
+yarn buildChrome
+yarn buildFirefox
 ```
 
-Pour créer un zip également:
+# Installation dans le navigateur
 
-```bash
-yarn buildExtension
-```
+## Chrome
+
+- Aller dans `chrome://extensions/`
+- Activer le mode développeur
+- Charger l'extension non empaquetée
+- Sélectionner le dossier `dist/chrome`
+
+## Firefox
+
+- Aller dans `about:debugging#/runtime/this-firefox`
+- Charger un module temporaire
+- Sélectionner le fichier `dist/firefox/manifest.json`
