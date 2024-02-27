@@ -43,8 +43,12 @@ yarn buildFirefox
 - Charger l'extension non empaquetée
 - Sélectionner le dossier `dist/chrome`
 
+![](install-chrome.png)
+
 ## Firefox
 
 - Aller dans `about:debugging#/runtime/this-firefox`
 - Charger un module temporaire
 - Sélectionner le fichier `dist/firefox/manifest.json`
+
+![](install-firefox.png)
