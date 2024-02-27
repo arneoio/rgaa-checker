@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Arneo RGAA Checker",
   "description": "RGAA Checker by Arneo",
-  "version": "1.0",
+  "version": "0.0.0",
   "icons": {
     "16": "images/icon16.png",
     "32": "images/icon32.png",

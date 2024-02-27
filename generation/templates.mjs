@@ -47,6 +47,7 @@ const panelTemplate = `../styleguide/components/25-templates/panel/panel.html.tw
 const buildExtension = (params) => {
   console.warn('Build extension template...');
   buildTemplate(panelTemplate, 'panel.html', params);
+  updateManifestVersion();
 };
 
 /**
@@ -148,6 +149,17 @@ const getAppVersion = () => {
     appVersion = packageJson.version;
   }
   return appVersion;
+};
+
+/**
+ * Update manifest version from package.json
+ */
+const updateManifestVersion = () => {
+  let manifestFile = `./${BUILDER_FOLDER}/manifest.json`;
+  let appVersion = getAppVersion();
+  let manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+  manifest.version = appVersion;
+  fs.writeFileSync(manifestFile, JSON.stringify(manifest, null, 2));
 };
 
 /**
