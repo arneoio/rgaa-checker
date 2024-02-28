@@ -1,8 +1,11 @@
-# Prérequis
+# INSTALLATION
 
-  - Node 18+
+## Prérequis
 
-# Installation
+  - Node >= 18.0.0
+  - Yarn
+
+## Installation
 
 ```bash
 yarn install
@@ -21,16 +24,21 @@ Les éléments du styleguide sont dans le dossier `styleguide/`.
 
 ## Génération de l'extension
 
-Pour générer juste l'extension, il faut lancer la commande suivante :
+### Pour Chrome
 
 ```bash
 yarn buildChrome
+```
+
+### Pour Firefox
+
+```bash
 yarn buildFirefox
 ```
 
-# Installation dans le navigateur
+## Installation dans le navigateur
 
-## Chrome
+### Chrome
 
   - Aller dans `chrome://extensions/`
   - Activer le mode développeur
@@ -39,10 +47,11 @@ yarn buildFirefox
 
 ![chrome installation](doc/install-chrome.png)
 
-## Firefox
+### Firefox
 
   - Aller dans `about:debugging#/runtime/this-firefox`
   - Charger un module temporaire
   - Sélectionner le fichier `dist/firefox/manifest.json`
 
 ![firefox installation](doc/install-firefox.png)
+
