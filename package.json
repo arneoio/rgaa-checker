@@ -1,13 +1,13 @@
 {
   "name": "accessibility-extension",
-  "version": "0.21.0",
+  "version": "0.0.0",
   "description": "Extension d'accessibilité",
   "repository": {
     "type": "git",
-    "url": "https://git.adfab.fr/adfab/frontstarter.git"
+    "url": "git@github.com:arneoio/rgaa-checker.git"
   },
   "author": "ARNEO",
-  "license": "UNLICENSED",
+  "license": "APACHE-2.0",
   "private": true,
   "scripts": {
     "dev": "node generation/utils/generate-design-system.js && concurrently -n webpack,fractal -c cyan,magenta \"yarn webpack:dev\" \"yarn fractal:dev\"",
