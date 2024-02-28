@@ -4,12 +4,6 @@
 
 # Installation
 
-Copier le fichier `.env.dist` en `.env` pour avoir les bons chemins du styleguide au build de webpabk et fractal.
-
-```bash
-cp .env.dist .env
-```
-
 ```bash
 yarn install
 yarn build

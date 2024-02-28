@@ -5,8 +5,6 @@
 !/backstop_data/html_report/.gitkeep
 /backstop.json
 
-/.env
-
 # Project compiled
 /public
 /dist
