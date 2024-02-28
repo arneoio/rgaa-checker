@@ -10,16 +10,6 @@ Le [RGAA](https://fr.wikipedia.org/wiki/R%C3%A9f%C3%A9rentiel_g%C3%A9n%C3%A9ral_
 
 Pour plus de détails, veuillez consulter le [site officiel du RGAA](https://accessibilite.numerique.gouv.fr/).
 
-## Installation
-
-Installation depuis les sources :
-
-  - [cf. INSTALL.md](INSTALL.md)
-
-Installation depuis les magasins d'extensions de Chrome et Firefox :
-
-  - Bientôt disponible !
-
 ## Fonctionnalités clés
 
   - Analyse automatisée : Évaluez automatiquement une sélection de critères RGAA, respectant scrupuleusement les critères et tests du RGAA
@@ -38,6 +28,20 @@ Que vous travailliez sur des sites en développement ou que vous souhaitiez éva
   - Permettre la configuration d'options pour l'extension
   - Automatiser la vérification de plus de critères
   - Internationalisation
+
+## Installation
+
+Installation depuis les sources :
+
+  - [INSTALL.md](INSTALL.md)
+
+Installation depuis les magasins d'extensions de Chrome et Firefox :
+
+  - Bientôt disponible !
+
+## Documentation
+
+  - [MANUAL.md](MANUAL.md)
 
 ## Des questions ? Des problèmes ? Des suggestions ?
 
