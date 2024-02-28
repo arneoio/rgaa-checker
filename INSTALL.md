@@ -1,6 +1,6 @@
 # Prérequis
 
-- Node 18+
+  - Node 18+
 
 # Installation
 
@@ -38,17 +38,17 @@ yarn buildFirefox
 
 ## Chrome
 
-- Aller dans `chrome://extensions/`
-- Activer le mode développeur
-- Charger l'extension non empaquetée
-- Sélectionner le dossier `dist/chrome`
+  - Aller dans `chrome://extensions/`
+  - Activer le mode développeur
+  - Charger l'extension non empaquetée
+  - Sélectionner le dossier `dist/chrome`
 
-![](install-chrome.png)
+![chrome installation](doc/install-chrome.png)
 
 ## Firefox
 
-- Aller dans `about:debugging#/runtime/this-firefox`
-- Charger un module temporaire
-- Sélectionner le fichier `dist/firefox/manifest.json`
+  - Aller dans `about:debugging#/runtime/this-firefox`
+  - Charger un module temporaire
+  - Sélectionner le fichier `dist/firefox/manifest.json`
 
-![](install-firefox.png)
+![firefox installation](doc/install-firefox.png)
