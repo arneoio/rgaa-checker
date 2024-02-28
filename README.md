@@ -21,6 +21,8 @@ Pour plus de détails, veuillez consulter le [site officiel du RGAA](https://acc
 
 Que vous travailliez sur des sites en développement ou que vous souhaitiez évaluer l'accessibilité de sites existants, notre extension est l'outil idéal pour intégrer les meilleures pratiques d'accessibilité dans votre workflow. Rejoignez-nous dans notre mission pour un web plus accessible à tous.
 
+L'extension teste actuellement 48 critères complets sur un total de 106. Certains critères non implémentés sont soit partiellement intégrables, soit non testable automatiquement de façon fiable. En première estimation 33 sont non implémentables en automatique. L'objectif à terme est d'atteindre 73 critères complets sur un total de 106.
+
 ## Fonctionnalités à venir
 
   - Afficher la liste des éléments mis en avant pour chaque critère dans la page
