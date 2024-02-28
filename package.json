@@ -10,7 +10,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "dev": "node generate-design-system.js && concurrently -n webpack,fractal -c cyan,magenta \"yarn webpack:dev\" \"yarn fractal:dev\"",
+    "dev": "node generation/utils/generate-design-system.js && concurrently -n webpack,fractal -c cyan,magenta \"yarn webpack:dev\" \"yarn fractal:dev\"",
     "backstop": "node backstop-tests.js && backstop test",
     "webpack:dev": "webpack --mode=development",
     "webpack:build": "webpack --mode=production",
