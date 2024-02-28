@@ -5,10 +5,17 @@
   - Node >= 18.0.0
   - Yarn
 
-## Installation
+## Construction du projet
+
+installer les dépendances :
 
 ```bash
 yarn install
+```
+
+puis construire le projet :
+
+```bash
 yarn build
 ```
 
@@ -38,7 +45,7 @@ yarn buildFirefox
 
 ## Installation dans le navigateur
 
-### Chrome
+### Dans Chrome
 
   - Aller dans `chrome://extensions/`
   - Activer le mode développeur
@@ -47,7 +54,7 @@ yarn buildFirefox
 
 ![chrome installation](doc/install-chrome.png)
 
-### Firefox
+### Dans Firefox
 
   - Aller dans `about:debugging#/runtime/this-firefox`
   - Charger un module temporaire
