@@ -1,7 +1,7 @@
 // zips the build folder for archive
 const zip = require('zip-a-folder');
 const fs = require('fs');
-var packageJson = require('./package.json');
+var packageJson = require('../../package.json');
 require('dotenv').config();
 
 /**
