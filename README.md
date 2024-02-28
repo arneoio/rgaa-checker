@@ -10,6 +10,16 @@ Le RGAA, aligné sur les normes WCAG, vise à assurer l'accessibilité numériqu
 
 Pour plus de détails, veuillez consulter le [site officiel du RGAA](https://accessibilite.numerique.gouv.fr/).
 
+## Installation
+
+Installation depuis les sources :
+
+  - [cf. INSTALL.md](INSTALL.md)
+
+Installation depuis les magasins d'extensions de Chrome et Firefox :
+
+  - Bientôt disponible !
+
 ## Fonctionnalités clés
 
   - Analyse automatisée : Évaluez automatiquement une sélection de critères RGAA, respectant scrupuleusement les critères et tests du RGAA
