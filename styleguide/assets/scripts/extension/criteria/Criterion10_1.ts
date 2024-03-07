@@ -61,14 +61,14 @@ export default class Criterion10_1 extends BaseCriterion {
       'char', 'charoff', 'clear', 'color', 'compact', 'frameborder', 'hspace',
       'link', 'marginheight', 'marginwidth', 'text', 'valign', 'vlink', 'vspace',
     ];
-    const presentationAttributeList = document.querySelectorAll(presentationAttributes.map((attribute) => `[${attribute}]`).join(', '));
+    const presentationAttributeList = document.body.querySelectorAll(presentationAttributes.map((attribute) => `[${attribute}]`).join(', '));
 
     // Vérifie si l'attribut size est utilisé sauf sur les balises select
-    const sizeAttributeList = document.querySelectorAll('[size]:not(select)');
+    const sizeAttributeList = document.body.querySelectorAll('[size]:not(select)');
 
     // Vérifie si l'attribut width ou height est utilisé sauf sur les balises img, object, canvas, embed, svg
-    const widthAttributeList = document.querySelectorAll('[width]:not(img, object, canvas, embed, svg)');
-    const heightAttributeList = document.querySelectorAll('[height]:not(img, object, canvas, embed, svg)');
+    const widthAttributeList = document.body.querySelectorAll('[width]:not(img, object, canvas, embed, svg)');
+    const heightAttributeList = document.body.querySelectorAll('[height]:not(img, object, canvas, embed, svg)');
 
     const mergedPresentationAttributeList = Array.from(presentationAttributeList).concat(Array.from(sizeAttributeList)).concat(Array.from(widthAttributeList)).concat(Array.from(heightAttributeList));
 
