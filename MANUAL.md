@@ -27,6 +27,16 @@ Pour voir plus en détail les éléments qui ne sont pas conformes, ils sont gé
 
 ![Informations indiquées dans la console](doc/manual/console.png)
 
+## Calcul du taux de conformité
+
+Le taux de conformité se base sur les [recommandations de la DINUM](https://accessibilite.numerique.gouv.fr/obligations/evaluation-conformite/).
+
+Le pourcentage correspond au nombre de critères conformes par rapport au nombre total de critères applicables. `C / (C + NC) * 100`
+
+L'indication en dessous du pourcentage indique le nombre de critères évalués par l'outil (`C + NC + NA`) par rapport au nombre total de critères total. **Le taux de conformité ne prenant pas en compte les critères non traités, il n'est pas représentatif de la conformité réelle de la page** tant que tous les critères ne sont pas traités. C'est pour cela que nous indiquons également le nombre de critères évalués par rapport au nombre total de critères.
+
+Le taux de conformité est mis à jour à chaque fois que vous changez l'état d'un critère.
+
 ## Mise en avant des éléments
 
 Sur plusieurs critères vous trouverez un switch **Highlight**. En cliquant dessus, les éléments qui correspondent au critère sont mis en évidence dans la page, tandis que les éléments qui ne correspondent pas sont affichés avec une opacité réduite.

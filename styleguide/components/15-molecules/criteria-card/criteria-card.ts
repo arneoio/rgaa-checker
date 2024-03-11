@@ -6,6 +6,8 @@ export default class CriteriaCard {
   $highLightWrapper: HTMLElement;
   $summaryScore: HTMLElement;
   $summaryScoreProgress: HTMLElement;
+  $summaryTested: HTMLElement;
+  $summaryTotal: HTMLElement;
   criterion: any;
   criterionNumber: string;
 
@@ -20,6 +22,8 @@ export default class CriteriaCard {
 
     this.$summaryScore = this.$wrapper.querySelector('.js-summary__score');
     this.$summaryScoreProgress = this.$wrapper.querySelector('.js-summary__score__progress');
+    this.$summaryTested = this.$wrapper.querySelector('.js-summary__tested');
+    this.$summaryTotal = this.$wrapper.querySelector('.js-summary__total');
 
     this.init();
   }
@@ -65,7 +69,6 @@ export default class CriteriaCard {
     savedStatus.user[window.location.pathname][this.criterionNumber] = newStatus;
 
     // Met à jour le localStorage
-    console.log('savedStatus', savedStatus);
     localStorage.setItem('accessibilityTesterResults', JSON.stringify(savedStatus));
   }
 
@@ -87,12 +90,14 @@ export default class CriteriaCard {
     });
 
     let total = $criteriaCards.length;
-    let totalScore = scoreList['C'] + scoreList['NC'] + scoreList['NA'];
-    let score = scoreList['C'] + scoreList['NA'];
+    let totalScore = scoreList['C'] + scoreList['NC'];
+    let score = scoreList['C'];
 
     this.$summaryScore.innerText = (Math.round(score / totalScore * 100)).toString();
     this.$summaryScoreProgress.setAttribute('value', score);
     this.$summaryScoreProgress.setAttribute('max', totalScore);
+    this.$summaryTested.innerText = (scoreList['C'] + scoreList['NC'] + scoreList['NA']).toString();
+    this.$summaryTotal.innerText = total.toString();
     Object.keys(scoreList).forEach((status: string) => {
       let $status = this.$wrapper.querySelector(`.js-summary__progress[data-status="${status}"]`);
       $status.setAttribute('value', scoreList[status].toString());

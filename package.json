@@ -17,7 +17,8 @@
     "fractal:build": "fractal build",
     "build": "yarn webpack:build --env app=chrome && yarn webpack:build --env app=firefox && yarn fractal:build",
     "lint": "eslint ./styleguide/* --ext .ts",
-    "generate": "node generation/index.mjs",
+    "generateChrome": "node generation/index.mjs chrome",
+    "generateFirefox": "node generation/index.mjs firefox",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --config mocha.config.js",
     "buildFirefox": "webpack --mode=production --env app=firefox && node generation/index.mjs firefox && node generation/utils/zip firefox",
     "buildChrome": "webpack --mode=production --env app=chrome && node generation/index.mjs chrome && node generation/utils/zip chrome"

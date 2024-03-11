@@ -12,7 +12,15 @@
             class: 'o-header__logo'
           }
         } only %}
-        <span class="-hiddenClosed">Accessibility audit helper</span>
+        <a href="https://github.com/arneoio/rgaa-checker/blob/main/README.md" target="_blank" class="o-header__externalLink -hiddenClosed">
+            RGAA Checker
+            {% include '@atom/icon/icon.html.twig' with {
+              name: 'external-link',
+              attributeList: {
+                class: 'o-header__externalLinkIcon'
+              }
+            } only %}
+        </a>
     </div>
     <div class="o-header__right">
         <button class="o-header__settingsButton -hiddenClosed" title="Paramètres">

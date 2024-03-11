@@ -57,7 +57,15 @@
 }
 
 .o-summary__score__value {
-    font-size: 2.4rem;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.o-summary__score__tested {
+    font-size: 9px;
+}
+
+.o-summary__score__testedValue {
     font-weight: 700;
 }
 

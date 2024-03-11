@@ -8,7 +8,7 @@
 {% set total = 0 %}
 {% set score = 0 %}
 {% for status in statusList %}
-    {% if status.slug != 'NA' %}
+    {% if status.slug == 'C' or status.slug == 'NC' %}
         {% set total = total + summary.scoreList[status.slug] %}
         {% if status.slug != 'NC' %}
             {% set score = score + summary.scoreList[status.slug] %}
@@ -24,7 +24,7 @@
     </div>
     <div class="o-summary__score o-summary__frame">
         <p class="o-summary__score__title">
-            Score
+            Taux de conformité
             {% include '@atom/icon/icon.html.twig' with {
                 name: 'speed',
                 attributeList: {
@@ -33,7 +33,9 @@
             } only %}
         </p>
         <p class="o-summary__score__value">
-          <span class="js-summary__score">{{ (score / total * 100) | round }}</span>%</p>
+          <span class="js-summary__score">{{ (score / total * 100) | round }}</span>%
+        </p>
+        <p class="o-summary__score__tested"><span class="js-summary__tested o-summary__score__testedValue">X</span> critères évalués sur <span class="js-summary__total o-summary__score__testedValue">Y</span></p>
         <progress class="o-summary__score__progress js-summary__score__progress" max="{{ total }}" value="{{ score }}"></progress>
     </div>
     <ul class="o-summary__list o-summary__frame">
