@@ -45,6 +45,7 @@
     "@frctl/mandelbrot": "1.9.4",
     "@frctl/twig": "1.2.11",
     "@types/chai": "^4.3.11",
+    "@types/chrome": "^0.0.263",
     "@types/mocha": "^10.0.6",
     "@types/sinon": "^17.0.2",
     "@typescript-eslint/eslint-plugin": "^6.9.0",

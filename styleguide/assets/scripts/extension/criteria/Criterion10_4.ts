@@ -15,9 +15,10 @@
  */
 
 import BaseCriterion from '../common/BaseCriterion';
+declare var browser: typeof chrome;
 
 /**
- * Dans chaque page web, chaque citation est-elle correctement indiquée ?
+ * Dans chaque page web, le texte reste-t-il lisible lorsque la taille des caractères est augmentée jusqu’à 200 %, au moins (hors cas particuliers) ?
  * Traite: NT (validation manuelle)
  */
 export default class Criterion10_4 extends BaseCriterion {
@@ -29,25 +30,24 @@ export default class Criterion10_4 extends BaseCriterion {
   }
 
   getHighlightText() {
-    return "Zoomer le texte à 200%";
+    return "Zoomer à 200%";
   }
 
   activateHighlight(): void {
-    // Zoom dans la page à 200%
-    // chrome.tabs.getZoom(function (zoomFactor: number) {
-    //   this.zoomFactor = zoomFactor;
-    //   // Pour effectuer un zoom à 200% :
-    //   chrome.tabs.setZoom(2);
-    // });
+    // Send message to background script to zoom in for firefox or chrome
+    if(browser) {
+      browser.runtime.sendMessage({action: "zoomIn"});
+    } else {
+      chrome.runtime.sendMessage({action: "zoomIn"});
+    }
   }
 
   resetHighlight(): void {
-    // let chrome = window.chrome as any;
-    // // Zoom dans la page à 200%
-    // chrome.tabs.getZoom(function () {
-    //   // Pour effectuer un zoom à 200% :
-    //   chrome.tabs.setZoom(this.zoomFactor);
-    // });
+    if(browser) {
+      browser.runtime.sendMessage({action: "zoomBack"});
+    } else {
+      chrome.runtime.sendMessage({action: "zoomBack"});
+    }
   }
 
   runTest() {
