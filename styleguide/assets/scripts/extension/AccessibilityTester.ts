@@ -124,7 +124,7 @@ export default class AccessibilityTester {
     }
   }
 
-  runTests() {
+  loadSavedData() {
     // Get previous results from localStorage
     const previousResults = JSON.parse(localStorage.getItem(this.localStorageKey)) || {
       "user": {},
@@ -160,7 +160,10 @@ export default class AccessibilityTester {
     previousResults.runner[window.location.pathname] = pageResults;
 
     localStorage.setItem(this.localStorageKey, JSON.stringify(previousResults));
+  }
 
+  runTests() {
+    this.loadSavedData();
     this.loadUserResults();
   }
 

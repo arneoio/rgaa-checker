@@ -6,6 +6,8 @@ export default class CriteriaCard {
   $highLightWrapper: HTMLElement;
   $summaryScore: HTMLElement;
   $summaryScoreProgress: HTMLElement;
+  $summaryScoreText: HTMLElement;
+  $summaryScoreMention: HTMLElement;
   $summaryTested: HTMLElement;
   $summaryTotal: HTMLElement;
   criterion: any;
@@ -24,6 +26,8 @@ export default class CriteriaCard {
     this.$summaryScoreProgress = this.$wrapper.querySelector('.js-summary__score__progress');
     this.$summaryTested = this.$wrapper.querySelector('.js-summary__tested');
     this.$summaryTotal = this.$wrapper.querySelector('.js-summary__total');
+    this.$summaryScoreText = this.$wrapper.querySelector('.js-summary__score__text');
+    this.$summaryScoreMention = this.$wrapper.querySelector('.js-summary__score__mention');
 
     this.init();
   }
@@ -90,18 +94,34 @@ export default class CriteriaCard {
     });
 
     let total = $criteriaCards.length;
-    let totalScore = scoreList['C'] + scoreList['NC'];
-    let score = scoreList['C'];
 
-    this.$summaryScore.innerText = (Math.round(score / totalScore * 100)).toString();
-    this.$summaryScoreProgress.setAttribute('value', score);
-    this.$summaryScoreProgress.setAttribute('max', totalScore);
-    this.$summaryTested.innerText = (scoreList['C'] + scoreList['NC'] + scoreList['NA']).toString();
-    this.$summaryTotal.innerText = total.toString();
     Object.keys(scoreList).forEach((status: string) => {
       let $status = this.$wrapper.querySelector(`.js-summary__progress[data-status="${status}"]`);
       $status.setAttribute('value', scoreList[status].toString());
       $status.setAttribute('max', total.toString());
     });
+
+    // While NT remains, the score is not calculated
+    if(scoreList['NT'] > 0) {
+      this.$summaryScoreText.classList.add('-hidden');
+      this.$summaryScoreMention.classList.remove('-hidden');
+      let progress = total - scoreList['NT'];
+
+      this.$summaryTested.innerText = progress.toString();
+      this.$summaryTotal.innerText = total.toString();
+      this.$summaryScoreProgress.setAttribute('value', progress.toString());
+      this.$summaryScoreProgress.setAttribute('max', total.toString());
+    } else {
+      // All criteria have been tested, the score is calculated
+      let total = scoreList['C'] + scoreList['NC'];
+      let score = Math.round(scoreList['C'] / total * 100);
+
+      this.$summaryScoreProgress.setAttribute('value', score.toString());
+      this.$summaryScoreProgress.setAttribute('max', '100');
+      this.$summaryScore.innerText = score.toString();
+
+      this.$summaryScoreText.classList.remove('-hidden');
+      this.$summaryScoreMention.classList.add('-hidden');
+    }
   }
 }

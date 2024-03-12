@@ -47,6 +47,7 @@
     justify-content: space-between;
     gap: 8px;
     font-size: 12px;
+    line-height: 1.2;
     font-weight: 600;
 }
 
@@ -61,12 +62,9 @@
     font-weight: 700;
 }
 
-.o-summary__score__tested {
+.o-summary__score__text {
     font-size: 9px;
-}
-
-.o-summary__score__testedValue {
-    font-weight: 700;
+    line-height: 1.2;
 }
 
 .o-summary__score__progress {
