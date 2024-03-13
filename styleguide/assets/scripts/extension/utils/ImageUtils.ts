@@ -51,6 +51,50 @@ export default class ImageUtils {
     }
 
     // Sinon on vérifie si aria-label est défini
+    const hasAriaLabel = $image.hasAttribute('aria-label');
+    if (hasAriaLabel) {
+      return true;
+    }
+
+    // Sinon on vérifie si alt est défini pour img, area ou input
+    if (['img', 'area', 'input'].includes(tagName)) {
+      const hasAlt = $image.hasAttribute('alt');
+      if (hasAlt) {
+        return true;
+      }
+    }
+
+    // Sinon on vérifie si title est défini pour img, input, object, embed
+    if (['img', 'input', 'object', 'embed'].includes(tagName)) {
+      const hasTitle = $image.hasAttribute('title');
+      if (hasTitle) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  static hasImageLabelFilled($image: HTMLElement): boolean {
+    if (!ImageUtils.isImageElement($image)) {
+      return false;
+    }
+
+    const tagName = $image.tagName.toLowerCase();
+
+    // On vérifie si aria-labelledby est défini pour <img>, [role="img"], <input type="image">, <object type="image/…">, <svg>, <canvas> ou <embed type="images/…">
+    if (tagName !== 'area') {
+      const ariaLabelledby = $image.getAttribute('aria-labelledby');
+      if (ariaLabelledby) {
+        // Si aria-labelledby est défini, on vérifie que l'élément référencé existe
+        const describedByElement: HTMLElement = document.getElementById(ariaLabelledby);
+        if (describedByElement) {
+          return true;
+        }
+      }
+    }
+
+    // Sinon on vérifie si aria-label est défini
     const ariaLabel = $image.getAttribute('aria-label');
     if (ariaLabel) {
       return true;

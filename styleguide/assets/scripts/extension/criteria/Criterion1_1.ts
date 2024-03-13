@@ -28,17 +28,32 @@ export default class Criterion1_1 extends BaseCriterion {
     this.initHighlight();
   }
 
+  getHighlightedElements(): Array<HTMLElement> {
+    const noAltImageList: any = [];
+    let $imageList = Array.from(document.querySelectorAll(this.querySelector));
+
+    $imageList.forEach(($image: HTMLElement) => {
+      if (!ImageUtils.hasImageLabel($image)) {
+        noAltImageList.push($image);
+      }
+    });
+
+    return noAltImageList;
+  }
+
   runTest() {
     let status = 'NA';
+    let warningMessage = "/!\\ En l'état actuel, la distinction entre images porteuses et non porteuses d'information n'est pas faite. Nous listons ici toutes les images sans alternative textuelle.";
     let message = "Aucune image n'a été trouvée dans la page.";
 
-    let $allImageList = document.querySelectorAll(this.querySelector);
+    let $noLabelImageList: any = [];
 
     let $imageList = document.querySelectorAll('img, [role="img"]:not(object, embed, svg, canvas)');
     let imageHasLabel = true;
     Array.from($imageList).forEach(($image: HTMLElement) => {
       if (!ImageUtils.hasImageLabel($image)) {
         imageHasLabel = false;
+        $noLabelImageList.push($image);
       }
     });
 
@@ -47,6 +62,7 @@ export default class Criterion1_1 extends BaseCriterion {
     Array.from($areaList).forEach(($area: HTMLElement) => {
       if (!ImageUtils.hasImageLabel($area)) {
         areaHasLabel = false;
+        $noLabelImageList.push($area);
       }
     });
 
@@ -55,6 +71,7 @@ export default class Criterion1_1 extends BaseCriterion {
     Array.from($inputList).forEach(($input: HTMLElement) => {
       if (!ImageUtils.hasImageLabel($input)) {
         inputHasLabel = false;
+        $noLabelImageList.push($input);
       }
     });
 
@@ -63,6 +80,7 @@ export default class Criterion1_1 extends BaseCriterion {
     Array.from($mapImageList).forEach(($mapImage: HTMLElement) => {
       if (!ImageUtils.hasImageLabel($mapImage)) {
         mapImageHasLabel = false;
+        $noLabelImageList.push($mapImage);
       }
     });
 
@@ -71,6 +89,7 @@ export default class Criterion1_1 extends BaseCriterion {
     Array.from($svgList).forEach(($svg: HTMLElement) => {
       if (!ImageUtils.hasImageLabel($svg)) {
         svgHasLabel = false;
+        $noLabelImageList.push($svg);
       }
     });
 
@@ -79,6 +98,7 @@ export default class Criterion1_1 extends BaseCriterion {
     Array.from($objectList).forEach(($object: HTMLElement) => {
       if (!ImageUtils.hasImageLabel($object)) {
         objectHasLabel = false;
+        $noLabelImageList.push($object);
       }
     });
 
@@ -87,6 +107,7 @@ export default class Criterion1_1 extends BaseCriterion {
     Array.from($embedList).forEach(($embed: HTMLElement) => {
       if (!ImageUtils.hasImageLabel($embed)) {
         embedHasLabel = false;
+        $noLabelImageList.push($embed);
       }
     });
 
@@ -95,15 +116,19 @@ export default class Criterion1_1 extends BaseCriterion {
     Array.from($canvasList).forEach(($canvas: HTMLElement) => {
       if (!ImageUtils.hasImageLabel($canvas)) {
         canvasHasLabel = false;
+        $noLabelImageList.push($canvas);
       }
     });
 
     if (!imageHasLabel || !areaHasLabel || !inputHasLabel || !mapImageHasLabel || !svgHasLabel || !objectHasLabel || !embedHasLabel || !canvasHasLabel) {
-      status = 'NC';
-      message = "Toutes les images n'ont pas d'alternative textuelle.";
+      // status = 'NC';
+      message = "Toutes les images de la page n'ont pas d'alternative textuelle.";
+    } else if ($imageList.length || $areaList.length || $inputList.length || $mapImageList.length || $svgList.length || $objectList.length || $embedList.length || $canvasList.length) {
+      status = 'NT';
+      message = "Toutes les images de la page ont une alternative textuelle.";
     }
 
-    this.updateCriteria('1.1', status, message);
+    this.updateCriteria('1.1', status, message + '<br />' + warningMessage);
     this.updateTest('1.1.1', $imageList.length ? (imageHasLabel ? 'NT' : 'NC') : 'NA');
     this.updateTest('1.1.2', $areaList.length ? (areaHasLabel ? 'NT' : 'NC') : 'NA');
     this.updateTest('1.1.3', $inputList.length ? (inputHasLabel ? 'NT' : 'NC') : 'NA');
@@ -113,8 +138,13 @@ export default class Criterion1_1 extends BaseCriterion {
     this.updateTest('1.1.7', $embedList.length ? (embedHasLabel ? 'NT' : 'NC') : 'NA');
     this.updateTest('1.1.8', $canvasList.length ? (canvasHasLabel ? 'NT' : 'NC') : 'NA');
 
-    if ($allImageList.length > 0) {
-      this.logResults('1.1 - Liste des images', $allImageList);
+    let $allImageList = document.querySelectorAll(this.querySelector);
+    if($allImageList.length > 0) {
+      this.logResults('1.1 - Liste des images', document.querySelectorAll(this.querySelector));
+    }
+
+    if ($noLabelImageList.length > 0) {
+      this.logResults('1.1 - Liste des images sans alternative textuelle', $noLabelImageList);
     }
 
     return status;

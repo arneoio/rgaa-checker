@@ -47,6 +47,7 @@
     justify-content: space-between;
     gap: 8px;
     font-size: 12px;
+    line-height: 1.2;
     font-weight: 600;
 }
 
@@ -57,8 +58,13 @@
 }
 
 .o-summary__score__value {
-    font-size: 2.4rem;
+    font-size: 24px;
     font-weight: 700;
+}
+
+.o-summary__score__text {
+    font-size: 9px;
+    line-height: 1.2;
 }
 
 .o-summary__score__progress {

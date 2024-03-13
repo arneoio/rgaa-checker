@@ -70,3 +70,23 @@ chrome.action.onClicked.addListener(async (tab) => {
     });
   }
 });
+
+let initialZoomFactor = 1;
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.action == "zoomIn") {
+      chrome.tabs.getZoom(sender.tab.id, (currentZoomFactor) => {
+        if (sender.tab) {
+          initialZoomFactor = currentZoomFactor;
+          chrome.tabs.setZoom(sender.tab.id, 2); // Double le zoom
+        }
+      });
+    } else if (request.action == "zoomBack") {
+      chrome.tabs.getZoom(sender.tab.id, () => {
+        if (sender.tab) {
+          chrome.tabs.setZoom(sender.tab.id, initialZoomFactor); // Divise le zoom par 2
+        }
+      });
+    }
+  }
+);

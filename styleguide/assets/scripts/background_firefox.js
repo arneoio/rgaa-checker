@@ -41,7 +41,6 @@ browser.browserAction.onClicked.addListener(async (tab) => {
             chrome.runtime.getURL('../pages/panel.html'),
           );
           const panelHtmlText = await panelHtmlResponse.text();
-          console.log(panelHtmlText);
           // Créer un élément shadow DOM pour l'extension
           const shadow = document.createElement('div');
           shadow.id = 'arneo-browser-extension';
@@ -75,6 +74,24 @@ browser.browserAction.onClicked.addListener(async (tab) => {
           shadow.remove();
         }
       },
+    });
+  }
+});
+
+let initialZoomFactor = 1;
+browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.action === "zoomIn") {
+    browser.tabs.get(sender.tab.id).then((tab) => {
+      browser.tabs.getZoom(tab.id).then((currentZoomFactor) => {
+        initialZoomFactor = currentZoomFactor;
+        browser.tabs.setZoom(tab.id, 2);
+      });
+    });
+  } else if (request.action === "zoomBack") {
+    browser.tabs.get(sender.tab.id).then((tab) => {
+      browser.tabs.getZoom(tab.id).then(() => {
+        browser.tabs.setZoom(tab.id, initialZoomFactor);
+      });
     });
   }
 });

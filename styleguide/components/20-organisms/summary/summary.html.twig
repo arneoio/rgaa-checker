@@ -8,23 +8,22 @@
 {% set total = 0 %}
 {% set score = 0 %}
 {% for status in statusList %}
-    {% if status.slug != 'NA' %}
+    {% if status.slug == 'C' or status.slug == 'NC' %}
         {% set total = total + summary.scoreList[status.slug] %}
-        {% if status.slug != 'NC' %}
+        {% if status.slug != 'NT' %}
             {% set score = score + summary.scoreList[status.slug] %}
         {% endif %}
     {% endif %}
 {% endfor %}
-
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
     <div class="o-summary__top">
-        <h2 class="o-summary__top__title">Votre audit en un clic</h2>
+        <h2 class="o-summary__top__title">Simplifiez votre audit</h2>
         <button class="o-summary__top__download js-summary__copyButton">Copier le résultat</button>
         <textarea id="summary__result" class="js-summary__textarea" style="display: none;"></textarea>
     </div>
     <div class="o-summary__score o-summary__frame">
         <p class="o-summary__score__title">
-            Score
+            Taux de conformité
             {% include '@atom/icon/icon.html.twig' with {
                 name: 'speed',
                 attributeList: {
@@ -32,8 +31,13 @@
                 }
             } only %}
         </p>
-        <p class="o-summary__score__value">
-          <span class="js-summary__score">{{ (score / total * 100) | round }}</span>%</p>
+        <p class="o-summary__score__value js-summary__score__text -hidden">
+          <span class="js-summary__score">{{ (score / total * 100) | round }}</span>%
+        </p>
+        <p class="o-summary__score__text js-summary__score__mention">
+          <strong class="js-summary__tested o-summary__score__testedValue">X</strong> critères évalués sur <strong class="js-summary__total o-summary__score__testedValue">Y</strong></br>
+          Complétez tous les critères <strong>NT</strong> pour obtenir votre taux de conformité
+        </p>
         <progress class="o-summary__score__progress js-summary__score__progress" max="{{ total }}" value="{{ score }}"></progress>
     </div>
     <ul class="o-summary__list o-summary__frame">

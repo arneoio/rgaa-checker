@@ -20,7 +20,6 @@ var App = {
       this.documentRoot = $shadowRoot.shadowRoot;
     }
     this.$wrapper = this.documentRoot.getElementById(this.ID);
-    console.log('ini', this.ID, this.$wrapper);
     this.$highLightWrapper = this.documentRoot.getElementById(this.HIGHLIGHT_ID);
 
     this.tester = new AccessibilityTester(this.$wrapper, this.$highLightWrapper);

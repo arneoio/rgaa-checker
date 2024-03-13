@@ -20,6 +20,17 @@
     height: 24px;
 }
 
+.o-header__externalLink {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.o-header__externalLinkIcon {
+    width: 16px;
+    height: 16px;
+}
+
 .o-header__right {
     display: flex;
     align-items: center;

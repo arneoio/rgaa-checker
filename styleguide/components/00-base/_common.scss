@@ -5,6 +5,7 @@
     color: var(--text-color, #252525);
     background-color: $color-white;
     font-family: $text-font;
+    box-shadow: 0 0 8px rgba($color-black, 0.2);
 }
 
 body {
