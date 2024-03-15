@@ -176,4 +176,5 @@ const getCurrentFormattedDate = () => {
 
 export default {
   buildExtension,
+  getAppVersion,
 };

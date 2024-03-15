@@ -3,5 +3,6 @@ display:
 variants:
 - name: default
   context:
+    version: X.Y.Z
     filterList: '@filter-list.filterList'
     topicList: '@topic-list.topicList'

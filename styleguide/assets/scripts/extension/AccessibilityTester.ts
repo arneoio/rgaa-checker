@@ -48,6 +48,7 @@ import Criterion10_1 from "./criteria/Criterion10_1";
 import Criterion10_2 from "./criteria/Criterion10_2";
 import Criterion10_3 from "./criteria/Criterion10_3";
 import Criterion10_4 from "./criteria/Criterion10_4";
+import Criterion10_5 from "./criteria/Criterion10_5";
 import Criterion11_1 from "./criteria/Criterion11_1";
 import Criterion11_2 from "./criteria/Criterion11_2";
 import Criterion11_3 from "./criteria/Criterion11_3";
@@ -108,6 +109,7 @@ export default class AccessibilityTester {
       "10.2": new Criterion10_2(this.$wrapper, this.$highlightWrapper),
       "10.3": new Criterion10_3(this.$wrapper, this.$highlightWrapper),
       "10.4": new Criterion10_4(this.$wrapper, this.$highlightWrapper),
+      "10.5": new Criterion10_5(this.$wrapper, this.$highlightWrapper),
       "11.1": new Criterion11_1(this.$wrapper, this.$highlightWrapper),
       "11.2": new Criterion11_2(this.$wrapper, this.$highlightWrapper),
       "11.3": new Criterion11_3(this.$wrapper, this.$highlightWrapper),

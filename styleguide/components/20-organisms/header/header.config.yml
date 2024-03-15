@@ -1,19 +1,4 @@
 variants:
 - name: default
   context:
-    topic:
-      number: 1
-      slug: images
-      title: Images
-      criteriaList:
-      - "@criteria-card--images-1.criteriaCard"
-      - "@criteria-card.criteriaCard"
-- name: frames
-  context:
-    topic:
-      number: 2
-      slug: frames
-      title: Cadres
-      criteriaList:
-      - "@criteria-card--frames-1.criteriaCard"
-      - "@criteria-card--frames-2.criteriaCard"
+    version: X.Y.Z

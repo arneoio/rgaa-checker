@@ -35,7 +35,7 @@ export default class Criterion10_4 extends BaseCriterion {
 
   activateHighlight(): void {
     // Send message to background script to zoom in for firefox or chrome
-    if(browser) {
+    if(typeof browser !== 'undefined') {
       browser.runtime.sendMessage({action: "zoomIn"});
     } else {
       chrome.runtime.sendMessage({action: "zoomIn"});
@@ -51,6 +51,13 @@ export default class Criterion10_4 extends BaseCriterion {
   }
 
   runTest() {
+    let status = 'NT';
+    let message = "Zoomez le texte à 200% et vérifiez s'il reste lisible.";
+
+    this.updateCriteria('10.4', status, message);
+    this.updateTest('10.4.1', status);
+    this.updateTest('10.4.2', status);
+
     return 'NT';
   }
 }
