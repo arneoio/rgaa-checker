@@ -10,18 +10,12 @@
 {% endfor %}
 
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
-    <button class="m-topicList__reduceButton" aria-expanded="true" aria-controls="arneo-accessibility-checker__aside">
-        <span class="-hiddenAsideReduced">Réduire la fenêtre</span>
-        {% include '@atom/icon/icon.html.twig' with {
-          name: 'arrow-left',
-          attributeList: {
-            class: 'm-topicList__reduceButton__icon',
-          },
-        } only %}
-    </button>
     <ul class="m-topicList__list">
         <li class="m-topicList__item -all -active js-topicList__item" data-topic="all" role="button">
-            Tous <span class="m-topic__item__number -hiddenAsideReduced">({{ total }})</span>
+            Tous
+            <span class="m-topic__item__number -hiddenAsideReduced">
+                (<span class="js-topic__addressedCriteriaNumber" data-topic="all">0</span>/{{ total }})
+            </span>
         </li>
 {% for topic in topicList %}
         <li class="m-topicList__item js-topicList__item" data-topic="{{ topic.slug }}" role="button">
@@ -32,9 +26,21 @@
                 }
             } only %}
             <p class="-hiddenAsideReduced">
-                {{ topic.topic }} <span class="m-topic__item__number">({{ topic.criteria | length }})</span>
+                {{ topic.number }}. {{ topic.topic }}
+                <span class="m-topic__item__number">
+                    (<span class="js-topic__addressedCriteriaNumber" data-topic="{{ topic.slug }}">0</span>/{{ topic.criteria | length }})
+                </span>
             </p>
         </li>
 {% endfor %}
     </ul>
+    <button class="m-topicList__reduceButton" aria-expanded="true" aria-controls="arneo-accessibility-checker__aside">
+        <span class="-hiddenAsideReduced">Réduire la fenêtre</span>
+        {% include '@atom/icon/icon.html.twig' with {
+          name: 'arrow-left',
+          attributeList: {
+            class: 'm-topicList__reduceButton__icon',
+          },
+        } only %}
+    </button>
 </{{ tag }}>

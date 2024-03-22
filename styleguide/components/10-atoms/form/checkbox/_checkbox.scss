@@ -1,0 +1,41 @@
+.a-checkbox {
+    display: flex;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    border: 1px solid $primary-color-1;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &::before {
+        content: '';
+        display: block;
+        margin: auto;
+        width: 16px;
+        height: 16px;
+        background: $primary-color-1;
+        border-radius: 2px;
+        transition: opacity 200ms ease, width 200ms ease, height 200ms ease;
+    }
+
+    &:not(:checked) {
+        &::before {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+    }
+
+    &[type='radio'] {
+        border-radius: 50%;
+
+        &::before {
+            border-radius: 50%;
+        }
+    }
+
+    &[disabled] {
+        background-color: $color-grey-light;
+        cursor: not-allowed;
+    }
+}

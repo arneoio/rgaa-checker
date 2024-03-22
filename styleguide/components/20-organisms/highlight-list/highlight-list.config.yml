@@ -1,0 +1,17 @@
+variants:
+- name: default
+  context:
+    highlightList:
+    - tag: 'H1'
+      text: 'Heading 1'
+    - tag: 'H2'
+      text: 'Heading 2'
+    - tag: 'H3'
+      text: 'Un titre de niveau 3 avec un libellé plus long'
+    - tag: 'H3'
+      text: 'Un titre de niveau 3'
+    - tag: 'H2'
+      text: 'Heading 2 à nouveau'
+- name: empty
+  context:
+    isEmtpy: true

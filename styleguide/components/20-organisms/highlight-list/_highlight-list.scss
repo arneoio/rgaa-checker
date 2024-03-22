@@ -1,0 +1,90 @@
+.o-highlightList {
+    box-shadow: 0 0 8px rgba($color-black, 0.2);
+    background-color: var(--color-grey-6);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.o-highlightList__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    background-color: var(--color-grey-2);
+    color: $color-white;
+}
+
+.o-highlightList__closeButton {
+    padding: 8px;
+}
+
+.o-highlightList__closeButton__icon {
+    width: 24px;
+    height: 24px;
+}
+
+.o-highlightList__title {
+    flex-grow: 1;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: move;
+}
+
+.o-highlightList__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    max-height: min(calc(100vh - 64px * 2), 500px);
+    overflow: auto;
+}
+
+.o-highlightList__item {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--color-grey-5);
+    background-color: $color-white;
+}
+
+.o-highlightList__content {
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.o-highlightList__button {
+    padding: 8px;
+}
+
+.o-highlightList__buttonIcon {
+    background-color: var(--secondary-color-green-soft);
+    color: var(--secondary-color-green);
+    border-radius: 8px;
+    padding: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.o-highlightList__tag {
+    display: inline-block;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: var(--secondary-color-orange-soft);
+    color: var(--secondary-color-orange);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.o-highlightList__text {
+    font-size: 12px;
+}

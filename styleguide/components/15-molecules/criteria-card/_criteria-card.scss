@@ -23,6 +23,9 @@
 }
 
 .m-criteriaCard__criteriaNumber {
+    padding: 4px;
+    border-radius: 4px;
+    background-color: var(--color-grey-6);
     font-size: 12px;
     font-weight: 700;
 }
@@ -51,6 +54,14 @@
     a {
         font-weight: 700;
     }
+}
+
+.m-criteriaCard__bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    z-index: 2; // Over next topic to see .m-criteriaCard__testListWrapper over
 }
 
 .m-criteriaCard__seeTestsLink {

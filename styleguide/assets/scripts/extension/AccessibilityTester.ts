@@ -49,6 +49,7 @@ import Criterion10_2 from "./criteria/Criterion10_2";
 import Criterion10_3 from "./criteria/Criterion10_3";
 import Criterion10_4 from "./criteria/Criterion10_4";
 import Criterion10_5 from "./criteria/Criterion10_5";
+import Criterion10_7 from "./criteria/Criterion10_7";
 import Criterion11_1 from "./criteria/Criterion11_1";
 import Criterion11_2 from "./criteria/Criterion11_2";
 import Criterion11_3 from "./criteria/Criterion11_3";
@@ -110,6 +111,7 @@ export default class AccessibilityTester {
       "10.3": new Criterion10_3(this.$wrapper, this.$highlightWrapper),
       "10.4": new Criterion10_4(this.$wrapper, this.$highlightWrapper),
       "10.5": new Criterion10_5(this.$wrapper, this.$highlightWrapper),
+      "10.7": new Criterion10_7(this.$wrapper, this.$highlightWrapper),
       "11.1": new Criterion11_1(this.$wrapper, this.$highlightWrapper),
       "11.2": new Criterion11_2(this.$wrapper, this.$highlightWrapper),
       "11.3": new Criterion11_3(this.$wrapper, this.$highlightWrapper),
@@ -167,6 +169,12 @@ export default class AccessibilityTester {
   runTests() {
     this.loadSavedData();
     this.loadUserResults();
+
+    const criteriaUpdatedEvent = new Event('rgaachecker-initialized', {
+      bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
+      cancelable: true, // L'événement peut être annulé
+    });
+    this.$wrapper.dispatchEvent(criteriaUpdatedEvent);
   }
 
   loadUserResults() {

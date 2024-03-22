@@ -24,6 +24,9 @@ export default abstract class BaseCriterion implements Criterion {
   querySelectorList: Array<HTMLElement>;
   isInitialTestDone: boolean = false;
   isTestMode: boolean = false;
+  topicNumber: number;
+  topicSlug: string;
+  criteriaNumber: number;
 
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
     this.$wrapper = $wrapper;
@@ -33,6 +36,9 @@ export default abstract class BaseCriterion implements Criterion {
       return;
     }
     let criteriaNumber = this.constructor.name.replace('Criterion', '').replace('_', '.');
+    this.topicNumber = parseInt(criteriaNumber.split('.')[0]);
+    this.topicSlug = this.getTopicSlug(this.topicNumber);
+    this.criteriaNumber = parseInt(criteriaNumber.split('.')[1]);
     this.$criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     this.querySelector = '';
   }
@@ -71,7 +77,6 @@ export default abstract class BaseCriterion implements Criterion {
     if (this.isTestMode) {
       return;
     }
-
     let $criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     if (!$criteriaCard) {
       return;
@@ -87,12 +92,12 @@ export default abstract class BaseCriterion implements Criterion {
 
     // Trigger click on criteriaSelector to update its status
     if (!this.isInitialTestDone) {
-      const loadClickEvent = new Event('loadclick', {
-        bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
-        cancelable: true, // L'événement peut être annulé
+      const initializedEvent = new Event('rgaachecker-criteria-initialized', {
+        bubbles: true,
+        cancelable: true,
       });
 
-      $criteriaSelector.dispatchEvent(loadClickEvent);
+      $criteriaSelector.dispatchEvent(initializedEvent);
     } else {
       $criteriaSelector.click();
     }
@@ -125,6 +130,39 @@ export default abstract class BaseCriterion implements Criterion {
     return '';
   }
 
+  getTopicSlug(topicNumber: number): string {
+    switch (topicNumber) {
+      case 1:
+        return 'images';
+      case 2:
+        return 'frames';
+      case 3:
+        return 'colors';
+      case 4:
+        return 'multimedia';
+      case 5:
+        return 'tables';
+      case 6:
+        return 'links';
+      case 7:
+        return 'scripts';
+      case 8:
+        return 'mandatory';
+      case 9:
+        return 'structure';
+      case 10:
+        return 'presentation';
+      case 11:
+        return 'forms';
+      case 12:
+        return 'navigation';
+      case 13:
+        return 'consultation';
+      default:
+        return '';
+    }
+  }
+
   logResults(title: string, log: any): void {
     if (this.isTestMode) {
       return;
@@ -147,7 +185,7 @@ export default abstract class BaseCriterion implements Criterion {
     const $highlightSwitch = this.$criteriaCard.querySelector('.js-criteriaCard__highlightSwitch');
 
     // Retourne le tableau pour manipuler les éléments dans l'ordre inverse, optimisation pour le hideRecursive
-    this.querySelectorList = this.getHighlightedElements().reverse();
+    this.querySelectorList = [...this.getHighlightedElements().reverse()];
     if ($highlightSwitch.querySelector('input').checked) {
       this.hideRecursive(document.body);
     }

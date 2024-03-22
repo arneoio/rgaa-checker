@@ -1,6 +1,5 @@
 .o-topic {
     position: relative;
-    overflow: hidden;
     border-radius: 8px;
 }
 
@@ -19,10 +18,11 @@
     &.-sticky {
         position: absolute;
         top: var(--topic-top, 0);
+        z-index: 4; // Over card content
     }
 
     &:not(.-sticky) {
-        opacity: 0;
+        visibility: hidden;
     }
 }
 
@@ -38,6 +38,11 @@
     background-color: var(--color-grey-6);
     transform: translateY(-50%) rotate(26deg);
     z-index: -1;
+}
+
+.o-topic__top__description {
+    font-size: 10px;
+    color: var(--color-grey-2);
 }
 
 .o-topic__criteriaList {
