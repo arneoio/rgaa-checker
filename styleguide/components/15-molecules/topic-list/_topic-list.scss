@@ -1,4 +1,8 @@
 .m-topicList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 8px 8px rgba($color-black, 0.12);
     .-hiddenAsideReduced {
         overflow: hidden;
         transition: 220ms opacity $easing-standard,
@@ -12,7 +16,7 @@
         }
 
         .m-topicList__item {
-            padding: 6px 12px 6px 12px;
+            padding: 6px 12px;
             gap: 0;
 
             &.-all {
@@ -22,7 +26,7 @@
 
         .m-topicList__reduceButton {
             gap: 0;
-            padding: 4px 4px 4px 4px;
+            padding: 4px;
             justify-content: center;
         }
 
@@ -38,7 +42,7 @@
     justify-items: stretch;
     align-items: stretch;
     overflow: auto;
-    height: 100%;
+    flex-grow: 1;
 }
 
 .m-topicList__reduceButton {
@@ -48,6 +52,7 @@
     width: 100%;
     gap: 4px;
     padding: 4px 4px 4px 12px;
+    margin-top: auto;
     background-color: $color-black;
     color: $color-white;
     font-size: 10px;
@@ -64,7 +69,7 @@
 
 .m-topicList__item {
     position: relative;
-    padding: 6px 20px 6px 12px;
+    padding: 6px 12px 6px 14px;
     flex-grow: 1;
     align-items: center;
     gap: 8px;
@@ -95,17 +100,18 @@
 
     &:hover,
     &.-active {
+        color: var(--primary-color-1);
         --border-color: var(--primary-color-1);
     }
 
-    &::after {
+    &::before {
         content: '';
         display: block;
         position: absolute;
-        width: 8px;
+        width: 2px;
         height: 100%;
         top: 0;
-        right: 0;
+        left: 0;
         background: var(--border-color);
         transition: background 220ms $easing-standard;
     }
@@ -120,5 +126,6 @@
 }
 
 .m-topic__item__number {
+    color: var(--color-grey-2);
     font-weight: 400;
 }

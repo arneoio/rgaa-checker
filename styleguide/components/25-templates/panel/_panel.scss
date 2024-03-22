@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 2147483646;
+    z-index: 2147483645;
     pointer-events: none;
 
     div {
@@ -36,7 +36,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    z-index: 2147483647;
+    z-index: 2147483646;
     max-width: 456px;
     display: grid;
     overflow: auto;
@@ -61,7 +61,7 @@
     position: sticky;
     top: 0;
     grid-area: header;
-    z-index: 3;
+    z-index: 5; // Over .l-extension__filters
 }
 
 .l-extension__aside {
@@ -92,7 +92,7 @@
     flex-direction: column;
     padding: 0 8px;
     gap: 4px;
-    z-index: 2;
+    z-index: 4;
 }
 
 .l-extension__filters__title {
@@ -103,4 +103,13 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
+}
+
+.l-extension__highlightList {
+    position: fixed;
+    top: 64px;
+    left: 16px;
+    width: 100%;
+    max-width: 320px;
+    z-index: 2147483647;
 }

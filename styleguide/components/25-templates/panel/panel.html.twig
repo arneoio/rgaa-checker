@@ -9,6 +9,7 @@
       attributeList: {
         class: 'l-extension__header',
       },
+      version: version,
     } only %}
     <aside class="l-extension__aside -hiddenClosed -expanded">
         {% include '@molecule/topic-list/topic-list.html.twig' with {
@@ -41,4 +42,9 @@
 {% endfor %}
        </ul>
     </main>
+    {# {% include '@organism/highlight-list/highlight-list.html.twig' with {
+      attributeList: {
+        class: 'l-extension__highlightList js-draggable',
+      },
+    } only %} #}
 </{{ tag }}>

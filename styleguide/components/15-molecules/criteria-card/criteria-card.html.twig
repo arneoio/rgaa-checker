@@ -6,39 +6,29 @@
 {% set tag = tag is defined ? tag : defaultTag %}
 {% set id = criteriaCard.topic ~ '-' ~ criteriaCard.criterium.number %}
 
+{% set statusList = [
+  {
+    slug: 'C',
+    title: 'Conforme',
+  },
+  {
+    slug: 'NC',
+    title: 'Non conforme',
+  },
+  {
+    slug: 'NA',
+    title: 'Non applicable',
+  },
+  {
+    slug: 'NT',
+    title: 'Non traité',
+  },
+] %}
+
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
     <div class="m-criteriaCard__top">
         <div class="m-criteriaCard__top__left">
             <span class="m-criteriaCard__criteriaNumber">{{ criteriaCard.topicNumber }}.{{ criteriaCard.criterium.number }}</span>
-            {% include '@molecule/criteria-selector/criteria-selector.html.twig' with {
-              attributeList: {
-                  class: 'm-criteriaCard__criteriaSelector js-criteriaCard__criteriaSelector',
-              },
-              criteriaSelector: {
-                zone: id,
-                current: {
-                  slug: status,
-                },
-                statusList: [
-                  {
-                    slug: 'C',
-                    title: 'Conforme',
-                  },
-                  {
-                    slug: 'NC',
-                    title: 'Non conforme',
-                  },
-                  {
-                    slug: 'NA',
-                    title: 'Non applicable',
-                  },
-                  {
-                    slug: 'NT',
-                    title: 'Non traité',
-                  },
-                ],
-              }
-            } only %}
         </div>
         {% include '@molecule/form/toggle-switch/toggle-switch.html.twig' with {
           toggleSwitch: {
@@ -52,22 +42,35 @@
         } only %}
     </div>
     <div class="m-criteriaCard__verification js-criteriaCard__verification"></div>
-    <div class="m-criteriaCard__text">
+    <div class="m-criteriaCard__text js-criteriaCard__text">
         {{ criteriaCard.criterium.title }}
     </div>
-{% if criteriaCard.criterium.tests is defined %}
-		<button aria-expanded="false" aria-controls="criteria-card-{{ id }}-test-list" class="m-criteriaCard__seeTestsLink">
-        Voir les tests
-        {% include '@atom/icon/icon.html.twig' with {
-					name: 'chevron',
-					attributeList: {
-						class: 'm-criteriaCard__seeTestsLink__chevron'
-					}
-				} only %}
-    </button>
+    <div class="m-criteriaCard__bottom">
+        {% include '@molecule/criteria-selector/criteria-selector.html.twig' with {
+          attributeList: {
+              class: 'm-criteriaCard__criteriaSelector js-criteriaCard__criteriaSelector',
+          },
+          criteriaSelector: {
+            zone: id,
+            current: {
+              slug: status,
+            },
+            statusList: statusList
+          }
+        } only %}
+        <button aria-expanded="false" aria-controls="criteria-card-{{ id }}-test-list" class="m-criteriaCard__seeTestsLink">
+            Voir les tests
+            {% include '@atom/icon/icon.html.twig' with {
+              name: 'chevron',
+              attributeList: {
+                class: 'm-criteriaCard__seeTestsLink__chevron'
+              }
+            } only %}
+        </button>
+    </div>
     <div class="m-criteriaCard__testListWrapper" id="criteria-card-{{ id }}-test-list">
         <ul class="m-criteriaCard__testList">
-    {% for test in criteriaCard.criterium.tests %}
+{% for test in criteriaCard.criterium.tests %}
             <li class="m-criteriaCard__test">
                 <span class="m-criteriaCard__test__number js-criteriaCard__test__number" data-test="{{ criteriaCard.topicNumber }}.{{ criteriaCard.criterium.number }}.{{ loop.index }}">
                     {{ criteriaCard.topicNumber }}.{{ criteriaCard.criterium.number }}.{{ loop.index }}
@@ -83,8 +86,7 @@
         {% endif %}
                 </div>
             </li>
-    {% endfor %}
+{% endfor %}
         </ul>
     </div>
-{% endif %}
 </{{ tag }}>

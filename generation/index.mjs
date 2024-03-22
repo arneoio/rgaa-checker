@@ -75,6 +75,7 @@ const Builder = () => {
     });
 
     let params = {
+      version: Template.getAppVersion(),
       filterList: {
         filterList: [
           {

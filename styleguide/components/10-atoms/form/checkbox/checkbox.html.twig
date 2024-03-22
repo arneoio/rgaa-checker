@@ -1,0 +1,5 @@
+{% set componentClass = 'a-checkbox' %}
+{% set attributeList = attributeList is defined ? attributeList : {} %}
+{% set attributeList = {'type': 'checkbox'}|merge(attributeList)|merge({'class': (attributeList.class is defined ? attributeList.class ~ ' ' ~ componentClass : componentClass)}) %}
+
+<input {% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %} />

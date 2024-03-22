@@ -5,24 +5,30 @@
 {% set tag = tag is defined ? tag : defaultTag %}
 
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
-    <div class="o-topic__top">
-        {{ topic.number }}. {{ topic.topic }} ({{ topic.criteria | length }})
+    <p class="o-topic__top">
+        {{ topic.number }}. {{ topic.topic }} ({{ topic.criteria | length }})<br />
+        <span class="o-topic__top__description">
+          <span class="js-topic__addressedCriteriaNumber" data-topic="{{ topic.slug }}">0</span> / {{ topic.criteria | length }} critères traités
+        </span>
         {% include '@atom/icon/icon.html.twig' with {
           name: 'topic-' ~ topic.slug,
           attributeList: {
             class: 'o-topic__top__icon'
           }
         } only %}
-    </div>
-    <div class="o-topic__top -sticky js-topic__top">
-        {{ topic.number }}. {{ topic.topic }} ({{ topic.criteria | length }})
+    </p>
+    <p class="o-topic__top -sticky js-topic__top">
+        {{ topic.number }}. {{ topic.topic }} ({{ topic.criteria | length }})<br />
+        <span class="o-topic__top__description">
+          <span class="js-topic__addressedCriteriaNumber" data-topic="{{ topic.slug }}">0</span> / {{ topic.criteria | length }} critères traités
+        </span>
         {% include '@atom/icon/icon.html.twig' with {
           name: 'topic-' ~ topic.slug,
           attributeList: {
             class: 'o-topic__top__icon'
           }
         } only %}
-    </div>
+    </p>
     <ul class="o-topic__criteriaList">
 {% for criteria in topic.criteria %}
         {% set criteriaCard = {

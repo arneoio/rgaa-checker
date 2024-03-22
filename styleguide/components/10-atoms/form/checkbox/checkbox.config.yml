@@ -1,0 +1,22 @@
+label: Checkbox/radio input
+variants:
+- name: default
+  label: Checkbox
+  context:
+    attributeList:
+      id: input-unique-id
+      name: input-name
+- name: radio
+  label: Input radio
+  context:
+    attributeList:
+      id: input-unique-id
+      name: input-name
+      type: radio
+      value: 42
+- name: Disabled Checkbox
+  context:
+    attributeList:
+      id: input-unique-id
+      name: input-name
+      disabled: disabled
