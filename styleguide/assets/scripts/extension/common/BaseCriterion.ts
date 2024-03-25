@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Criterion } from "./Criterion";
+import { ICriterion } from "./ICriterion";
+import Highlight from "./Highlight"
 
-export default abstract class BaseCriterion implements Criterion {
+export default abstract class BaseCriterion implements ICriterion {
   $wrapper: HTMLElement;
   $highLightWrapper: HTMLElement;
   $criteriaCard: HTMLElement;
@@ -27,6 +28,7 @@ export default abstract class BaseCriterion implements Criterion {
   topicNumber: number;
   topicSlug: string;
   criteriaNumber: number;
+  highlightInstance: Highlight;
 
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
     this.$wrapper = $wrapper;
@@ -41,6 +43,7 @@ export default abstract class BaseCriterion implements Criterion {
     this.criteriaNumber = parseInt(criteriaNumber.split('.')[1]);
     this.$criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     this.querySelector = '';
+    this.highlightInstance = Highlight.getInstance(this.$wrapper);
   }
 
   initHighlight() {
@@ -68,7 +71,7 @@ export default abstract class BaseCriterion implements Criterion {
           }
         });
 
-        this.activateHighlight();
+        this.enableHighlight();
       }
     });
   }
@@ -119,6 +122,10 @@ export default abstract class BaseCriterion implements Criterion {
   abstract runTest(): string;
 
   getHighlightedElements(): Array<HTMLElement> {
+    if(!this.querySelector) {
+      return [];
+    }
+
     return Array.from(document.querySelectorAll(this.querySelector));
   }
 
@@ -179,6 +186,12 @@ export default abstract class BaseCriterion implements Criterion {
     );
     // Remove all highlights
     this.$highLightWrapper.innerHTML = '';
+    this.highlightInstance.hide();
+  }
+
+  enableHighlight() {
+    this.activateHighlight();
+    this.highlightInstance.activate(this);
   }
 
   activateHighlight() {

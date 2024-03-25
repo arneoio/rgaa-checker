@@ -42,9 +42,9 @@
 {% endfor %}
        </ul>
     </main>
-    {# {% include '@organism/highlight-list/highlight-list.html.twig' with {
+    {% include '@organism/highlight-list/highlight-list.html.twig' with {
       attributeList: {
-        class: 'l-extension__highlightList js-draggable',
+        class: 'l-extension__highlightList js-draggable -hidden',
       },
-    } only %} #}
+    } only %}
 </{{ tag }}>

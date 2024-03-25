@@ -1,4 +1,4 @@
-{% set componentClass = 'o-highlightList -expanded js-highlightList js-draggable' %}
+{% set componentClass = 'o-highlightList js-highlightList js-draggable' %}
 {% set defaultTag = 'div' %}
 {% set attributeList = attributeList is defined ? attributeList : {} %}
 {% set attributeList = attributeList|merge({'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
@@ -6,7 +6,7 @@
 
 {% macro highlightItem(isEmpty, highlight) %}
     <li class="o-highlightList__item js-highlightList__item">
-        <button class="o-highlightList__button js-highlightList__itemButton" type="button">
+        <button class="o-highlightList__button js-highlightList__itemPageButton" type="button">
             {% include '@atom/icon/icon.html.twig' with {
               name: 'visibility-on',
               attributeList: {
@@ -14,7 +14,15 @@
               },
             } only %}
         </button>
-        <label for="highlight-valid-{{ loop.index }}" class="o-highlightList__content">
+        <button class="o-highlightList__button js-highlightList__itemConsoleButton" type="button">
+            {% include '@atom/icon/icon.html.twig' with {
+              name: 'magnify-glass',
+              attributeList: {
+                class: 'o-highlightList__buttonIcon',
+              },
+            } only %}
+        </button>
+        <label class="o-highlightList__content">
 {% if isEmpty or highlight.tag is defined %}
             <span class="o-highlightList__tag js-highlightList__itemTag{% if not isEmpty %} -tag{{ highlight.tag | lower }}{% endif %}">
                 {{ highlight.tag }}
@@ -25,14 +33,13 @@
                 {{ highlight.text }}
             </span>
 {% endif %}
+            {% include '@atom/form/checkbox/checkbox.html.twig' with {
+              attributeList: {
+                class: 'o-highlightList__checkbox js-highlightList__itemCheckbox',
+                name: 'highlight-valid[]',
+              },
+            } only %}
         </label>
-        {% include '@atom/form/checkbox/checkbox.html.twig' with {
-          attributeList: {
-            class: 'o-highlightList__checkbox js-highlightList__itemCheckbox',
-            name: 'highlight-valid[]',
-            id: 'highlight-valid-' ~ loop.index,
-          },
-        } only %}
     </li>
 {% endmacro %}
 {% from _self import highlightItem %}
@@ -51,9 +58,9 @@
             } only %}
         </button>
     </header>
-    <ul class="o-highlightList__list">
+    <ul class="o-highlightList__list js-highlightList__list">
         <li class="o-highlightList__item">
-            <label for="highlight-valid-all" class="o-highlightList__content">
+            <label class="o-highlightList__content">
                 <span class="o-highlightList__text">
                     Tous valides ?
                 </span>
@@ -62,7 +69,6 @@
               attributeList: {
                 class: 'o-highlightList__checkbox js-highlightListCheckbox -all',
                 name: 'highlight-valid-all',
-                id: 'highlight-valid-all',
               },
             } only %}
         </li>

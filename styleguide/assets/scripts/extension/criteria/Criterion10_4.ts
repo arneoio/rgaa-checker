@@ -43,7 +43,7 @@ export default class Criterion10_4 extends BaseCriterion {
   }
 
   resetHighlight(): void {
-    if(browser) {
+    if(typeof browser !== 'undefined') {
       browser.runtime.sendMessage({action: "zoomBack"});
     } else {
       chrome.runtime.sendMessage({action: "zoomBack"});
