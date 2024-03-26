@@ -20,6 +20,8 @@ variants:
           - La balise a une [alternative textuelle](#alternative-textuelle-image).
 - name: images-1
   context:
+    attributeList:
+      class: -checked
     criteriaCard:
       topic: images
       topicNumber: 1
@@ -27,7 +29,7 @@ variants:
         number: 2
         title: Chaque [image de décoration](#image-de-decoration) est-elle correctement ignorée par les technologies d'assistance ?
         tests:
-          '1': 
+          '1':
           - "Chaque image (balise) [de décoration](#image-de-decoration), sans [légende](#legende), vérifie-t-elle une de ces conditions ?"
           - "La balise possède un attribut alt vide (`alt=\"\"`) et est dépourvue de tout autre attribut permettant de fournir une [alternative textuelle](#alternative-textuelle-image)."
           - "La balise possède un attribut WAI-ARIA `aria-hidden=\"true\"` ou `role=\"presentation\"`."

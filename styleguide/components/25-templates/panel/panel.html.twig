@@ -5,43 +5,47 @@
 {% set tag = tag is defined ? tag : defaultTag %}
 
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
-    {% include '@organism/header/header.html.twig' with {
-      attributeList: {
-        class: 'l-extension__header',
-      },
-      version: version,
-    } only %}
-    <aside class="l-extension__aside -hiddenClosed -expanded">
-        {% include '@molecule/topic-list/topic-list.html.twig' with {
-          topicList: topicList,
-        } only %}
-    </aside>
-    <main class="l-extension__main -hiddenClosed">
-        {% include '@organism/summary/summary.html.twig' with {
-          summary: {
-            scoreList: {
-              C: 42,
-              NC: 24,
-              NA: 34,
-              NT: 18
-            }
+    <div class="l-extension__contentWrapper js-draggable">
+        {% include '@organism/header/header.html.twig' with {
+          attributeList: {
+            class: 'l-extension__header js-draggable__handle',
           },
+          version: version,
         } only %}
-        <div class="l-extension__filters">
-            <p class="l-extension__filters__title">Filtrer par :</p>
-            {% include '@molecule/filter-list/filter-list.html.twig' with {
-              filterList: filterList,
-            } only %}
-        </div>
-        <ul class="l-extension__topicList">
+        <div class="l-extension__content">
+            <aside class="l-extension__aside -hiddenClosed -expanded">
+                {% include '@molecule/topic-list/topic-list.html.twig' with {
+                  topicList: topicList,
+                } only %}
+            </aside>
+            <main class="l-extension__main js-main -hiddenClosed">
+                {% include '@organism/summary/summary.html.twig' with {
+                  summary: {
+                    scoreList: {
+                      C: 42,
+                      NC: 24,
+                      NA: 34,
+                      NT: 18
+                    }
+                  },
+                } only %}
+                <div class="l-extension__filters">
+                    <p class="l-extension__filters__title">Filtrer par :</p>
+                    {% include '@molecule/filter-list/filter-list.html.twig' with {
+                      filterList: filterList,
+                    } only %}
+                </div>
+                <ul class="l-extension__topicList">
 {% for topic in topicList %}
-            {% include '@organism/topic/topic.html.twig' with {
-              topic: topic,
-              tag: 'li',
-            } only %}
+                    {% include '@organism/topic/topic.html.twig' with {
+                      topic: topic,
+                      tag: 'li',
+                    } only %}
 {% endfor %}
-       </ul>
-    </main>
+              </ul>
+            </main>
+        </div>
+    </div>
     {% include '@organism/highlight-list/highlight-list.html.twig' with {
       attributeList: {
         class: 'l-extension__highlightList js-draggable -hidden',

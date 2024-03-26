@@ -69,7 +69,8 @@
     display: grid;
     grid-template-areas:
         'tag checkbox'
-        'text checkbox';
+        'text checkbox'
+        'status checkbox';
     grid-template-columns: 1fr auto;
     gap: 4px 8px;
     align-items: center;
@@ -91,8 +92,30 @@
 }
 
 .o-highlightList__text {
-    font-size: 12px;
     grid-area: text;
+    font-size: 12px;
+    line-height: 1.2;
+
+    img {
+        width: auto;
+        height: auto;
+        max-width: 140px;
+        max-height: 140px;
+        object-fit: contain;
+    }
+}
+
+.o-highlightList__visibilityStatus {
+    grid-area: status;
+}
+
+.o-highlightList__visibilityIcon {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background-color: var(--color-grey-6);
+    color: var(--color-grey-3);
+    cursor: help;
 }
 
 .o-highlightList__checkbox {

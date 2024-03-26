@@ -42,7 +42,7 @@ export default class Criterion10_3 extends BaseCriterion {
     });
   }
 
-  getHighlightText() {
+  getHighlightSwitchLabel() {
     return "Switch les styles";
   }
 

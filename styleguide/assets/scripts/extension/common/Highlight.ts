@@ -80,22 +80,26 @@ export default class Highlight {
     let $tag: HTMLElement = $item.querySelector('.js-highlightList__itemTag') as HTMLElement;
     $tag.textContent = $highlightElement.tagName.toUpperCase();
     $tag.classList.add(`-tag${$highlightElement.tagName.toUpperCase()}`);
-    $item.querySelector('.js-highlightList__itemText').textContent = criterion.getHighlightLabel($highlightElement);
+
+    // Set text to display
+    $item.querySelector('.js-highlightList__itemText').innerHTML = criterion.getHighlightListContent($highlightElement);
+    // Setcheckbox value
     ($item.querySelector('.js-highlightList__itemCheckbox') as HTMLInputElement).value = index.toString();
 
-    $item.querySelector('.js-highlightList__itemConsoleButton').addEventListener('click', () => {
-      this.inspectElement($highlightElement);
-    });
+    // $item.querySelector('.js-highlightList__itemConsoleButton').addEventListener('click', () => {
+    //   this.inspectElement($highlightElement);
+    // });
     $item.querySelector('.js-highlightList__itemPageButton').addEventListener('click', () => {
-      $highlightElement.scrollIntoView({block: "center"});
-      setTimeout(() => {
-        // add a class to trigger the highlight animation
-        $highlightElement.classList.add('-rgaacheckerHighlight');
-        setTimeout(() => {
-          $highlightElement.classList.remove('-rgaacheckerHighlight');
-        }, 1000);
-      }, 500);
+      this.highlightElement($highlightElement);
     });
+    let isElementVisible = $highlightElement.checkVisibility({
+      opacityProperty: true,
+      visibilityProperty: true,
+    } as any); // Obligé de mettre "any", opacityProperty n'est pas reconnu
+    if(isElementVisible) {
+      $item.querySelector('.js-highlightList__visibilityStatus').remove();
+    }
+
     this.$list.appendChild($item);
   }
 
@@ -110,5 +114,16 @@ export default class Highlight {
     } else {
       chrome.runtime.sendMessage({action: "inspectElement", elementId: $highlightElement.id});
     }
+  }
+
+  private highlightElement($highlightElement: HTMLElement) {
+    $highlightElement.scrollIntoView({behavior: "smooth", block: "center"});
+    setTimeout(() => {
+      // add a class to trigger the highlight animation
+      $highlightElement.classList.add('-rgaacheckerHighlight');
+      setTimeout(() => {
+        $highlightElement.classList.remove('-rgaacheckerHighlight');
+      }, 1000);
+    }, 500);
   }
 }

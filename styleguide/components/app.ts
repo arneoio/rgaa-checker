@@ -21,6 +21,7 @@ var App = {
       this.documentRoot = $shadowRoot.shadowRoot;
     }
     this.$wrapper = this.documentRoot.getElementById(this.ID);
+    this.$main = this.$wrapper.querySelector('.js-main');
     this.$highLightWrapper = this.documentRoot.getElementById(this.HIGHLIGHT_ID);
 
     this.tester = new AccessibilityTester(this.$wrapper, this.$highLightWrapper);
@@ -80,7 +81,7 @@ var App = {
     // Set sticky title on list
     this.$topicList = Array.from(this.$wrapper.querySelectorAll('.js-topic'));
     this.setStickyTitle();
-    this.$wrapper.addEventListener('scroll', () => {
+    this.$main.addEventListener('scroll', () => {
       this.setStickyTitle();
     });
   },

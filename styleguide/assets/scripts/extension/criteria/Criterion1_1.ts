@@ -28,18 +28,18 @@ export default class Criterion1_1 extends BaseCriterion {
     this.initHighlight();
   }
 
-  getHighlightedElements(): Array<HTMLElement> {
-    const noAltImageList: any = [];
-    let $imageList = Array.from(document.querySelectorAll(this.querySelector));
+  // getHighlightedElements(): Array<HTMLElement> {
+  //   const noAltImageList: any = [];
+  //   let $imageList = Array.from(document.querySelectorAll(this.querySelector));
 
-    $imageList.forEach(($image: HTMLElement) => {
-      if (!ImageUtils.hasImageLabel($image)) {
-        noAltImageList.push($image);
-      }
-    });
+  //   $imageList.forEach(($image: HTMLElement) => {
+  //     if (!ImageUtils.hasImageLabel($image)) {
+  //       noAltImageList.push($image);
+  //     }
+  //   });
 
-    return noAltImageList;
-  }
+  //   return noAltImageList;
+  // }
 
   runTest() {
     let status = 'NA';
@@ -152,6 +152,15 @@ export default class Criterion1_1 extends BaseCriterion {
 
   getHighlightLabel($element: HTMLElement) {
     return ImageUtils.getImageLabel($element);
+  }
+
+  getHighlightListContent($element: HTMLElement) {
+    // For images, display the image
+    if ($element.tagName === 'IMG') {
+      return `<img src="${($element as HTMLImageElement).src}" alt="${ImageUtils.getImageLabel($element)}">`;
+    } else {
+      return this.getHighlightLabel($element);
+    }
   }
 }
 

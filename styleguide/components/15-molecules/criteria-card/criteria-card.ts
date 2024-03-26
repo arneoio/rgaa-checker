@@ -26,13 +26,15 @@ export default class CriteriaCard {
       cancelable: true
     });
 
-    this.init();
+    this.bindEvents();
   }
 
-  init() {
+  bindEvents() {
     Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link: HTMLElement) => {
       $link.addEventListener('rgaachecker-criteria-initialized', () => {
         this.updateCardStatus($link);
+        this.$element.classList.add('-checked');
+        this.removeHighlightForNA();
       });
 
       $link.addEventListener('click', () => {
@@ -40,6 +42,13 @@ export default class CriteriaCard {
         this.$wrapper.dispatchEvent(this.criteriaUpdatedEvent);
       });
     });
+  }
+
+  removeHighlightForNA() {
+    // If the status is NA, remove the highlight switch
+    if (this.$element.dataset.status === 'NA') {
+      this.$element.querySelector('.js-criteriaCard__highlightSwitch')?.remove();
+    }
   }
 
   updateCardStatus($link: HTMLElement, saveUserState: boolean = false) {

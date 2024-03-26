@@ -29,7 +29,7 @@ export default class Criterion10_4 extends BaseCriterion {
     this.initHighlight();
   }
 
-  getHighlightText() {
+  getHighlightSwitchLabel() {
     return "Zoomer à 200%";
   }
 

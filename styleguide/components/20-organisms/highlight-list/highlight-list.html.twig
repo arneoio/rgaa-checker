@@ -29,8 +29,17 @@
             </span>
 {% endif %}
 {% if isEmpty or highlight.text is defined %}
-            <span class="o-highlightList__text js-highlightList__itemText">
+            <p class="o-highlightList__text js-highlightList__itemText">
                 {{ highlight.text }}
+            </p>
+            <span title="Élément non visible" class="o-highlightList__visibilityStatus js-highlightList__visibilityStatus">
+                {% include '@atom/icon/icon.html.twig' with {
+                  name: 'visibility-off',
+                  isAriaHidden: false,
+                  attributeList: {
+                    class: 'o-highlightList__visibilityIcon',
+                  },
+                } only %}
             </span>
 {% endif %}
             {% include '@atom/form/checkbox/checkbox.html.twig' with {

@@ -22,7 +22,7 @@ export interface ICriterion {
   getHighlightedElements(): Array<HTMLElement>;
 
   // get the highlight selector to use in querySelector
-  getHighlightText(): string;
+  getHighlightSwitchLabel(): string;
 
   // reset highlight
   resetHighlight(): void;

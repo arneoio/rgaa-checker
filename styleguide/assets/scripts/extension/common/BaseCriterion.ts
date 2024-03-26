@@ -29,6 +29,7 @@ export default abstract class BaseCriterion implements ICriterion {
   topicSlug: string;
   criteriaNumber: number;
   highlightInstance: Highlight;
+  HIGHLIGHT_CONTENT_MAX_LENGTH: number = 100;
 
   constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
     this.$wrapper = $wrapper;
@@ -53,7 +54,7 @@ export default abstract class BaseCriterion implements ICriterion {
 
     // Affiche le switch
     const $highlightSwitch = this.$criteriaCard.querySelector('.js-criteriaCard__highlightSwitch');
-    ($highlightSwitch.querySelector('.js-toggleSwitch__label') as HTMLElement).innerText = this.getHighlightText();
+    ($highlightSwitch.querySelector('.js-toggleSwitch__label') as HTMLElement).innerText = this.getHighlightSwitchLabel();
     $highlightSwitch.classList.remove('-hidden');
 
     // Ajoute le listener sur le switch
@@ -129,14 +130,38 @@ export default abstract class BaseCriterion implements ICriterion {
     return Array.from(document.querySelectorAll(this.querySelector));
   }
 
-  getHighlightText(): string {
+  /**
+   * Get the label for the highlight switch
+   * @returns {string} Switch label
+   */
+  getHighlightSwitchLabel(): string {
     return 'Highlight';
   }
 
+  /**
+   * Get the content to display in the highlight list
+   * @param $element
+   * @returns string content to display, default similar to highlightLabel
+   */
+  getHighlightListContent($element: HTMLElement) {
+    let text = $element.textContent;
+    return text.length > this.HIGHLIGHT_CONTENT_MAX_LENGTH ? text.substring(0, this.HIGHLIGHT_CONTENT_MAX_LENGTH) + '...' : text;
+  }
+
+  /**
+   * Get the label to display over the highlighted element
+   * @param $element
+   * @returns string label to display
+   */
   getHighlightLabel($element: HTMLElement) {
     return '';
   }
 
+  /**
+   * Get the slug for the topic number
+   * @param topicNumber
+   * @returns string slug
+   */
   getTopicSlug(topicNumber: number): string {
     switch (topicNumber) {
       case 1:
