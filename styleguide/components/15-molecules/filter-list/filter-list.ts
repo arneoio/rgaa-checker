@@ -1,11 +1,9 @@
 export default class FilterList {
-  $wrapper: HTMLElement;
   $element: HTMLElement;
   $toogleButtonList: NodeListOf<Element>;
 
-  constructor($wrapper: HTMLElement, $element: HTMLElement) {
-    this.$wrapper = $wrapper;
-    this.$element = $element;
+  constructor($element: HTMLElement) {
+        this.$element = $element;
     this.$toogleButtonList = this.$element.querySelectorAll('.js-filterList__toggleButton');
 
     this.init();
@@ -20,7 +18,7 @@ export default class FilterList {
   toggleFilter(event: Event) {
     const $target = event.currentTarget as HTMLElement;
 
-    let $criteriaCardList = this.$wrapper.querySelectorAll(`.js-criteriaCard[data-status="${$target.dataset.status}"]`);
+    let $criteriaCardList = document.querySelectorAll(`.js-criteriaCard[data-status="${$target.dataset.status}"]`);
     $criteriaCardList.forEach(($criteriaCard: HTMLElement) => {
       if($target.dataset.active === 'true') {
         $criteriaCard.classList.add('-hidden');

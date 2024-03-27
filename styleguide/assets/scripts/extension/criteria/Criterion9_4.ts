@@ -21,8 +21,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT (validation manuelle)
  */
 export default class Criterion9_4 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($highLightWrapper, isTestMode);
     this.querySelector = 'q, blockquote';
     this.initHighlight();
   }

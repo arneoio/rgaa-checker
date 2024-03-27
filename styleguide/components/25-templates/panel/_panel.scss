@@ -31,50 +31,24 @@
     }
 }
 
-.l-extension {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2147483646;
-}
-
 .l-extension__contentWrapper {
-    position: fixed;
-    top: 64px;
-    right: 16px;
-    width: 100%;
-    max-width: 456px;
-    z-index: 1;
-    box-shadow: 0 0 8px rgba($color-black, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     background-color: $color-white;
-    border-radius: 8px;
-    overflow: hidden;
-
-    &.-closed {
-        bottom: auto;
-        grid-template-columns: auto 0;
-
-        .-hiddenClosed {
-            display: none;
-        }
-    }
 }
 
 .l-extension__content {
+    flex: 1;
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: 1fr;
-    max-height: min(calc(100vh - 64px * 2), 700px);
-}
-
-.l-extension__header {
-    cursor: move;
+    overflow: auto;
 }
 
 .l-extension__aside {
     position: relative;
-    max-width: 134px;
+    max-width: 160px;
     background-color: $color-white;
     min-height: 0px;
 

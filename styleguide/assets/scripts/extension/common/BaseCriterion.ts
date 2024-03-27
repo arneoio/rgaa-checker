@@ -18,7 +18,6 @@ import { ICriterion } from "./ICriterion";
 import Highlight from "./Highlight"
 
 export default abstract class BaseCriterion implements ICriterion {
-  $wrapper: HTMLElement;
   $highLightWrapper: HTMLElement;
   $criteriaCard: HTMLElement;
   querySelector: string;
@@ -31,8 +30,7 @@ export default abstract class BaseCriterion implements ICriterion {
   highlightInstance: Highlight;
   HIGHLIGHT_CONTENT_MAX_LENGTH: number = 100;
 
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    this.$wrapper = $wrapper;
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
     this.$highLightWrapper = $highLightWrapper;
     this.isTestMode = isTestMode;
     if(this.isTestMode) {
@@ -42,9 +40,9 @@ export default abstract class BaseCriterion implements ICriterion {
     this.topicNumber = parseInt(criteriaNumber.split('.')[0]);
     this.topicSlug = this.getTopicSlug(this.topicNumber);
     this.criteriaNumber = parseInt(criteriaNumber.split('.')[1]);
-    this.$criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
+    this.$criteriaCard = document.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     this.querySelector = '';
-    this.highlightInstance = Highlight.getInstance(this.$wrapper);
+    this.highlightInstance = Highlight.getInstance();
   }
 
   initHighlight() {
@@ -64,7 +62,7 @@ export default abstract class BaseCriterion implements ICriterion {
         this.resetHighlight();
       } else {
         // Désactive les autres highlight
-        Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard__highlightSwitch input:checked')).forEach(($input: HTMLInputElement) => {
+        Array.from(document.querySelectorAll('.js-criteriaCard__highlightSwitch input:checked')).forEach(($input: HTMLInputElement) => {
           if ($input !== $highlightSwitch.querySelector('input')) {
             $input.checked = false;
             // Trigger le change pour reset le highlight du bon critère
@@ -81,7 +79,7 @@ export default abstract class BaseCriterion implements ICriterion {
     if (this.isTestMode) {
       return;
     }
-    let $criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
+    let $criteriaCard = document.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     if (!$criteriaCard) {
       return;
     }
@@ -112,7 +110,7 @@ export default abstract class BaseCriterion implements ICriterion {
       return;
     }
 
-    let $criteriaTest = this.$wrapper.querySelector(`.js-criteriaCard__test__number[data-test="${testNumber}"]`) as HTMLElement;
+    let $criteriaTest = document.querySelector(`.js-criteriaCard__test__number[data-test="${testNumber}"]`) as HTMLElement;
     if (!$criteriaTest) {
       return;
     }

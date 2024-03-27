@@ -36,7 +36,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       target: { tabId: tab.id },
       function: async () => {
         const panelHtmlResponse = await fetch(
-          chrome.runtime.getURL('../pages/panel.html'),
+          chrome.runtime.getURL('rgaa-checker-panel.html'),
         );
         const panelHtmlText = await panelHtmlResponse.text();
         // Créer un élément shadow DOM pour l'extension

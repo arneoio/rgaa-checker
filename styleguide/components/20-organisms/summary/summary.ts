@@ -1,5 +1,4 @@
 export default class Summary {
-  $wrapper: HTMLElement;
   $element: HTMLElement;
   $copyButton: HTMLElement;
   $textArea: HTMLTextAreaElement;
@@ -10,18 +9,17 @@ export default class Summary {
   $tested: HTMLElement;
   $total: HTMLElement;
 
-  constructor($wrapper: HTMLElement, $element: HTMLElement) {
-    this.$wrapper = $wrapper;
+  constructor($element: HTMLElement) {
     this.$element = $element;
     this.$copyButton = this.$element.querySelector('.js-summary__copyButton');
     this.$textArea = this.$element.querySelector('.js-summary__textarea');
 
-    this.$score = this.$wrapper.querySelector('.js-summary__score');
-    this.$scoreProgress = this.$wrapper.querySelector('.js-summary__score__progress');
-    this.$tested = this.$wrapper.querySelector('.js-summary__tested');
-    this.$total = this.$wrapper.querySelector('.js-summary__total');
-    this.$scoreText = this.$wrapper.querySelector('.js-summary__score__text');
-    this.$scoreMention = this.$wrapper.querySelector('.js-summary__score__mention');
+    this.$score = document.querySelector('.js-summary__score');
+    this.$scoreProgress = document.querySelector('.js-summary__score__progress');
+    this.$tested = document.querySelector('.js-summary__tested');
+    this.$total = document.querySelector('.js-summary__total');
+    this.$scoreText = document.querySelector('.js-summary__score__text');
+    this.$scoreMention = document.querySelector('.js-summary__score__mention');
 
     this.bindEvents();
   }
@@ -29,10 +27,10 @@ export default class Summary {
   bindEvents() {
     this.$copyButton.addEventListener('click', this.copyData.bind(this));
 
-    this.$wrapper.addEventListener('rgaachecker-initialized', () => {
+    document.addEventListener('rgaachecker-initialized', () => {
       this.updateCompletion();
     });
-    this.$wrapper.addEventListener('rgaachecker-criteria-updated', () => {
+    document.addEventListener('rgaachecker-criteria-updated', () => {
       this.updateCompletion();
     });
   }
@@ -40,7 +38,7 @@ export default class Summary {
   copyData(event: Event) {
     this.$textArea.value = '';
     let resultList: any[] = [];
-    const $criteriaCardList = Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard'));
+    const $criteriaCardList = Array.from(document.querySelectorAll('.js-criteriaCard'));
     $criteriaCardList.forEach(($criteriaCard: HTMLElement) => {
       let criteriaNumber: string = $criteriaCard.dataset.criteria;
       let criteriaLabel: string = ($criteriaCard.querySelector('.js-criteriaCard__text') as HTMLElement)?.textContent?.trim() || '';
@@ -69,7 +67,7 @@ export default class Summary {
   }
 
   updateCompletion() {
-    let $criteriaCards = this.$wrapper.querySelectorAll('.js-criteriaCard');
+    let $criteriaCards = document.querySelectorAll('.js-criteriaCard');
     let scoreList: any = {
       'C': 0,
       'NC': 0,
@@ -88,7 +86,7 @@ export default class Summary {
     let total = $criteriaCards.length;
 
     Object.keys(scoreList).forEach((status: string) => {
-      let $status = this.$wrapper.querySelector(`.js-summary__progress[data-status="${status}"]`);
+      let $status = document.querySelector(`.js-summary__progress[data-status="${status}"]`);
       $status.setAttribute('value', scoreList[status].toString());
       $status.setAttribute('max', total.toString());
     });

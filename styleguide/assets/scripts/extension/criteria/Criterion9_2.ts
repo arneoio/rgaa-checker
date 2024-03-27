@@ -21,8 +21,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion9_2 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($highLightWrapper, isTestMode);
     this.querySelector = 'main, header, footer, nav';
     this.initHighlight();
   }

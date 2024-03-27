@@ -4,15 +4,13 @@
 export default class TabUtil {
   toggleEventName: string;
   $tabWrapper: HTMLElement;
-  $rootElement: HTMLElement;
   toggleEvent: Event;
   KEYS: { end: string; home: string; left: string; up: string; right: string; down: string; delete: string; enter: string; space: string; };
   DIRECTION: { [x: string]: number; };
 
-  constructor($tabWrapper: HTMLElement, $rootElement: HTMLElement) {
+  constructor($tabWrapper: HTMLElement) {
     this.toggleEventName = this.getToggleEventName();
     this.$tabWrapper = $tabWrapper;
-    this.$rootElement = $rootElement;
 
     this.toggleEvent = document.createEvent('Event');
     this.toggleEvent.initEvent(this.toggleEventName, true, true);
@@ -73,7 +71,7 @@ export default class TabUtil {
     $tab.setAttribute('aria-selected', 'true');
     $tab.dispatchEvent(this.toggleEvent);
 
-    this.$rootElement?.querySelector(`#${$tab.getAttribute('aria-controls')}`)?.removeAttribute('hidden');
+    document?.querySelector(`#${$tab.getAttribute('aria-controls')}`)?.removeAttribute('hidden');
 
     if (setFocus) {
       $tab.focus();
@@ -84,7 +82,7 @@ export default class TabUtil {
     $tabPanel.querySelectorAll('[role="tab"]').forEach(($tab) => {
       $tab.setAttribute('tabindex', '-1');
       $tab.setAttribute('aria-selected', 'false');
-      this.$rootElement?.querySelector(`#${$tab.getAttribute('aria-controls')}`)?.setAttribute('hidden', 'hidden');
+      document?.querySelector(`#${$tab.getAttribute('aria-controls')}`)?.setAttribute('hidden', 'hidden');
     });
   }
 

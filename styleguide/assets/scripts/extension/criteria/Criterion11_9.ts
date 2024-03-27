@@ -22,8 +22,8 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NC, NA, NT (validation manuelle)
  */
 export default class Criterion11_9 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($highLightWrapper, isTestMode);
     this.querySelector = FormUtils.getButtonQuerySelector();
     this.initHighlight();
   }

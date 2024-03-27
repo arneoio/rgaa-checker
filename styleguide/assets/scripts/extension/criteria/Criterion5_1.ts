@@ -22,8 +22,8 @@ import TableUtils from '../utils/TableUtils';
  * Traite: NA, C, NC
  */
 export default class Criterion5_1 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($highLightWrapper, isTestMode);
     this.querySelector = 'table, [role="table"]';
     this.initHighlight();
   }

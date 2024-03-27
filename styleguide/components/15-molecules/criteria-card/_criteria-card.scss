@@ -1,6 +1,5 @@
 .m-criteriaCard {
     position: relative;
-    z-index: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -24,7 +23,6 @@
     height: 16px;
     color: var(--secondary-color-green);
     opacity: 0.1;
-    z-index: -1;
     pointer-events: none;
     transform: rotate(-12.5deg);
 }

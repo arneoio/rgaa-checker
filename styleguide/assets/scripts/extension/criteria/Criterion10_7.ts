@@ -24,8 +24,8 @@ declare var browser: typeof chrome;
   export default class Criterion10_7 extends BaseCriterion {
   $highlightElementList: Array<HTMLElement> = [];
 
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($highLightWrapper, isTestMode);
     this.initHighlight();
   }
 

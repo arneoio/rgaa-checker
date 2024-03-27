@@ -1,5 +1,4 @@
 export default class CriteriaCard {
-  $wrapper: HTMLElement;
   $element: HTMLElement;
   $statusSelector: HTMLElement;
   $toggler: HTMLElement;
@@ -10,8 +9,7 @@ export default class CriteriaCard {
   currentStatus: string;
   criteriaUpdatedEvent: Event;
 
-  constructor($wrapper: HTMLElement, $element: HTMLElement, criterion: any, $highLightWrapper: HTMLElement) {
-    this.$wrapper = $wrapper;
+  constructor($element: HTMLElement, criterion: any, $highLightWrapper: HTMLElement) {
     this.$element = $element;
     this.$statusSelector = this.$element.querySelector('.js-criteriaSelector');
     this.$toggler = this.$statusSelector.querySelector('.js-criteriaSelector__toggler');
@@ -39,7 +37,7 @@ export default class CriteriaCard {
 
       $link.addEventListener('click', () => {
         this.updateCardStatus($link, true);
-        this.$wrapper.dispatchEvent(this.criteriaUpdatedEvent);
+        document.dispatchEvent(this.criteriaUpdatedEvent);
       });
     });
   }

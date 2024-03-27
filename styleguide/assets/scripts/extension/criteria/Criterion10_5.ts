@@ -25,8 +25,8 @@ declare var browser: typeof chrome;
   zoomFactor: number = 1;
   $highlightedElementList: Array<HTMLElement> = [];
 
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($highLightWrapper, isTestMode);
     this.initHighlight();
   }
 

@@ -21,8 +21,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion8_6 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($highLightWrapper, isTestMode);
   }
 
   runTest() {

@@ -40,13 +40,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // set styleguide templates file path
 const panelTemplate = `../styleguide/components/25-templates/panel/panel.html.twig`;
+const devtoolsTemplate = `../styleguide/components/25-templates/devtools/devtools.html.twig`;
+const devtoolsPanelTemplate = `../styleguide/components/25-templates/devtools-panel/devtools-panel.html.twig`;
 
 /**
  * Build Index page
  */
 const buildExtension = (params) => {
   console.warn('Build extension template...');
-  buildTemplate(panelTemplate, 'panel.html', params);
+  buildTemplate(panelTemplate, 'rgaa-checker-panel.html', params);
+  buildTemplate(devtoolsTemplate, 'rgaa-checker-devtools.html', params, false);
+  buildTemplate(devtoolsPanelTemplate, 'rgaa-checker-devtools-panel.html', params, false);
   updateManifestVersion();
 };
 
@@ -56,7 +60,7 @@ const buildExtension = (params) => {
  * @param {string} outputFileName name of the file to create
  * @param {object} params additional data to pass to the template
  */
-const buildTemplate = (templateName, outputFileName, params = {}) => {
+const buildTemplate = (templateName, outputFileName, params = {}, hasDependencies = true) => {
   const templatePath = path.join(__dirname, templateName);
   fs.readFile(templatePath, 'utf8', (err, data) => {
     if (err) {
@@ -75,20 +79,26 @@ const buildTemplate = (templateName, outputFileName, params = {}) => {
       data: data,
     });
 
-    let templateRender = getHtmlHeader();
+    let templateRender = '';
+    if(hasDependencies)
+    {
+      templateRender += getHtmlHeader();
 
-    // Adds footer params to every templates
-    params.footer = {
-      generationDate: getCurrentFormattedDate(),
-      versionNumber: getAppVersion(),
-    };
-    templateRender += template.render(params);
-    templateRender += getHtmlFooter();
+      // Adds footer params to every templates
+      params.footer = {
+        generationDate: getCurrentFormattedDate(),
+        versionNumber: getAppVersion(),
+      };
+      templateRender += template.render(params);
+      templateRender += getHtmlFooter();
+    } else {
+      templateRender = template.render(params);
+    }
 
     fs.mkdirSync(`./${BUILDER_FOLDER}/pages`, { recursive: true });
 
     fs.writeFile(
-      `./${BUILDER_FOLDER}/pages/${outputFileName}`,
+      `./${BUILDER_FOLDER}/${outputFileName}`,
       templateRender,
       (err) => {
         if (err) {
@@ -112,13 +122,17 @@ const getHtmlHeader = () => {
       encoding: 'utf8',
       flag: 'r',
     });
-    // Inject app.css content inline
-    const appCss = fs.readFileSync(`./${BUILDER_FOLDER}/app.css`, {
-      encoding: 'utf8',
-      flag: 'r',
-    });
     htmlHeader = `
-          <style>${appCss}</style>
+      <!DOCTYPE html>
+      <html lang="fr">
+        <head>
+          <meta charset="UTF-8"/>
+          <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+          <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+          <title>RGAA Checker</title>
+          <link rel="stylesheet" href="app.css"/>
+        </head>
+        <body>
           <div class="-hidden">${icons}</div>
           <div id="arneo-browser-highlight"></div>
         `;
@@ -131,7 +145,7 @@ const getHtmlHeader = () => {
  */
 const getHtmlFooter = () => {
   return `
-        <script src="../app.js"></script>
+        <script src="app.js"></script>
     `;
 };
 

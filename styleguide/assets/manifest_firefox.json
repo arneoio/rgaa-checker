@@ -22,7 +22,8 @@
     "persistent": false
   },
   "web_accessible_resources": [
-    "pages/panel.html",
-    "app.js"
+    "rgaa-checker-panel.html",
+    "app.js",
+    "app.css"
   ]
 }

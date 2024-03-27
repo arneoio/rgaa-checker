@@ -23,8 +23,8 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion8_4 extends BaseCriterion {
   apiKey: string;
 
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($highLightWrapper, isTestMode);
   }
 
   runTest() {

@@ -5,20 +5,20 @@
 {% set tag = tag is defined ? tag : defaultTag %}
 
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
-    <div class="l-extension__contentWrapper js-draggable">
+    <div class="l-extension__contentWrapper">
         {% include '@organism/header/header.html.twig' with {
           attributeList: {
-            class: 'l-extension__header js-draggable__handle',
+            class: 'l-extension__header',
           },
           version: version,
         } only %}
         <div class="l-extension__content">
-            <aside class="l-extension__aside -hiddenClosed -expanded">
+            <aside class="l-extension__aside -expanded">
                 {% include '@molecule/topic-list/topic-list.html.twig' with {
                   topicList: topicList,
                 } only %}
             </aside>
-            <main class="l-extension__main js-main -hiddenClosed">
+            <main class="l-extension__main js-main">
                 {% include '@organism/summary/summary.html.twig' with {
                   summary: {
                     scoreList: {

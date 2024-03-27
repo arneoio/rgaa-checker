@@ -65,66 +65,64 @@ import Criterion11_12 from "./criteria/Criterion11_12";
 import Criterion11_13 from "./criteria/Criterion11_13";
 
 export default class AccessibilityTester {
-  $wrapper: HTMLElement;
   $highlightWrapper: HTMLElement;
   criterionList: any;
   localStorageKey: string;
 
-  constructor($wrapper: HTMLElement, $highlightWrapper: HTMLElement) {
-    this.$wrapper = $wrapper;
+  constructor($highlightWrapper: HTMLElement) {
     this.$highlightWrapper = $highlightWrapper;
     this.localStorageKey = 'accessibilityTesterResults';
 
     this.criterionList = {
-      "1.1": new Criterion1_1(this.$wrapper, this.$highlightWrapper),
-      "2.1": new Criterion2_1(this.$wrapper, this.$highlightWrapper),
-      "2.2": new Criterion2_2(this.$wrapper, this.$highlightWrapper),
-      "4.1": new Criterion4_1(this.$wrapper, this.$highlightWrapper),
-      "4.2": new Criterion4_2(this.$wrapper, this.$highlightWrapper),
-      "4.3": new Criterion4_3(this.$wrapper, this.$highlightWrapper),
-      "4.4": new Criterion4_4(this.$wrapper, this.$highlightWrapper),
-      "4.5": new Criterion4_5(this.$wrapper, this.$highlightWrapper),
-      "4.6": new Criterion4_6(this.$wrapper, this.$highlightWrapper),
-      "4.7": new Criterion4_7(this.$wrapper, this.$highlightWrapper),
-      "5.1": new Criterion5_1(this.$wrapper, this.$highlightWrapper),
-      "5.2": new Criterion5_2(this.$wrapper, this.$highlightWrapper),
-      "5.3": new Criterion5_3(this.$wrapper, this.$highlightWrapper),
-      "5.4": new Criterion5_4(this.$wrapper, this.$highlightWrapper),
-      "5.5": new Criterion5_5(this.$wrapper, this.$highlightWrapper),
-      "6.1": new Criterion6_1(this.$wrapper, this.$highlightWrapper),
-      "6.2": new Criterion6_2(this.$wrapper, this.$highlightWrapper),
-      "8.1": new Criterion8_1(this.$wrapper, this.$highlightWrapper),
-      "8.2": new Criterion8_2(this.$wrapper, this.$highlightWrapper),
-      "8.3": new Criterion8_3(this.$wrapper, this.$highlightWrapper),
-      "8.4": new Criterion8_4(this.$wrapper, this.$highlightWrapper),
-      "8.5": new Criterion8_5(this.$wrapper, this.$highlightWrapper),
-      "8.6": new Criterion8_6(this.$wrapper, this.$highlightWrapper),
-      "8.7": new Criterion8_7(this.$wrapper, this.$highlightWrapper),
-      "8.8": new Criterion8_8(this.$wrapper, this.$highlightWrapper),
-      "8.10": new Criterion8_10(this.$wrapper, this.$highlightWrapper),
-      "9.1": new Criterion9_1(this.$wrapper, this.$highlightWrapper),
-      "9.2": new Criterion9_2(this.$wrapper, this.$highlightWrapper),
-      "9.3": new Criterion9_3(this.$wrapper, this.$highlightWrapper),
-      "9.4": new Criterion9_4(this.$wrapper, this.$highlightWrapper),
-      "10.1": new Criterion10_1(this.$wrapper, this.$highlightWrapper),
-      "10.2": new Criterion10_2(this.$wrapper, this.$highlightWrapper),
-      "10.3": new Criterion10_3(this.$wrapper, this.$highlightWrapper),
-      "10.4": new Criterion10_4(this.$wrapper, this.$highlightWrapper),
-      "10.5": new Criterion10_5(this.$wrapper, this.$highlightWrapper),
-      "10.7": new Criterion10_7(this.$wrapper, this.$highlightWrapper),
-      "11.1": new Criterion11_1(this.$wrapper, this.$highlightWrapper),
-      "11.2": new Criterion11_2(this.$wrapper, this.$highlightWrapper),
-      "11.3": new Criterion11_3(this.$wrapper, this.$highlightWrapper),
-      "11.4": new Criterion11_4(this.$wrapper, this.$highlightWrapper),
-      "11.5": new Criterion11_5(this.$wrapper, this.$highlightWrapper),
-      "11.6": new Criterion11_6(this.$wrapper, this.$highlightWrapper),
-      "11.7": new Criterion11_7(this.$wrapper, this.$highlightWrapper),
-      "11.8": new Criterion11_8(this.$wrapper, this.$highlightWrapper),
-      "11.9": new Criterion11_9(this.$wrapper, this.$highlightWrapper),
-      "11.10": new Criterion11_10(this.$wrapper, this.$highlightWrapper),
-      "11.11": new Criterion11_11(this.$wrapper, this.$highlightWrapper),
-      "11.12": new Criterion11_12(this.$wrapper, this.$highlightWrapper),
-      "11.13": new Criterion11_13(this.$wrapper, this.$highlightWrapper),
+      "1.1": new Criterion1_1(this.$highlightWrapper),
+      "2.1": new Criterion2_1(this.$highlightWrapper),
+      "2.2": new Criterion2_2(this.$highlightWrapper),
+      "4.1": new Criterion4_1(this.$highlightWrapper),
+      "4.2": new Criterion4_2(this.$highlightWrapper),
+      "4.3": new Criterion4_3(this.$highlightWrapper),
+      "4.4": new Criterion4_4(this.$highlightWrapper),
+      "4.5": new Criterion4_5(this.$highlightWrapper),
+      "4.6": new Criterion4_6(this.$highlightWrapper),
+      "4.7": new Criterion4_7(this.$highlightWrapper),
+      "5.1": new Criterion5_1(this.$highlightWrapper),
+      "5.2": new Criterion5_2(this.$highlightWrapper),
+      "5.3": new Criterion5_3(this.$highlightWrapper),
+      "5.4": new Criterion5_4(this.$highlightWrapper),
+      "5.5": new Criterion5_5(this.$highlightWrapper),
+      "6.1": new Criterion6_1(this.$highlightWrapper),
+      "6.2": new Criterion6_2(this.$highlightWrapper),
+      "8.1": new Criterion8_1(this.$highlightWrapper),
+      "8.2": new Criterion8_2(this.$highlightWrapper),
+      "8.3": new Criterion8_3(this.$highlightWrapper),
+      "8.4": new Criterion8_4(this.$highlightWrapper),
+      "8.5": new Criterion8_5(this.$highlightWrapper),
+      "8.6": new Criterion8_6(this.$highlightWrapper),
+      "8.7": new Criterion8_7(this.$highlightWrapper),
+      "8.8": new Criterion8_8(this.$highlightWrapper),
+      "8.10": new Criterion8_10(this.$highlightWrapper),
+      "9.1": new Criterion9_1(this.$highlightWrapper),
+      "9.2": new Criterion9_2(this.$highlightWrapper),
+      "9.3": new Criterion9_3(this.$highlightWrapper),
+      "9.4": new Criterion9_4(this.$highlightWrapper),
+      "10.1": new Criterion10_1(this.$highlightWrapper),
+      "10.2": new Criterion10_2(this.$highlightWrapper),
+      "10.3": new Criterion10_3(this.$highlightWrapper),
+      "10.4": new Criterion10_4(this.$highlightWrapper),
+      "10.5": new Criterion10_5(this.$highlightWrapper),
+      "10.7": new Criterion10_7(this.$highlightWrapper),
+      "11.1": new Criterion11_1(this.$highlightWrapper),
+      "11.2": new Criterion11_2(this.$highlightWrapper),
+      "11.3": new Criterion11_3(this.$highlightWrapper),
+      "11.4": new Criterion11_4(this.$highlightWrapper),
+      "11.5": new Criterion11_5(this.$highlightWrapper),
+      "11.6": new Criterion11_6(this.$highlightWrapper),
+      "11.7": new Criterion11_7(this.$highlightWrapper),
+      "11.8": new Criterion11_8(this.$highlightWrapper),
+      "11.9": new Criterion11_9(this.$highlightWrapper),
+      "11.10": new Criterion11_10(this.$highlightWrapper),
+      "11.11": new Criterion11_11(this.$highlightWrapper),
+      "11.12": new Criterion11_12(this.$highlightWrapper),
+      "11.13": new Criterion11_13(this.$highlightWrapper),
     }
   }
 
@@ -174,7 +172,7 @@ export default class AccessibilityTester {
       bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
       cancelable: true, // L'événement peut être annulé
     });
-    this.$wrapper.dispatchEvent(criteriaUpdatedEvent);
+    document.body.dispatchEvent(criteriaUpdatedEvent);
   }
 
   loadUserResults() {
@@ -185,7 +183,7 @@ export default class AccessibilityTester {
     // Mais if faut dans ce cas une classe définie pour chaque critère
     // TODO: s'il y a un conflit entre les résultats de l'utilisateur et ceux du runner suite au chargement, il faut indiquer le conflit
     Object.keys(userResults).forEach((key: string) => {
-      let $criteriaCard: HTMLElement = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${key}"]`);
+      let $criteriaCard: HTMLElement = document.querySelector(`.js-criteriaCard[data-criteria="${key}"]`);
       if ($criteriaCard) {
         let $toggler: HTMLElement = $criteriaCard.querySelector(`.js-criteriaSelector__toggler`);
         let $togglerText: HTMLElement = $criteriaCard.querySelector(`.js-criteriaSelector__togglerText`);

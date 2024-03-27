@@ -1,12 +1,10 @@
 export default class TopicList {
-  $wrapper: HTMLElement;
   $main: HTMLElement;
   $element: HTMLElement;
   $topicItemList: NodeListOf<HTMLElement>;
 
-  constructor($wrapper: HTMLElement, $element: HTMLElement) {
-    this.$wrapper = $wrapper;
-    this.$main = this.$wrapper.querySelector('.js-main');
+  constructor($element: HTMLElement) {
+        this.$main = document.querySelector('.js-main');
     this.$element = $element;
     this.$topicItemList = this.$element.querySelectorAll('.js-topicList__item');
     this.init();
@@ -17,7 +15,7 @@ export default class TopicList {
     // On scroll, change active topic
     this.$main.addEventListener('scroll', () => {
       Array.from(this.$topicItemList).forEach(($topicItem: HTMLElement) => {
-        let $topic = this.$wrapper.querySelector(`.js-topic[data-topic="${$topicItem.dataset.topic}"]`) as HTMLElement;
+        let $topic = document.querySelector(`.js-topic[data-topic="${$topicItem.dataset.topic}"]`) as HTMLElement;
         if ($topic) {
           if ($topic.offsetTop <= this.$main.scrollTop + 80) {
             Array.from(this.$topicItemList).forEach(($topicItem: HTMLElement) => {
@@ -37,7 +35,7 @@ export default class TopicList {
         if(selectedTopic == 'all') {
           scrollPosition = 0;
         } else {
-          let $relatedTopic = this.$wrapper.querySelector(`.js-topic[data-topic="${selectedTopic}"]`) as HTMLElement;
+          let $relatedTopic = document.querySelector(`.js-topic[data-topic="${selectedTopic}"]`) as HTMLElement;
           if ($relatedTopic) {
             scrollPosition = $relatedTopic.offsetTop - 80;
           }
@@ -49,10 +47,10 @@ export default class TopicList {
   }
 
   bindEvents() {
-    this.$wrapper.addEventListener('rgaachecker-initialized', () => {
+    document.addEventListener('rgaachecker-initialized', () => {
       this.updateTopicListCompletion();
     });
-    this.$wrapper.addEventListener('rgaachecker-criteria-updated', () => {
+    document.addEventListener('rgaachecker-criteria-updated', () => {
       this.updateTopicListCompletion();
     });
   }
@@ -66,7 +64,7 @@ export default class TopicList {
         return;
       }
 
-      let $relatedTopic = this.$wrapper.querySelector(`.js-topic[data-topic="${selectedTopic}"]`) as HTMLElement;
+      let $relatedTopic = document.querySelector(`.js-topic[data-topic="${selectedTopic}"]`) as HTMLElement;
       let $criteriaList = $relatedTopic.querySelectorAll('.js-criteriaSelector__toggler');
       let completedCriteriaNumber: number = 0;
       Array.from($criteriaList).forEach(($criteria: HTMLElement) => {
@@ -77,12 +75,12 @@ export default class TopicList {
         }
       });
       totalCompletedCriteriaNumber += completedCriteriaNumber;
-      Array.from(this.$wrapper.querySelectorAll(`.js-topic__addressedCriteriaNumber[data-topic="${selectedTopic}"]`)).forEach(($topicScore: HTMLElement) => {
+      Array.from(document.querySelectorAll(`.js-topic__addressedCriteriaNumber[data-topic="${selectedTopic}"]`)).forEach(($topicScore: HTMLElement) => {
         $topicScore.innerText = completedCriteriaNumber.toString();
       });
     });
 
-    Array.from(this.$wrapper.querySelectorAll('.js-topic__addressedCriteriaNumber[data-topic="all"]')).forEach(($topicScore: HTMLElement) => {
+    Array.from(document.querySelectorAll('.js-topic__addressedCriteriaNumber[data-topic="all"]')).forEach(($topicScore: HTMLElement) => {
       $topicScore.innerText = totalCompletedCriteriaNumber.toString();
     });
   }

@@ -12,19 +12,12 @@ import Summary from './20-organisms/summary/summary';
 var App = {
   init: function () {
     // Get element in shadow DOM if extension mode
-    this.ID = 'arneo-accessibility-checker';
     this.HIGHLIGHT_ID = 'arneo-browser-highlight';
 
-    this.documentRoot = document;
-    const $shadowRoot = document.getElementById('arneo-browser-extension');
-    if ($shadowRoot) {
-      this.documentRoot = $shadowRoot.shadowRoot;
-    }
-    this.$wrapper = this.documentRoot.getElementById(this.ID);
-    this.$main = this.$wrapper.querySelector('.js-main');
-    this.$highLightWrapper = this.documentRoot.getElementById(this.HIGHLIGHT_ID);
+    this.$main = document.querySelector('.js-main');
+    this.$highLightWrapper = document.getElementById(this.HIGHLIGHT_ID);
 
-    this.tester = new AccessibilityTester(this.$wrapper, this.$highLightWrapper);
+    this.tester = new AccessibilityTester(this.$highLightWrapper);
 
     // Inits elements common to every pages
     this.initLayout();
@@ -40,27 +33,27 @@ var App = {
 
   initLayout: function () {
     // Inits expand buttons (like burger menu)
-    const $expandButtonList = Array.from(this.$wrapper.querySelectorAll(
+    const $expandButtonList = Array.from(document.querySelectorAll(
       'button[aria-expanded][aria-controls]',
     ));
 
     if ($expandButtonList.length) {
       $expandButtonList.forEach(($expandButton) => {
         let $button = new ButtonExpand($expandButton as HTMLElement);
-        $button.init(this.documentRoot);
+        $button.init();
       });
     }
 
     // Init tab system
-    const $tabWrapperList = Array.from(this.$wrapper.querySelectorAll('[role="tablist"]'));
+    const $tabWrapperList = Array.from(document.querySelectorAll('[role="tablist"]'));
     if ($tabWrapperList.length) {
       $tabWrapperList.forEach(($tabWrapper) => {
-        new TabUtil($tabWrapper as HTMLElement, this.documentRoot);
+        new TabUtil($tabWrapper as HTMLElement);
       });
     }
 
     // Init draggable elements
-    const $draggableList = Array.from(this.$wrapper.querySelectorAll('.js-draggable'));
+    const $draggableList = Array.from(document.querySelectorAll('.js-draggable'));
     if ($draggableList.length) {
       $draggableList.forEach(($draggable) => {
         new Draggable($draggable as HTMLElement);
@@ -68,8 +61,8 @@ var App = {
     }
 
     // When click outisde a criteriaSelector, reset its aria-expanded to false
-    this.$wrapper.addEventListener('click', (event: MouseEvent) => {
-      const $criteriaSelectorList = Array.from(this.$wrapper.querySelectorAll('.js-criteriaSelector')) as HTMLElement[];
+    document.addEventListener('click', (event: MouseEvent) => {
+      const $criteriaSelectorList = Array.from(document.querySelectorAll('.js-criteriaSelector')) as HTMLElement[];
       $criteriaSelectorList.forEach(($criteriaSelector: HTMLElement) => {
         if (!$criteriaSelector.contains(event.target as Node)) {
           $criteriaSelector?.querySelector('.js-criteriaSelector__toggler')?.setAttribute('aria-expanded', 'false');
@@ -79,7 +72,7 @@ var App = {
     });
 
     // Set sticky title on list
-    this.$topicList = Array.from(this.$wrapper.querySelectorAll('.js-topic'));
+    this.$topicList = Array.from(document.querySelectorAll('.js-topic'));
     this.setStickyTitle();
     this.$main.addEventListener('scroll', () => {
       this.setStickyTitle();
@@ -91,40 +84,40 @@ var App = {
 
   initMolecules: function () {
     // Init filter list
-    this.$filterList = this.$wrapper.querySelector('.js-filterList') as HTMLElement;
+    this.$filterList = document.querySelector('.js-filterList') as HTMLElement;
     if (this.$filterList) {
-      new FilterList(this.$wrapper, this.$filterList);
+      new FilterList(this.$filterList);
     }
 
     // Init Criteria cards
-    const $criteriaCardList = Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard')) as HTMLElement[];
+    const $criteriaCardList = Array.from(document.querySelectorAll('.js-criteriaCard')) as HTMLElement[];
     if ($criteriaCardList.length) {
       $criteriaCardList.forEach(($criteriaCard: HTMLElement) => {
         const criteriaNumber = $criteriaCard.dataset.criteria;
         if (criteriaNumber) {
-          new CriteriaCard(this.$wrapper, $criteriaCard, this.tester.criterionList[criteriaNumber], this.$highLightWrapper);
+          new CriteriaCard($criteriaCard, this.tester.criterionList[criteriaNumber], this.$highLightWrapper);
         }
       });
     }
 
     // Init topic list
-    const $topicList: HTMLElement = this.$wrapper.querySelector('.js-topicList');
+    const $topicList: HTMLElement = document.querySelector('.js-topicList');
     if ($topicList) {
-      new TopicList(this.$wrapper, $topicList);
+      new TopicList($topicList);
     }
   },
 
   initOrganisms: function () {
     // Init header
-    const $header: HTMLElement = this.$wrapper.querySelector('.js-header');
+    const $header: HTMLElement = document.querySelector('.js-header');
     if ($header) {
-      new Header(this.$wrapper, $header);
+      new Header($header);
     }
 
     // Init summary
-    const $summary: HTMLElement = this.$wrapper.querySelector('.js-summary');
+    const $summary: HTMLElement = document.querySelector('.js-summary');
     if ($summary) {
-      new Summary(this.$wrapper, $summary);
+      new Summary($summary);
     }
   },
 

@@ -18,16 +18,14 @@ declare var browser: typeof chrome;
 
 export default class Highlight {
   private static instance: Highlight | null = null;
-  private $wrapper: HTMLElement;
   private $element: HTMLElement;
   private $list: HTMLElement;
   private itemTemplate: HTMLTemplateElement
   private $closeButton: HTMLElement;
   private tempId: string = 'rgaachecker-hightlight-id';
 
-  private constructor($wrapper: HTMLElement) {
-    this.$wrapper = $wrapper;
-    this.$element = $wrapper.querySelector('.js-highlightList') as HTMLElement;
+  private constructor() {
+    this.$element = document.querySelector('.js-highlightList') as HTMLElement;
     this.$list = this.$element.querySelector('.js-highlightList__list') as HTMLElement;
     this.itemTemplate = this.$element.querySelector('.js-highlightList__itemTemplate') as HTMLTemplateElement;
     this.$closeButton = this.$element.querySelector('.js-highlightList__closeButton') as HTMLElement;
@@ -35,9 +33,9 @@ export default class Highlight {
     this.bindEvents();
   }
 
-  public static getInstance($wrapper: HTMLElement): Highlight {
+  public static getInstance(): Highlight {
     if (!Highlight.instance) {
-      Highlight.instance = new Highlight($wrapper);
+      Highlight.instance = new Highlight();
     }
     return Highlight.instance;
   }

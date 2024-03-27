@@ -22,8 +22,8 @@ import LinkUtils from '../utils/LinkUtils';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion6_1 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
+    super($highLightWrapper, isTestMode);
     this.querySelector = 'a:not([role]), [role="link"]';
     this.initHighlight();
   }

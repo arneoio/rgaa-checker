@@ -10,6 +10,7 @@ const ASSETS_PATH = path.resolve(__dirname, process.env.STYLEGUIDE_ASSETS_PATH);
 const SVG_ICON_PATH = path.resolve(ASSETS_PATH, 'icons/');
 let BUILD_FOLDER = path.resolve(__dirname, process.env.FRACTAL_STATIC_FOLDER);
 const ENTRY_FILE = `${STYLEGUIDE_PATH}/components/app.ts`;
+const DEVTOOLS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/devtools.ts`;
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== 'production';
@@ -56,6 +57,7 @@ module.exports = (env, argv) => {
   return {
     entry: {
       app: ENTRY_FILE,
+      devtools: DEVTOOLS_ENTRY_FILE,
       icons: glob.sync(
         path.resolve(path.join(SVG_ICON_PATH, '**/*.svg')).replace(/\\/g, '/'),
       ),
@@ -119,7 +121,7 @@ module.exports = (env, argv) => {
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: true,
+                sourceMap: devMode ? true : false,
               },
             },
           ],
