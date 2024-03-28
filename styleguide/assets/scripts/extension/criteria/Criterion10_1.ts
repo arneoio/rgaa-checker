@@ -21,9 +21,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion10_1 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
-    this.initHighlight();
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
   }
 
   resetHighlight(): void {
@@ -47,7 +46,7 @@ export default class Criterion10_1 extends BaseCriterion {
   }
 
   runTest() {
-    let status = 'NT';
+    this.status = 'NT';
     let message = "Désactivez les feuilles de styles pour valider le test 10.1.3 en vérifiant que les espaces n'ont pas été utilisés pour simuler des tableaux ou des colonnes ni pour séparer les lettres d'un mot.";
 
     const presentationElementList = document.querySelectorAll('basefont, big, blink, center, font, marquee, s, strike, tt');
@@ -90,7 +89,7 @@ export default class Criterion10_1 extends BaseCriterion {
       this.logResults('10.1 - Liste des attributs de présentation', mergedPresentationAttributeList);
     }
 
-    return status;
+    return this.status;
   }
 }
 

@@ -22,14 +22,13 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion11_2 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = FormUtils.getFormFieldQuerySelector();
-    this.initHighlight();
   }
 
   runTest() {
-    let status = 'NA';
+    this.status = 'NA';
     let message = "Aucun champ de formulaire n'a été trouvé";
     let $elementList = document.querySelectorAll(this.querySelector);
     const labelFieldList: any = [];
@@ -56,7 +55,7 @@ export default class Criterion11_2 extends BaseCriterion {
       this.logResults('11.2 - Liste des étiquettes de formulaire', labelFieldList);
     }
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

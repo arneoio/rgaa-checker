@@ -21,9 +21,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT (validation manuelle)
  */
 export default class Criterion10_2 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
-    this.initHighlight();
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
   }
 
   resetHighlight(): void {
@@ -47,13 +46,13 @@ export default class Criterion10_2 extends BaseCriterion {
   }
 
   runTest() {
-    let status = 'NT';
+    this.status = 'NT';
     let message = "Désactivez les feuilles de styles pour vérifier que le contenu reste lisible et utilisable.";
 
     this.updateCriteria('10.2', status, message);
     this.updateTest('10.2.1', status);
 
-    return status;
+    return this.status;
   }
 }
 

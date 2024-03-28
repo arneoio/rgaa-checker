@@ -21,9 +21,8 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT (validation manuelle)
  */
 export default class Criterion10_3 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
-    this.initHighlight();
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
   }
 
   resetHighlight(): void {
@@ -47,13 +46,13 @@ export default class Criterion10_3 extends BaseCriterion {
   }
 
   runTest() {
-    let status = 'NT';
+    this.status = 'NT';
     let message = "Désactivez les feuilles de styles pour vérifier que l'ordre dans lequel les contenus sont implémentés ne pose pas de problème de compréhension.";
 
     this.updateCriteria('10.3', status, message);
     this.updateTest('10.3.1', status);
 
-    return status;
+    return this.status;
   }
 }
 

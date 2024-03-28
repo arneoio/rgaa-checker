@@ -23,14 +23,19 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion8_4 extends BaseCriterion {
   apiKey: string;
 
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
+    this.messageList = {
+      'C': 'Le code de langue est pertinent.',
+      'NC': "Le code de langue ne correspond pas à la langue du document.",
+      'NA': "Aucune langue par défaut n'a été définie.",
+      'NT': 'Vérifiez si le code de langue est pertinent.'
+    }
   }
 
   runTest() {
     let documentLanguage = '';
-    let status = 'NT';
-    let message = "Aucune langue par défaut n\'est définie, le critère n'est pas applicable.";
+    this.status = 'NT';
 
     const htmlElement = document.documentElement;
     const langAttribute = htmlElement.getAttribute('lang');
@@ -40,23 +45,24 @@ export default class Criterion8_4 extends BaseCriterion {
     // Le code de langue est pertinent.
     if (langAttribute || xmlLangAttribute) {
       documentLanguage = langAttribute || xmlLangAttribute;
-      message = `Langue du document: <span>${documentLanguage}</span>.`;
+      this.messageList['NT'] = `Langue du document: <span>${documentLanguage}</span>. Vérifiez si le code de langue est pertinent avec le contenu du document.`;
 
       // Expression régulière pour la norme ISO 639-1 ou ISO 639-2
       const iso639Pattern = /^[a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?$/;
 
       if (!iso639Pattern.test(documentLanguage)) {
-        status = 'NC';
-        message = `Le code de langue <span>${documentLanguage}</span> n'est pas valide. Vérifiez le code de langue à l'aide de la <strong><a href="https://www.w3.org/International/questions/qa-choosing-language-tags" target="_blank">norme ISO 639-1 ou ISO 639-2</a></strong>.`;
+        this.status = 'NC';
+        this.messageList['NC'] = `Le code de langue <span>${documentLanguage}</span> n'est pas valide. Vérifiez le code de langue à l'aide de la <strong><a href="https://www.w3.org/International/questions/qa-choosing-language-tags" target="_blank">norme ISO 639-1 ou ISO 639-2</a></strong>.`;
       }
     } else {
       // Langue absente = critère non applicable, le 8.3 est déjà en NC
-      status = 'NA';
+      this.status = 'NA';
     }
 
-    this.updateCriteria('8.4', status, message);
-    this.updateTest('8.4.1', status);
+    this.testList = {
+      '1': this.status
+    }
 
-    return status;
+    return this.status;
   }
 }

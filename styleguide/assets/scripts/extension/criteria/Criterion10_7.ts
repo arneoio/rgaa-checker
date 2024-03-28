@@ -15,7 +15,6 @@
  */
 
 import BaseCriterion from '../common/BaseCriterion';
-declare var browser: typeof chrome;
 
 /**
  * Dans chaque page web, les déclarations CSS de couleurs de fond d’élément et de police sont-elles correctement utilisées ?
@@ -24,9 +23,8 @@ declare var browser: typeof chrome;
   export default class Criterion10_7 extends BaseCriterion {
   $highlightElementList: Array<HTMLElement> = [];
 
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
-    this.initHighlight();
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
   }
 
   getHighlightedElements(): Array<HTMLElement> {
@@ -35,7 +33,7 @@ declare var browser: typeof chrome;
   }
 
   runTest() {
-    let status = 'NA';
+    this.status = 'NA';
     let message = "Aucun élément de la page n'a de prise de focus.";
 
     let focusableElementList = this.getFocusableElementList();

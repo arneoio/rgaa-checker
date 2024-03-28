@@ -2,19 +2,15 @@ export default class CriteriaCard {
   $element: HTMLElement;
   $statusSelector: HTMLElement;
   $toggler: HTMLElement;
-  $highLightWrapper: HTMLElement;
-  criterion: any;
   criterionNumber: string;
   previousStatus: string;
   currentStatus: string;
   criteriaUpdatedEvent: Event;
 
-  constructor($element: HTMLElement, criterion: any, $highLightWrapper: HTMLElement) {
+  constructor($element: HTMLElement) {
     this.$element = $element;
     this.$statusSelector = this.$element.querySelector('.js-criteriaSelector');
     this.$toggler = this.$statusSelector.querySelector('.js-criteriaSelector__toggler');
-    this.$highLightWrapper = $highLightWrapper;
-    this.criterion = criterion;
     this.criterionNumber = this.$element.dataset.criteria;
     this.previousStatus = 'NT';
     this.currentStatus = 'NT';
@@ -64,18 +60,18 @@ export default class CriteriaCard {
   }
 
   saveStatus(newStatus: string) {
-    let savedStatus = JSON.parse(localStorage.getItem('accessibilityTesterResults')) || {
-      "user": {},
-      "runner": {},
-    };
+    // let savedStatus = JSON.parse(localStorage.getItem('accessibilityTesterResults')) || {
+    //   "user": {},
+    //   "runner": {},
+    // };
 
-    // Créé une entrée pour la page courante si elle n'existe pas
-    savedStatus.user[window.location.pathname] = savedStatus.user[window.location.pathname] || {};
+    // // Créé une entrée pour la page courante si elle n'existe pas
+    // savedStatus.user[window.location.pathname] = savedStatus.user[window.location.pathname] || {};
 
-    // Sauvegarde le status dans le user
-    savedStatus.user[window.location.pathname][this.criterionNumber] = newStatus;
+    // // Sauvegarde le status dans le user
+    // savedStatus.user[window.location.pathname][this.criterionNumber] = newStatus;
 
-    // Met à jour le localStorage
-    localStorage.setItem('accessibilityTesterResults', JSON.stringify(savedStatus));
+    // // Met à jour le localStorage
+    // localStorage.setItem('accessibilityTesterResults', JSON.stringify(savedStatus));
   }
 }

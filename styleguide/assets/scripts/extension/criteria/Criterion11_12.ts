@@ -22,12 +22,12 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion11_12 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
   }
 
   runTest() {
-    let status = 'NA';
+    this.status = 'NA';
     let message = "Aucun formulaire n'a été trouvé.";
 
     let $elementList = Array.from(document.querySelectorAll('form'));
@@ -41,7 +41,7 @@ export default class Criterion11_12 extends BaseCriterion {
     this.updateTest('11.12.1', status);
     this.updateTest('11.12.2', status);
 
-    return status;
+    return this.status;
   }
 }
 

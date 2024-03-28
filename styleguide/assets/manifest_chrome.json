@@ -23,8 +23,18 @@
     "debugger"
   ],
   "background": {
-    "service_worker": "scripts/background.js"
+    "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ],
   "devtools_page": "rgaa-checker-devtools.html",
   "web_accessible_resources": [
     {

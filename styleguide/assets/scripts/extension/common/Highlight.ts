@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import BaseCriterion from './BaseCriterion';
-declare var browser: typeof chrome;
 
 export default class Highlight {
   private static instance: Highlight | null = null;

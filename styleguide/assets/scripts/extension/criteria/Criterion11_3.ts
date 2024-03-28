@@ -22,14 +22,13 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion11_3 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = FormUtils.getFormFieldQuerySelector();
-    this.initHighlight();
   }
 
   runTest() {
-    let status = 'NA';
+    this.status = 'NA';
     let message = "Aucun champ de formulaire n'a été trouvé";
     let $elementList = document.querySelectorAll(this.querySelector);
 
@@ -42,7 +41,7 @@ export default class Criterion11_3 extends BaseCriterion {
     this.updateTest('11.3.1', status);
     this.updateTest('11.3.2', status);
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

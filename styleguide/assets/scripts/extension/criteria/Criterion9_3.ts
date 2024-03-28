@@ -21,14 +21,13 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT (validation manuelle)
  */
 export default class Criterion9_3 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'ul, ol, dl, [role="list"]';
-    this.initHighlight();
   }
 
   runTest() {
-    let status = 'NT';
+    this.status = 'NT';
     let message = "Vérifiez si les éléments mis en liste sont corrects et s'il n'en manque pas.";
     let $elementList = document.querySelectorAll(this.querySelector);
 
@@ -48,7 +47,7 @@ export default class Criterion9_3 extends BaseCriterion {
       this.logResults('9.3 - Liste des listes', $elementList);
     }
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

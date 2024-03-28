@@ -15,10 +15,8 @@
  */
 
 import { ICriterion } from "./ICriterion";
-import Highlight from "./Highlight"
 
 export default abstract class BaseCriterion implements ICriterion {
-  $highLightWrapper: HTMLElement;
   $criteriaCard: HTMLElement;
   querySelector: string;
   querySelectorList: Array<HTMLElement>;
@@ -27,11 +25,13 @@ export default abstract class BaseCriterion implements ICriterion {
   topicNumber: number;
   topicSlug: string;
   criteriaNumber: number;
-  highlightInstance: Highlight;
+  status: string = 'NT';
+  messageList: any = {};
+  elementList: Array<HTMLElement> = [];
+  testList: any = {};
   HIGHLIGHT_CONTENT_MAX_LENGTH: number = 100;
 
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    this.$highLightWrapper = $highLightWrapper;
+  constructor(isTestMode: boolean = false) {
     this.isTestMode = isTestMode;
     if(this.isTestMode) {
       return;
@@ -42,7 +42,21 @@ export default abstract class BaseCriterion implements ICriterion {
     this.criteriaNumber = parseInt(criteriaNumber.split('.')[1]);
     this.$criteriaCard = document.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     this.querySelector = '';
-    this.highlightInstance = Highlight.getInstance();
+  }
+
+  sendActionMessage(action: string) {
+    // Send message to background script to zoom in for firefox or chrome
+    if(typeof browser !== 'undefined') {
+      browser.runtime.sendMessage({
+        tabId: chrome.devtools.inspectedWindow.tabId,
+        action: action
+      });
+    } else {
+      chrome.runtime.sendMessage({
+        tabId: chrome.devtools.inspectedWindow.tabId,
+        action: action
+      });
+    }
   }
 
   initHighlight() {
@@ -76,6 +90,7 @@ export default abstract class BaseCriterion implements ICriterion {
   }
 
   updateCriteria(criteriaNumber: string, status: string, verification?: string) {
+    return;
     if (this.isTestMode) {
       return;
     }
@@ -106,6 +121,7 @@ export default abstract class BaseCriterion implements ICriterion {
   }
 
   updateTest(testNumber: string, status: string) {
+    return;
     if (this.isTestMode) {
       return;
     }
@@ -119,6 +135,19 @@ export default abstract class BaseCriterion implements ICriterion {
   }
 
   abstract runTest(): string;
+
+  formatJSON(): any {
+    let result = {
+      criteriaNumber: this.criteriaNumber,
+      status: this.status,
+      messageList: this.messageList,
+      elementList: this.querySelectorList,
+      testList: this.testList,
+      highlightSwitchLabel: this.getHighlightSwitchLabel(),
+    }
+
+    return result;
+  }
 
   getHighlightedElements(): Array<HTMLElement> {
     if(!this.querySelector) {
@@ -208,13 +237,10 @@ export default abstract class BaseCriterion implements ICriterion {
     }
     );
     // Remove all highlights
-    this.$highLightWrapper.innerHTML = '';
-    this.highlightInstance.hide();
   }
 
   enableHighlight() {
     this.activateHighlight();
-    this.highlightInstance.activate(this);
   }
 
   activateHighlight() {
@@ -242,23 +268,23 @@ export default abstract class BaseCriterion implements ICriterion {
     if ($element === this.querySelectorList[this.querySelectorList.length - 1]) {
       // On supprime le dernier élément de la liste
       this.querySelectorList.pop();
-      if (this.$highLightWrapper) {
-        // On créé un élément dans le wrapper à la même position que l'élément matchant pour le mettre en avant
-        let $highlight = document.createElement('div');
-        let bounding = $element.getBoundingClientRect();
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      // if (this.$highlightWrapper) {
+      //   // On créé un élément dans le wrapper à la même position que l'élément matchant pour le mettre en avant
+      //   let $highlight = document.createElement('div');
+      //   let bounding = $element.getBoundingClientRect();
+      //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-        $highlight.style.top = `${bounding.top + scrollTop}px`;
-        $highlight.style.left = `${bounding.left}px`;
-        $highlight.style.width = `${bounding.width}px`;
-        $highlight.style.height = `${bounding.height}px`;
-        this.$highLightWrapper.appendChild($highlight);
+      //   $highlight.style.top = `${bounding.top + scrollTop}px`;
+      //   $highlight.style.left = `${bounding.left}px`;
+      //   $highlight.style.width = `${bounding.width}px`;
+      //   $highlight.style.height = `${bounding.height}px`;
+      //   this.$highlightWrapper.appendChild($highlight);
 
-        // Ajoute un label à l'élément mis en avant
-        let $label = document.createElement('p');
-        $label.innerText = this.getHighlightLabel($element);
-        $highlight.appendChild($label);
-      }
+      //   // Ajoute un label à l'élément mis en avant
+      //   let $label = document.createElement('p');
+      //   $label.innerText = this.getHighlightLabel($element);
+      //   $highlight.appendChild($label);
+      // }
 
       $element.childNodes.forEach((e: HTMLElement) => {
         this.hideRecursive(e, false);

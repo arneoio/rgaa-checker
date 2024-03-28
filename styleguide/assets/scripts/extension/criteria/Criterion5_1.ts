@@ -22,10 +22,15 @@ import TableUtils from '../utils/TableUtils';
  * Traite: NA, C, NC
  */
 export default class Criterion5_1 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'table, [role="table"]';
-    this.initHighlight();
+
+    this.messageList = {
+      'C': 'Tous les tableaux complexes ont un résumé.',
+      'NC': "Certains tableaux complexes n'ont pas de résumé.",
+      'NA': "Aucun tableau complexe n'a été trouvé."
+    }
   }
 
   getHighlightedElements(): Array<HTMLElement> {
@@ -46,13 +51,12 @@ export default class Criterion5_1 extends BaseCriterion {
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun tableau complexe n'a été trouvé.";
+    this.status = 'NA';
 
     let $complexTableList = TableUtils.getComplexTableList();
     let notDescribedTableList: Array<HTMLTableElement> = [];
-    if ($complexTableList.length) {
 
+    if ($complexTableList.length) {
       $complexTableList.forEach(($table: HTMLTableElement) => {
         let tableDescription = TableUtils.getComplexTableDescription($table);
         if (!tableDescription) {
@@ -60,18 +64,20 @@ export default class Criterion5_1 extends BaseCriterion {
         }
       });
 
-      status = notDescribedTableList.length === 0 ? 'C' : 'NC';
-      message = notDescribedTableList.length === 0 ? "Tous les tableaux complexes ont un résumé." : "Certains tableaux complexes n'ont pas de résumé.";
+      this.status = notDescribedTableList.length === 0 ? 'C' : 'NC';
     }
-
-    this.updateCriteria('5.1', status, message);
-    this.updateTest('5.1.1', status);
 
     if (notDescribedTableList.length > 0) {
       this.logResults('5.1 - Tableaux complexes non décrits', notDescribedTableList);
     }
 
-    return status;
+    this.testList = {
+      '1': this.status,
+    };
+
+    this.elementList = notDescribedTableList;
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

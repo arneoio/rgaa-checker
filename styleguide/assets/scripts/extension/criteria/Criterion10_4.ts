@@ -15,7 +15,6 @@
  */
 
 import BaseCriterion from '../common/BaseCriterion';
-declare var browser: typeof chrome;
 
 /**
  * Dans chaque page web, le texte reste-t-il lisible lorsque la taille des caractères est augmentée jusqu’à 200 %, au moins (hors cas particuliers) ?
@@ -24,9 +23,8 @@ declare var browser: typeof chrome;
 export default class Criterion10_4 extends BaseCriterion {
   zoomFactor: number = 1;
 
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
-    this.initHighlight();
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
   }
 
   getHighlightSwitchLabel() {
@@ -34,24 +32,15 @@ export default class Criterion10_4 extends BaseCriterion {
   }
 
   activateHighlight(): void {
-    // Send message to background script to zoom in for firefox or chrome
-    if(typeof browser !== 'undefined') {
-      browser.runtime.sendMessage({action: "zoomIn"});
-    } else {
-      chrome.runtime.sendMessage({action: "zoomIn"});
-    }
+    this.sendActionMessage('zoomIn');
   }
 
   resetHighlight(): void {
-    if(typeof browser !== 'undefined') {
-      browser.runtime.sendMessage({action: "zoomBack"});
-    } else {
-      chrome.runtime.sendMessage({action: "zoomBack"});
-    }
+    this.sendActionMessage('zoomBack');
   }
 
   runTest() {
-    let status = 'NT';
+    this.status = 'NT';
     let message = "Zoomez le texte à 200% et vérifiez s'il reste lisible.";
 
     this.updateCriteria('10.4', status, message);

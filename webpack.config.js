@@ -11,6 +11,8 @@ const SVG_ICON_PATH = path.resolve(ASSETS_PATH, 'icons/');
 let BUILD_FOLDER = path.resolve(__dirname, process.env.FRACTAL_STATIC_FOLDER);
 const ENTRY_FILE = `${STYLEGUIDE_PATH}/components/app.ts`;
 const DEVTOOLS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/devtools.ts`;
+const BACKGROUND_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/background.ts`;
+const CONTENT_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/content.ts`;
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== 'production';
@@ -35,10 +37,6 @@ module.exports = (env, argv) => {
       to: path.resolve(`${BUILD_FOLDER}/manifest.json`),
     },
     {
-      from: path.resolve(`${ASSETS_PATH}/scripts/background_${builtExtension}.js`),
-      to: path.resolve(`${BUILD_FOLDER}/scripts/background.js`),
-    },
-    {
       from: path.resolve(`${ASSETS_PATH}/scripts/extension`),
       to: path.resolve(`${BUILD_FOLDER}/scripts/extension`),
     },
@@ -58,6 +56,8 @@ module.exports = (env, argv) => {
     entry: {
       app: ENTRY_FILE,
       devtools: DEVTOOLS_ENTRY_FILE,
+      background: BACKGROUND_ENTRY_FILE,
+      content: CONTENT_ENTRY_FILE,
       icons: glob.sync(
         path.resolve(path.join(SVG_ICON_PATH, '**/*.svg')).replace(/\\/g, '/'),
       ),

@@ -15,7 +15,6 @@
  */
 
 import BaseCriterion from '../common/BaseCriterion';
-declare var browser: typeof chrome;
 
 /**
  * Dans chaque page web, les déclarations CSS de couleurs de fond d’élément et de police sont-elles correctement utilisées ?
@@ -25,9 +24,8 @@ declare var browser: typeof chrome;
   zoomFactor: number = 1;
   $highlightedElementList: Array<HTMLElement> = [];
 
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
-    this.initHighlight();
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
   }
 
   getHighlightedElements(): Array<HTMLElement> {
@@ -69,7 +67,7 @@ declare var browser: typeof chrome;
   }
 
   runTest() {
-    let status = 'NA';
+    this.status = 'NA';
     let message = "Aucun élément texte n'a été trouvé.";
     let test1Status = 'NA';
     let test2Status = 'NA';

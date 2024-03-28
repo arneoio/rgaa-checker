@@ -21,30 +21,30 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion8_7 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = '*[lang]:not(html), *[xml\\:lang]:not(html)';
-    this.initHighlight();
+    this.messageList = {
+      'NT': 'Vérifiez si les changements de langue sont correctement indiqués.',
+      'NA': "Aucun changement de langue n'a été détecté. Vérifiez si les changements de langue sont correctement indiqués."
+    }
   }
 
   runTest() {
-    let status = 'NT';
-    let message = "Vérifiez si les changements de langue sont correctement indiqués.";
+    this.status = 'NT';
     let $elementList = document.querySelectorAll(this.querySelector);
-
-    if($elementList.length === 0) {
-      message = "Aucun changement de langue n'a été détecté. Vérifiez si les changements de langue sont correctement indiqués.";
-    }
-
-    // 8.7.1
-    this.updateCriteria('8.7', status, message);
-    this.updateTest('8.7.1', $elementList.length > 0 ? 'NT' : 'NA');
 
     if($elementList.length > 0) {
       this.logResults('8.7 - Liste des changements de langue', $elementList);
     }
 
-    return status;
+    this.testList = {
+      '1': this.status
+    }
+
+    this.elementList = Array.from($elementList) as Array<HTMLElement>;
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

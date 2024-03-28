@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import Criterion1_1 from "./criteria/Criterion1_1";
 import Criterion2_1 from "./criteria/Criterion2_1";
 import Criterion2_2 from "./criteria/Criterion2_2";
@@ -65,114 +64,122 @@ import Criterion11_12 from "./criteria/Criterion11_12";
 import Criterion11_13 from "./criteria/Criterion11_13";
 
 export default class AccessibilityTester {
-  $highlightWrapper: HTMLElement;
   criterionList: any;
   localStorageKey: string;
+  previousResults: any;
+  pageResults: any;
 
-  constructor($highlightWrapper: HTMLElement) {
-    this.$highlightWrapper = $highlightWrapper;
+  constructor() {
     this.localStorageKey = 'accessibilityTesterResults';
 
     this.criterionList = {
-      "1.1": new Criterion1_1(this.$highlightWrapper),
-      "2.1": new Criterion2_1(this.$highlightWrapper),
-      "2.2": new Criterion2_2(this.$highlightWrapper),
-      "4.1": new Criterion4_1(this.$highlightWrapper),
-      "4.2": new Criterion4_2(this.$highlightWrapper),
-      "4.3": new Criterion4_3(this.$highlightWrapper),
-      "4.4": new Criterion4_4(this.$highlightWrapper),
-      "4.5": new Criterion4_5(this.$highlightWrapper),
-      "4.6": new Criterion4_6(this.$highlightWrapper),
-      "4.7": new Criterion4_7(this.$highlightWrapper),
-      "5.1": new Criterion5_1(this.$highlightWrapper),
-      "5.2": new Criterion5_2(this.$highlightWrapper),
-      "5.3": new Criterion5_3(this.$highlightWrapper),
-      "5.4": new Criterion5_4(this.$highlightWrapper),
-      "5.5": new Criterion5_5(this.$highlightWrapper),
-      "6.1": new Criterion6_1(this.$highlightWrapper),
-      "6.2": new Criterion6_2(this.$highlightWrapper),
-      "8.1": new Criterion8_1(this.$highlightWrapper),
-      "8.2": new Criterion8_2(this.$highlightWrapper),
-      "8.3": new Criterion8_3(this.$highlightWrapper),
-      "8.4": new Criterion8_4(this.$highlightWrapper),
-      "8.5": new Criterion8_5(this.$highlightWrapper),
-      "8.6": new Criterion8_6(this.$highlightWrapper),
-      "8.7": new Criterion8_7(this.$highlightWrapper),
-      "8.8": new Criterion8_8(this.$highlightWrapper),
-      "8.10": new Criterion8_10(this.$highlightWrapper),
-      "9.1": new Criterion9_1(this.$highlightWrapper),
-      "9.2": new Criterion9_2(this.$highlightWrapper),
-      "9.3": new Criterion9_3(this.$highlightWrapper),
-      "9.4": new Criterion9_4(this.$highlightWrapper),
-      "10.1": new Criterion10_1(this.$highlightWrapper),
-      "10.2": new Criterion10_2(this.$highlightWrapper),
-      "10.3": new Criterion10_3(this.$highlightWrapper),
-      "10.4": new Criterion10_4(this.$highlightWrapper),
-      "10.5": new Criterion10_5(this.$highlightWrapper),
-      "10.7": new Criterion10_7(this.$highlightWrapper),
-      "11.1": new Criterion11_1(this.$highlightWrapper),
-      "11.2": new Criterion11_2(this.$highlightWrapper),
-      "11.3": new Criterion11_3(this.$highlightWrapper),
-      "11.4": new Criterion11_4(this.$highlightWrapper),
-      "11.5": new Criterion11_5(this.$highlightWrapper),
-      "11.6": new Criterion11_6(this.$highlightWrapper),
-      "11.7": new Criterion11_7(this.$highlightWrapper),
-      "11.8": new Criterion11_8(this.$highlightWrapper),
-      "11.9": new Criterion11_9(this.$highlightWrapper),
-      "11.10": new Criterion11_10(this.$highlightWrapper),
-      "11.11": new Criterion11_11(this.$highlightWrapper),
-      "11.12": new Criterion11_12(this.$highlightWrapper),
-      "11.13": new Criterion11_13(this.$highlightWrapper),
-    }
+      "1.1": new Criterion1_1(),
+      "2.1": new Criterion2_1(),
+      "2.2": new Criterion2_2(),
+      "4.1": new Criterion4_1(),
+      "4.2": new Criterion4_2(),
+      "4.3": new Criterion4_3(),
+      "4.4": new Criterion4_4(),
+      "4.5": new Criterion4_5(),
+      "4.6": new Criterion4_6(),
+      "4.7": new Criterion4_7(),
+      "5.1": new Criterion5_1(),
+      "5.2": new Criterion5_2(),
+      "5.3": new Criterion5_3(),
+      "5.4": new Criterion5_4(),
+      "5.5": new Criterion5_5(),
+      "6.1": new Criterion6_1(),
+      "6.2": new Criterion6_2(),
+      "8.1": new Criterion8_1(),
+      "8.2": new Criterion8_2(),
+      "8.3": new Criterion8_3(),
+      "8.4": new Criterion8_4(),
+      "8.5": new Criterion8_5(),
+      "8.6": new Criterion8_6(),
+      "8.7": new Criterion8_7(),
+      "8.8": new Criterion8_8(),
+      "8.10": new Criterion8_10(),
+      "9.1": new Criterion9_1(),
+      "9.2": new Criterion9_2(),
+      "9.3": new Criterion9_3(),
+      "9.4": new Criterion9_4(),
+      "10.1": new Criterion10_1(),
+      "10.2": new Criterion10_2(),
+      "10.3": new Criterion10_3(),
+      "10.4": new Criterion10_4(),
+      "10.5": new Criterion10_5(),
+      "10.7": new Criterion10_7(),
+      "11.1": new Criterion11_1(),
+      "11.2": new Criterion11_2(),
+      "11.3": new Criterion11_3(),
+      "11.4": new Criterion11_4(),
+      "11.5": new Criterion11_5(),
+      "11.6": new Criterion11_6(),
+      "11.7": new Criterion11_7(),
+      "11.8": new Criterion11_8(),
+      "11.9": new Criterion11_9(),
+      "11.10": new Criterion11_10(),
+      "11.11": new Criterion11_11(),
+      "11.12": new Criterion11_12(),
+      "11.13": new Criterion11_13(),
+    };
   }
 
   loadSavedData() {
     // Get previous results from localStorage
-    const previousResults = JSON.parse(localStorage.getItem(this.localStorageKey)) || {
+    this.previousResults = JSON.parse(localStorage.getItem(this.localStorageKey)) || {
       "user": {},
       "runner": {},
     };
+  }
+
+  runTests() {
+    console.log('AccessibilityTester.runTests');
+    this.loadSavedData();
+    var jsonResult = this.runCriteriaTests();
 
     // Get results of runner for current page
-    const currentPageResults = previousResults.runner[window.location.pathname] || {};
+    let currentPageResults = this.previousResults.runner[window.location.pathname] || {};
+    // Get difference between previous and current results
+    const diff: any = {};
+    Object.keys(this.pageResults).forEach((key: string) => {
+      if (typeof currentPageResults[key] !== 'undefined' && currentPageResults[key] !== this.pageResults[key]) {
+        diff[key] = {
+          "previous": currentPageResults[key],
+          "current": this.pageResults[key],
+        };
+      }
+    });
+    console.log('Différence', diff);
 
-    let pageResults: any = {};
+    // Save results of runner to localStorage for current page
+    this.previousResults.runner[window.location.pathname] = this.pageResults;
+    localStorage.setItem(this.localStorageKey, JSON.stringify(this.previousResults));
+
+    this.loadUserResults();
+
+    // const criteriaUpdatedEvent = new Event('rgaachecker-initialized', {
+    //   bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
+    //   cancelable: true, // L'événement peut être annulé
+    // });
+    // document.body.dispatchEvent(criteriaUpdatedEvent);
+    return jsonResult;
+  }
+
+  runCriteriaTests() {
+    this.pageResults = {};
+    var jsonResult: any = {};
 
     Object.keys(this.criterionList).forEach((key: string) => {
       const criterion = this.criterionList[key];
       const criteraStatus = criterion.runTest();
+      jsonResult[key] = criterion.formatJSON();
       criterion.isInitialTestDone = true;
-      pageResults[key] = criteraStatus;
+      this.pageResults[key] = criteraStatus;
     });
 
-    // Get difference between previous and current results
-    const diff: any = {};
-    Object.keys(pageResults).forEach((key: string) => {
-      if (typeof currentPageResults[key] !== 'undefined' && currentPageResults[key] !== pageResults[key]) {
-        diff[key] = {
-          "previous": currentPageResults[key],
-          "current": pageResults[key],
-        };
-      }
-    });
-
-    console.log('Différence', diff);
-
-    // Save results of runner to localStorage for current page
-    previousResults.runner[window.location.pathname] = pageResults;
-
-    localStorage.setItem(this.localStorageKey, JSON.stringify(previousResults));
-  }
-
-  runTests() {
-    this.loadSavedData();
-    this.loadUserResults();
-
-    const criteriaUpdatedEvent = new Event('rgaachecker-initialized', {
-      bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
-      cancelable: true, // L'événement peut être annulé
-    });
-    document.body.dispatchEvent(criteriaUpdatedEvent);
+    console.log('Résultats', jsonResult);
+    return jsonResult;
   }
 
   loadUserResults() {

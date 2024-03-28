@@ -21,14 +21,13 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion9_2 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'main, header, footer, nav';
-    this.initHighlight();
   }
 
   runTest() {
-    let status = 'NT';
+    this.status = 'NT';
     let message = 'Vérifiez si les éléments structurants sont présents et correctement balisés.';
     let $elementList = document.querySelectorAll(this.querySelector);
     let $main = document.querySelectorAll('main');
@@ -48,7 +47,7 @@ export default class Criterion9_2 extends BaseCriterion {
       this.logResults('9.2 - Liste des éléments structurant', $elementList);
     }
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

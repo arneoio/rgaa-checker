@@ -21,15 +21,18 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NA, C, NC
  */
 export default class Criterion2_1 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'iframe, frame';
-    this.initHighlight();
+    this.messageList = {
+      'C': 'Tous les cadres ont un titre.',
+      'NC': "Certains cadres n'ont pas de titre.",
+      'NA': "Aucun cadre n'a été trouvé."
+    }
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun cadre n'a été trouvé.";
+    this.status = 'NA';
     let untitledFrameList: Array<HTMLTableElement> = [];
 
     let $frameList = document.querySelectorAll(this.querySelector);
@@ -40,18 +43,18 @@ export default class Criterion2_1 extends BaseCriterion {
         }
       });
 
-      status = untitledFrameList.length === 0 ? 'C' : 'NC';
-      message = untitledFrameList.length === 0 ? "Tous les cadres ont un titre." : "Certains cadres n'ont pas de titre.";
+      this.status = untitledFrameList.length === 0 ? 'C' : 'NC';
     }
-
-    this.updateCriteria('2.1', status, message);
-    this.updateTest('2.1.1', status);
 
     if (untitledFrameList.length > 0) {
       this.logResults('2.1 - Cadres sans titre', untitledFrameList);
     }
 
-    return status;
+    this.testList = {
+      '1': this.status
+    }
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

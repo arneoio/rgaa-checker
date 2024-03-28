@@ -22,14 +22,13 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NC, NA, NT (validation manuelle)
  */
 export default class Criterion11_9 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = FormUtils.getButtonQuerySelector();
-    this.initHighlight();
   }
 
   runTest() {
-    let status = 'NA';
+    this.status = 'NA';
     let message = "Aucun bouton de formulaire n'a été trouvé.";
 
     let $elementList = Array.from(document.querySelectorAll(this.querySelector));
@@ -71,7 +70,7 @@ export default class Criterion11_9 extends BaseCriterion {
       this.logResults('11.9.2 - Liste des boutons dont l\'intitulé accessible ne contient pas le libellé visible', noConcordantElementList);
     }
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

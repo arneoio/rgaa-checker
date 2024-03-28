@@ -21,28 +21,34 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion8_6 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
+    this.messageList = {
+      'NT': 'Vériﬁez que le titre de la page est pertinent et unique.',
+      'NA': "Aucun titre n'est défini, le critère n'est pas applicable."
+    }
   }
 
   runTest() {
     // Pour chaque page web ayant un titre de page (balise <title>), le contenu de cette balise est-il pertinent ?
     let title = '';
-    let status = 'NT';
-    let message = "Aucun titre n'est défini, le critère n'est pas applicable.";
+    this.status = 'NT';
     const pageTitleElement = document.querySelector('title');
 
     if (!pageTitleElement) {
-      status = 'NA';
+      this.status = 'NA';
 
     } else {
       title = pageTitleElement.innerText;
-      message = `Titre de la page: <strong>${title}</strong>.<br />Vériﬁez que le titre de la page est pertinent et unique.`;
+      this.messageList['NT'] = `Titre de la page: <strong>${title}</strong>.<br />Vériﬁez que le titre de la page est pertinent et unique.`;
+      this.messageList['C'] = `Le titre de la page: <strong>${title}</strong> est pertinent et unique.`;
+      this.messageList['NC'] = `Le titre de la page: <strong>${title}</strong> n'est pas pertinent ou unique.`;
     }
 
-    this.updateCriteria('8.6', status, message);
-    this.updateTest('8.6.1', status);
+    this.testList = {
+      '1': this.status
+    }
 
-    return status;
+    return this.status;
   }
 }

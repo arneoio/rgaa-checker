@@ -21,14 +21,13 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NC, NA, NT (validation manuelle)
  */
 export default class Criterion11_8 extends BaseCriterion {
-  constructor($highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'select';
-    this.initHighlight();
   }
 
   runTest() {
-    let status = 'NA';
+    this.status = 'NA';
     let message = "Aucun select n'a été trouvé.";
 
     let $elementList = Array.from(document.querySelectorAll(this.querySelector));
@@ -64,7 +63,7 @@ export default class Criterion11_8 extends BaseCriterion {
     this.updateTest('11.8.2', $elementList.length === 0 ? 'NA' : (status === 'NC' ? 'NC' : 'C'));
     this.updateTest('11.8.3', hasAtLeastOneOptiongroup ? 'NT' : 'NA');
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {
