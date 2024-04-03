@@ -1,8 +1,11 @@
+import MessageSender from "../../00-base/utils/message-sender";
+
 export default class CriteriaCard {
   $element: HTMLElement;
   $statusSelector: HTMLElement;
   $toggler: HTMLElement;
-  criterionNumber: string;
+  topicNumber: number;
+  criteriaNumber: number;
   previousStatus: string;
   currentStatus: string;
   criteriaUpdatedEvent: Event;
@@ -11,7 +14,9 @@ export default class CriteriaCard {
     this.$element = $element;
     this.$statusSelector = this.$element.querySelector('.js-criteriaSelector');
     this.$toggler = this.$statusSelector.querySelector('.js-criteriaSelector__toggler');
-    this.criterionNumber = this.$element.dataset.criteria;
+    let criteriaSplit = this.$element.dataset.criteria.split('.');
+    this.topicNumber = parseInt(criteriaSplit.shift());
+    this.criteriaNumber = parseInt(criteriaSplit.pop());
     this.previousStatus = 'NT';
     this.currentStatus = 'NT';
 
@@ -24,25 +29,25 @@ export default class CriteriaCard {
   }
 
   bindEvents() {
-    Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link: HTMLElement) => {
-      $link.addEventListener('rgaachecker-criteria-initialized', () => {
-        this.updateCardStatus($link);
-        this.$element.classList.add('-checked');
-        this.removeHighlightForNA();
-      });
-
-      $link.addEventListener('click', () => {
-        this.updateCardStatus($link, true);
-        document.dispatchEvent(this.criteriaUpdatedEvent);
-      });
-    });
+    // Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link: HTMLElement) => {
+    //   $link.addEventListener('click', () => {
+    //     this.updateCardStatus($link, true);
+    //     document.dispatchEvent(this.criteriaUpdatedEvent);
+    //   });
+    // });
   }
 
-  removeHighlightForNA() {
-    // If the status is NA, remove the highlight switch
-    if (this.$element.dataset.status === 'NA') {
-      this.$element.querySelector('.js-criteriaCard__highlightSwitch')?.remove();
-    }
+  loadData(criterionData: any) {
+    // Update criterion status
+    let status = criterionData.status;
+    this.$element.dataset.status = status;
+    this.$element.classList.add('-checked');
+
+    console.log(`Updating criterion  ${this.topicNumber}.${this.criteriaNumber} with status ${status}`);
+    let $statusLink = this.$statusSelector.querySelector(`.js-criteriaSelector__link[data-status="${status}"]`) as HTMLElement;
+    this.updateCardStatus($statusLink);
+    this.updateTests(criterionData.testList);
+    this.setHighlightSwitch(criterionData);
   }
 
   updateCardStatus($link: HTMLElement, saveUserState: boolean = false) {
@@ -59,6 +64,57 @@ export default class CriteriaCard {
     }
   }
 
+
+  updateTests(testList: any) {
+    Object.keys(testList).forEach((key: string) => {
+      let testNumber = this.topicNumber + '.' + this.criteriaNumber + '.' + key;
+      let testStatus = testList[key];
+      let $test = this.$element.querySelector(`.js-criteriaCard__test__number[data-test="${testNumber}"]`) as HTMLElement;
+      if ($test) {
+        $test.dataset.status = testStatus;
+      }
+    });
+  }
+
+  setHighlightSwitch(criterionData: any) {
+    // If the status is NA, remove the highlight switch, otherwise update its label
+    const $highlightSwitch = this.$element.querySelector('.js-criteriaCard__highlightSwitch');
+    if (!$highlightSwitch) {
+      return;
+    }
+
+    if (criterionData.status === 'NA') {
+      this.$element.querySelector('.js-criteriaCard__highlightSwitch')?.remove();
+      return;
+    }
+
+    $highlightSwitch.classList.remove('-hidden');
+    ($highlightSwitch.querySelector('.js-toggleSwitch__label') as HTMLElement).innerText = criterionData.highlightSwitchLabel;
+
+    // Ajoute le listener sur le switch
+    const $input = $highlightSwitch.querySelector('input') as HTMLInputElement;
+    $input.addEventListener('change', () => {
+      if (!$input.checked) {
+        console.log('Disable highlight');
+        MessageSender.sendMessage('resetHighlight');
+        //this.resetHighlight();
+      } else {
+        console.log('Enable highlight');
+        MessageSender.sendMessage('enableHighlight', {topicNumber: this.topicNumber, criteriaNumber: this.criteriaNumber});
+        // Désactive les autres highlight
+        Array.from(document.querySelectorAll('.js-criteriaCard__highlightSwitch input:checked')).forEach(($input: HTMLInputElement) => {
+          if ($input !== $highlightSwitch.querySelector('input')) {
+            $input.checked = false;
+            // Trigger le change pour reset le highlight du bon critère
+            $input.dispatchEvent(new Event('change'));
+          }
+        });
+
+        //this.enableHighlight();
+      }
+    });
+  }
+
   saveStatus(newStatus: string) {
     // let savedStatus = JSON.parse(localStorage.getItem('accessibilityTesterResults')) || {
     //   "user": {},
@@ -69,7 +125,7 @@ export default class CriteriaCard {
     // savedStatus.user[window.location.pathname] = savedStatus.user[window.location.pathname] || {};
 
     // // Sauvegarde le status dans le user
-    // savedStatus.user[window.location.pathname][this.criterionNumber] = newStatus;
+    // savedStatus.user[window.location.pathname][this.criteriaNumber] = newStatus;
 
     // // Met à jour le localStorage
     // localStorage.setItem('accessibilityTesterResults', JSON.stringify(savedStatus));

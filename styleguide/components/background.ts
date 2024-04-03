@@ -26,16 +26,10 @@ class Background {
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
-    console.log('Message received to background', request);
-    if(!request.tabId) {
-      console.error('No tabId provided');
-      return false;
+    if(request.tabId) {
+      this.tabId = request.tabId;
     }
-    this.tabId = request.tabId;
     switch(request.action) {
-      case "runTests":
-        this.runTests();
-        break;
       case "zoomIn":
         this.zoomIn();
         break;
@@ -57,22 +51,6 @@ class Background {
   zoomBack() {
     chrome.tabs.getZoom(this.tabId, () => {
       chrome.tabs.setZoom(this.tabId, this.initialZoomFactor); // Set zoom back to initial value
-    });
-  }
-
-  runTests() {
-    console.log('Running tests!!');
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs: chrome.tabs.Tab[]) => {
-      if(!tabs[0]) {
-        console.error('No active tab found');
-        return false;
-      }
-      if(!tabs[0].id) {
-        console.error('No tab id found');
-        return false;
-      }
-      console.log('Sending message to tab', tabs[0].id);
-      chrome.tabs.sendMessage(tabs[0].id, {action: "runTests"});
     });
   }
 }

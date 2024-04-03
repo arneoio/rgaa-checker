@@ -26,20 +26,25 @@ class RGAACheckerContent {
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
-    console.log('Message received in content', request);
+    console.log('Message received in content fron background', request);
     switch(request.action) {
       case "runTests":
-        this.runTests();
+        console.log('Running tests from devtools');
+        this.runTests(sendResponse);
         break;
     }
 
     return true;
   }
 
-  runTests() {
-    console.log('Running tests!!');
+  runTests(sendResponse: any) {
     let accessibilityTester = new AccessibilityTester();
-    return accessibilityTester.runTests();
+    let testJsonResult = accessibilityTester.runTests();
+    chrome.runtime.sendMessage({
+      action: 'testsCompleted',
+      results: testJsonResult });
+    sendResponse(testJsonResult);
+    return testJsonResult;
   }
 }
 

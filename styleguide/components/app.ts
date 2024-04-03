@@ -7,6 +7,7 @@ import TopicList from './15-molecules/topic-list/topic-list';
 import Header from './20-organisms/header/header';
 import './app.scss';
 import Summary from './20-organisms/summary/summary';
+import Devtools from './25-templates/devtools/devtools';
 
 var App = {
   init: function () {
@@ -14,6 +15,7 @@ var App = {
     this.HIGHLIGHT_ID = 'arneo-browser-highlight';
 
     this.$main = document.querySelector('.js-main');
+    this.criteriaCardList = [];
 
     // Inits elements common to every pages
     this.initLayout();
@@ -24,18 +26,8 @@ var App = {
 
     this.initOrganisms();
 
-    // Send message to background script to notify that the extension is loaded
-    if (typeof browser !== 'undefined') {
-      browser.runtime.sendMessage({
-        tabId: chrome.devtools.inspectedWindow.tabId,
-        action: 'runTests',
-      });
-    } else {
-      chrome.runtime.sendMessage({
-        tabId: chrome.devtools.inspectedWindow.tabId,
-        action: 'runTests',
-      });
-    }
+    let devtools = new Devtools();
+    devtools.runTests(this.criteriaCardList);
   },
 
   initLayout: function () {
@@ -102,7 +94,8 @@ var App = {
       $criteriaCardList.forEach(($criteriaCard: HTMLElement) => {
         const criteriaNumber = $criteriaCard.dataset.criteria;
         if (criteriaNumber) {
-          new CriteriaCard($criteriaCard);
+          let criteriaCard = new CriteriaCard($criteriaCard);
+          this.criteriaCardList.push(criteriaCard);
         }
       });
     }

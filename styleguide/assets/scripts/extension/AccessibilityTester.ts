@@ -158,11 +158,6 @@ export default class AccessibilityTester {
 
     this.loadUserResults();
 
-    // const criteriaUpdatedEvent = new Event('rgaachecker-initialized', {
-    //   bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
-    //   cancelable: true, // L'événement peut être annulé
-    // });
-    // document.body.dispatchEvent(criteriaUpdatedEvent);
     return jsonResult;
   }
 

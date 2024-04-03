@@ -59,36 +59,6 @@ export default abstract class BaseCriterion implements ICriterion {
     }
   }
 
-  initHighlight() {
-    if(this.isTestMode) {
-      return;
-    }
-
-    // Affiche le switch
-    const $highlightSwitch = this.$criteriaCard.querySelector('.js-criteriaCard__highlightSwitch');
-    ($highlightSwitch.querySelector('.js-toggleSwitch__label') as HTMLElement).innerText = this.getHighlightSwitchLabel();
-    $highlightSwitch.classList.remove('-hidden');
-
-    // Ajoute le listener sur le switch
-    const $input = $highlightSwitch.querySelector('input') as HTMLInputElement;
-    $input.addEventListener('change', () => {
-      if (!$input.checked) {
-        this.resetHighlight();
-      } else {
-        // Désactive les autres highlight
-        Array.from(document.querySelectorAll('.js-criteriaCard__highlightSwitch input:checked')).forEach(($input: HTMLInputElement) => {
-          if ($input !== $highlightSwitch.querySelector('input')) {
-            $input.checked = false;
-            // Trigger le change pour reset le highlight du bon critère
-            $input.dispatchEvent(new Event('change'));
-          }
-        });
-
-        this.enableHighlight();
-      }
-    });
-  }
-
   updateCriteria(criteriaNumber: string, status: string, verification?: string) {
     return;
     if (this.isTestMode) {
@@ -108,16 +78,7 @@ export default abstract class BaseCriterion implements ICriterion {
     let $criteriaSelector = $criteriaCard.querySelector(`.js-criteriaSelector__link[data-status="${status}"]`) as HTMLElement;
 
     // Trigger click on criteriaSelector to update its status
-    if (!this.isInitialTestDone) {
-      const initializedEvent = new Event('rgaachecker-criteria-initialized', {
-        bubbles: true,
-        cancelable: true,
-      });
-
-      $criteriaSelector.dispatchEvent(initializedEvent);
-    } else {
       $criteriaSelector.click();
-    }
   }
 
   updateTest(testNumber: string, status: string) {
@@ -138,6 +99,7 @@ export default abstract class BaseCriterion implements ICriterion {
 
   formatJSON(): any {
     let result = {
+      topicNumber: this.topicNumber,
       criteriaNumber: this.criteriaNumber,
       status: this.status,
       messageList: this.messageList,
@@ -234,8 +196,7 @@ export default abstract class BaseCriterion implements ICriterion {
   resetHighlight() {
     document.querySelectorAll('*').forEach(($element: HTMLElement) => {
       $element.style.opacity = null; $element.style.outline = null;
-    }
-    );
+    });
     // Remove all highlights
   }
 
