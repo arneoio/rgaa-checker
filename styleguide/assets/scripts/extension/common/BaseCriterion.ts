@@ -30,6 +30,7 @@ export default abstract class BaseCriterion implements ICriterion {
   elementList: Array<HTMLElement> = [];
   testList: any = {};
   HIGHLIGHT_CONTENT_MAX_LENGTH: number = 100;
+  isHighlightActive: boolean = false;
 
   constructor(isTestMode: boolean = false) {
     this.isTestMode = isTestMode;
@@ -40,7 +41,6 @@ export default abstract class BaseCriterion implements ICriterion {
     this.topicNumber = parseInt(criteriaNumber.split('.')[0]);
     this.topicSlug = this.getTopicSlug(this.topicNumber);
     this.criteriaNumber = parseInt(criteriaNumber.split('.')[1]);
-    this.$criteriaCard = document.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     this.querySelector = '';
   }
 
@@ -60,39 +60,11 @@ export default abstract class BaseCriterion implements ICriterion {
   }
 
   updateCriteria(criteriaNumber: string, status: string, verification?: string) {
-    return;
-    if (this.isTestMode) {
-      return;
-    }
-    let $criteriaCard = document.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
-    if (!$criteriaCard) {
-      return;
-    }
-    $criteriaCard.dataset.status = status;
-
-    if (verification) {
-      let $criteriaVerification = $criteriaCard.querySelector('.js-criteriaCard__verification') as HTMLElement;
-      $criteriaVerification.innerHTML = verification;
-    }
-
-    let $criteriaSelector = $criteriaCard.querySelector(`.js-criteriaSelector__link[data-status="${status}"]`) as HTMLElement;
-
-    // Trigger click on criteriaSelector to update its status
-      $criteriaSelector.click();
+    // TODO: remove
   }
 
   updateTest(testNumber: string, status: string) {
-    return;
-    if (this.isTestMode) {
-      return;
-    }
-
-    let $criteriaTest = document.querySelector(`.js-criteriaCard__test__number[data-test="${testNumber}"]`) as HTMLElement;
-    if (!$criteriaTest) {
-      return;
-    }
-
-    $criteriaTest.dataset.status = status;
+    // TODO: remove
   }
 
   abstract runTest(): string;
@@ -193,25 +165,32 @@ export default abstract class BaseCriterion implements ICriterion {
     console.groupEnd();
   };
 
+  disableHighlight() {
+    if(this.isHighlightActive) {
+      this.resetHighlight();
+      this.isHighlightActive = false;
+    }
+  }
+
   resetHighlight() {
+    // Remove all highlights
+    this.isHighlightActive = false;
     document.querySelectorAll('*').forEach(($element: HTMLElement) => {
       $element.style.opacity = null; $element.style.outline = null;
     });
-    // Remove all highlights
   }
 
   enableHighlight() {
+    this.isHighlightActive = true;
     this.activateHighlight();
+    return this.getHighlightedElements();
   }
 
   activateHighlight() {
-    const $highlightSwitch = this.$criteriaCard.querySelector('.js-criteriaCard__highlightSwitch');
-
     // Retourne le tableau pour manipuler les éléments dans l'ordre inverse, optimisation pour le hideRecursive
-    this.querySelectorList = [...this.getHighlightedElements().reverse()];
-    if ($highlightSwitch.querySelector('input').checked) {
-      this.hideRecursive(document.body);
-    }
+    let $highlightElementList = this.getHighlightedElements();
+    this.querySelectorList = [...$highlightElementList.reverse()];
+    this.hideRecursive(document.body);
   }
 
   hideRecursive($element: HTMLElement, canBeHidden: boolean = true): boolean {

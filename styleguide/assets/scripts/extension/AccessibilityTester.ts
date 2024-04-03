@@ -134,7 +134,6 @@ export default class AccessibilityTester {
   }
 
   runTests() {
-    console.log('AccessibilityTester.runTests');
     this.loadSavedData();
     var jsonResult = this.runCriteriaTests();
 
@@ -173,7 +172,6 @@ export default class AccessibilityTester {
       this.pageResults[key] = criteraStatus;
     });
 
-    console.log('Résultats', jsonResult);
     return jsonResult;
   }
 
@@ -194,6 +192,40 @@ export default class AccessibilityTester {
         $togglerText.innerText = userResults[key];
       }
     });
+  }
 
+  enableHighlight(topicNumber: string, criteriaNumber: string) {
+    console.log('Enable highlight', topicNumber, criteriaNumber);
+    let criterion = this.criterionList[topicNumber + '.' + criteriaNumber];
+    let highlightJsonList: any[] = [];
+
+    // Reset all highlights except the one to enable
+    Object.keys(this.criterionList).forEach((key: string) => {
+      if (key !== topicNumber + '.' + criteriaNumber) {
+        this.criterionList[key].disableHighlight();
+      } else {
+        let $highlightElementList = criterion.enableHighlight();
+
+        $highlightElementList.forEach(($highlightElement: HTMLElement, index: number) => {
+          highlightJsonList.push({
+            tag: $highlightElement.tagName,
+            text: criterion.getHighlightListContent($highlightElement),
+            isVisible: $highlightElement.checkVisibility({
+              opacityProperty: true,
+              visibilityProperty: true,
+            } as any) // Obligé de mettre "any", opacityProperty n'est pas reconnu
+          });
+        });
+      }
+    });
+
+    return highlightJsonList;
+  }
+
+  disableHighlight() {
+    console.log('Reset highlight');
+    Object.keys(this.criterionList).forEach((key: string) => {
+      this.criterionList[key].disableHighlight();
+    });
   }
 }

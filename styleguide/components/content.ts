@@ -16,7 +16,10 @@
 import AccessibilityTester from '../assets/scripts/extension/AccessibilityTester';
 
 class RGAACheckerContent {
+  accessibilityTester: AccessibilityTester;
+
   constructor() {
+    this.accessibilityTester = new AccessibilityTester();
     this.init();
   }
 
@@ -26,11 +29,19 @@ class RGAACheckerContent {
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
-    console.log('Message received in content fron background', request);
     switch(request.action) {
       case "runTests":
-        console.log('Running tests from devtools');
         this.runTests(sendResponse);
+        break;
+      case "enableHighlight":
+        this.enableHighlight(request.topicNumber, request.criteriaNumber, sendResponse);
+        break;
+      case "disableHighlight":
+        this.disableHighlight(sendResponse);
+        break;
+      default:
+        console.log('Unknown action: ' + request.action);
+        sendResponse({});
         break;
     }
 
@@ -38,13 +49,29 @@ class RGAACheckerContent {
   }
 
   runTests(sendResponse: any) {
-    let accessibilityTester = new AccessibilityTester();
-    let testJsonResult = accessibilityTester.runTests();
+    let testJsonResult = this.accessibilityTester.runTests();
     chrome.runtime.sendMessage({
       action: 'testsCompleted',
-      results: testJsonResult });
+      result: testJsonResult
+    });
     sendResponse(testJsonResult);
     return testJsonResult;
+  }
+
+  enableHighlight(topicNumber: string, criteriaNumber: string, sendResponse: any) {
+    let highlightedElementList = this.accessibilityTester.enableHighlight(topicNumber, criteriaNumber);
+    chrome.runtime.sendMessage({
+      action: 'elementsHightlighted',
+      result: highlightedElementList
+    });
+    sendResponse(true);
+    return true;
+  }
+
+  disableHighlight(sendResponse: any) {
+    this.accessibilityTester.disableHighlight();
+    sendResponse(true);
+    return true;
   }
 }
 

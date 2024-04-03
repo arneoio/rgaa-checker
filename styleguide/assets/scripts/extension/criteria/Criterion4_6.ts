@@ -27,7 +27,7 @@ export default class Criterion4_6 extends BaseCriterion {
     this.querySelector = `audio, video, object, svg, canvas, [type='application/x-shockwave-flash'], bgsound`;
     this.messageList = {
       'NT': 'Des médias temporels sont présents. Vérifier si leur audiodescription est pertinente.',
-      'NA': 'Aucun média temporel.'
+      'NA': "Aucun média temporel n'est présent dans la page"
     }
   }
 

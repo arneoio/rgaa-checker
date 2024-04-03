@@ -19,7 +19,6 @@ export default class MessageSender {
             reject('No tab id found');
             return;
           }
-          console.log('Sending message to tab', tabs[0].id);
 
           chrome.tabs.sendMessage(tabs[0].id, messageData, (response) => {
             resolve(response);

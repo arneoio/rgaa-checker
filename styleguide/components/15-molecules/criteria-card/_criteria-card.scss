@@ -50,16 +50,15 @@
 }
 
 .m-criteriaCard__verification {
-    &:empty {
-        display: none;
-    }
-
+    width: 100%;
+    min-height: 100px;
     border: 1px solid currentColor;
     background-color: var(--color-grey-6);
     border-radius: 4px;
     padding: 4px 8px;
     font-size: 10px;
     line-height: 1.4;
+    resize: vertical;
 
     span {
         font-weight: 700;

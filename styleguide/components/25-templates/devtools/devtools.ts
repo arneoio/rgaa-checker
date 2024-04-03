@@ -21,8 +21,7 @@ export default class Devtools {
   handleMessage(request: any, sender: any, sendResponse: any) {
     switch (request.action) {
       case 'testsCompleted':
-        console.log('Tests completed from content', request.results);
-        this.parseResults(request.results);
+        this.parseResults(request.result);
 
         const criteriaUpdatedEvent = new Event('rgaachecker-initialized', {
           bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
@@ -30,11 +29,13 @@ export default class Devtools {
         });
         document.body.dispatchEvent(criteriaUpdatedEvent);
         break;
+      case 'elementsHightlighted':
+        console.log('Elements highlighted from content', request.result);
+        break;
     }
   }
 
   parseResults(criteriaList: any) {
-    console.log('Parsing results', criteriaList);
     // results data structure
     // 4.2: {
     //   topicNumber: 4,
@@ -42,7 +43,7 @@ export default class Devtools {
     //   highlightSwitchLabel:"Highlight",
     //   messageList:{NT: 'Toutes les images de la page ont une alternative t…ici toutes les images sans alternative textuelle.', NC: "Toutes les images de la page n'ont pas d'alternati…ici toutes les images sans alternative textuelle.", NA: "Aucune image n'a été trouvée dans la page./!\\ En l…ici toutes les images sans alternative textuelle."},
     //   status:"NT",
-    //   testList:{1: 'NT', 2: 'NA', 3: 'NA', 4: 'NA', 5: 'NA', 6: 'NA', 7: 'NA', 8: 'NA'}
+    //   testList:{1: 'NT', 2: 'NA'}
     // }
     Object.keys(criteriaList).forEach((key: string) => {
       let criterionData = criteriaList[key];

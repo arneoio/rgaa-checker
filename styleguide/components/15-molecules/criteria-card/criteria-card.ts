@@ -9,6 +9,7 @@ export default class CriteriaCard {
   previousStatus: string;
   currentStatus: string;
   criteriaUpdatedEvent: Event;
+  messageList: any = {};
 
   constructor($element: HTMLElement) {
     this.$element = $element;
@@ -42,8 +43,8 @@ export default class CriteriaCard {
     let status = criterionData.status;
     this.$element.dataset.status = status;
     this.$element.classList.add('-checked');
+    this.messageList = criterionData.messageList || {'C': '', 'NC': '', 'NA': '', 'NT': ''};
 
-    console.log(`Updating criterion  ${this.topicNumber}.${this.criteriaNumber} with status ${status}`);
     let $statusLink = this.$statusSelector.querySelector(`.js-criteriaSelector__link[data-status="${status}"]`) as HTMLElement;
     this.updateCardStatus($statusLink);
     this.updateTests(criterionData.testList);
@@ -58,6 +59,7 @@ export default class CriteriaCard {
     (this.$toggler.querySelector('.js-criteriaSelector__togglerText') as HTMLElement).innerHTML = $link.innerHTML;
     this.$statusSelector.querySelector('.js-criteriaSelector__content').classList.remove('-expanded');
     this.$element.dataset.status = newStatus;
+    this.$element.querySelector('.js-criteriaCard__verification').innerHTML = this.messageList[newStatus] || '';
 
     if (saveUserState) {
       this.saveStatus(newStatus);
@@ -96,8 +98,7 @@ export default class CriteriaCard {
     $input.addEventListener('change', () => {
       if (!$input.checked) {
         console.log('Disable highlight');
-        MessageSender.sendMessage('resetHighlight');
-        //this.resetHighlight();
+        MessageSender.sendMessage('disableHighlight');
       } else {
         console.log('Enable highlight');
         MessageSender.sendMessage('enableHighlight', {topicNumber: this.topicNumber, criteriaNumber: this.criteriaNumber});
@@ -105,12 +106,8 @@ export default class CriteriaCard {
         Array.from(document.querySelectorAll('.js-criteriaCard__highlightSwitch input:checked')).forEach(($input: HTMLInputElement) => {
           if ($input !== $highlightSwitch.querySelector('input')) {
             $input.checked = false;
-            // Trigger le change pour reset le highlight du bon critère
-            $input.dispatchEvent(new Event('change'));
           }
         });
-
-        //this.enableHighlight();
       }
     });
   }
