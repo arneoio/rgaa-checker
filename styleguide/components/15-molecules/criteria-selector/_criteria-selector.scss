@@ -22,6 +22,7 @@
 
         + .m-criteriaSelector__content {
             border-radius: 0 0 4px 4px;
+            z-index: 5; // Over .o-topic__top.-sticky
         }
     }
 }

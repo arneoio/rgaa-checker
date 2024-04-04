@@ -25,21 +25,26 @@ export default class Criterion11_3 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
     this.querySelector = FormUtils.getFormFieldQuerySelector();
+    this.messageList = {
+      'NA': "Aucun champ de formulaire n'a été trouvé",
+      'NT': "Vérifiez si les étiquettes des champs de formulaire ayant la même fonction et répétées dans la page sont pertinentes."
+    };
   }
 
   runTest() {
     this.status = 'NA';
-    let message = "Aucun champ de formulaire n'a été trouvé";
     let $elementList = document.querySelectorAll(this.querySelector);
 
     if ($elementList.length > 0) {
-      status = 'NT';
-      message = "Vérifiez si les étiquettes des champs de formulaire ayant la même fonction et répétées dans la page sont pertinentes.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('11.3', status, message);
-    this.updateTest('11.3.1', status);
-    this.updateTest('11.3.2', status);
+    this.testList = {
+      '1': this.status,
+      '2': this.status,
+    };
+
+    this.elementList = Array.from($elementList) as HTMLElement[];
 
     return this.status;
   }

@@ -25,42 +25,44 @@ export default class Criterion11_9 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
     this.querySelector = FormUtils.getButtonQuerySelector();
+    this.messageList = {
+      'NC': "Certains boutons n’ont pas d’intitulé ou l’intitulé n'est pas pertinent.",
+      'NA': "Aucun bouton de formulaire n'a été trouvé.",
+      'NT': "Vérifiez si l'intitulé des boutons est pertinent."
+    };
   }
 
   runTest() {
     this.status = 'NA';
-    let message = "Aucun bouton de formulaire n'a été trouvé.";
 
     let $elementList = Array.from(document.querySelectorAll(this.querySelector));
     let noLabelElementList: Array<HTMLElement> = [];
     let noConcordantElementList: any = [];
 
     if ($elementList.length > 0) {
-      status = 'NT';
-      message = "Vérifiez si l'intitulé des boutons est pertinent.";
+      this.status = 'NT';
 
       $elementList.forEach(($element: HTMLElement) => {
         const accessibleLabel = FormUtils.getButtonAccessibleLabel($element);
         const visibleLabel = FormUtils.getButtonVisibleLabel($element);
 
         if (!accessibleLabel) {
-          status = 'NC';
-          message = 'Certains boutons n’ont pas d’intitulé.';
+          this.status = 'NC';
           noLabelElementList.push($element);
         }
 
         // Le nom accessible doit contenir au minimum le nom visible
         if (accessibleLabel && visibleLabel && !accessibleLabel.includes(visibleLabel.trim())) {
-          status = 'NC';
-          message = "Certains libellés accessibles ne contiennent pas reprennent pas le libellé visible.";
+          this.status = 'NC';
           noConcordantElementList.push({ $element, visibleLabel, accessibleLabel });
         }
       });
     }
 
-    this.updateCriteria('11.9', status, message);
-    this.updateTest('11.9.1', noLabelElementList.length ? 'NC' : 'NT');
-    this.updateTest('11.9.2', noConcordantElementList.length ? 'NC' : 'C');
+    this.testList = {
+      '1': noLabelElementList.length ? 'NC' : 'NT',
+      '2': noConcordantElementList.length ? 'NC' : 'C'
+    };
 
     if (noLabelElementList.length) {
       this.logResults('11.9.1 - Liste des boutons sans intitulé', noLabelElementList);

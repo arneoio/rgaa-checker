@@ -26,6 +26,11 @@ import BaseCriterion from '../common/BaseCriterion';
 
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
+    this.messageList = {
+      'C': "Les déclarations CSS de color de background sont correctement définies.",
+      'NC': "Les déclarations CSS de color de background ne sont pas correctement définies pour tous les textes.",
+      'NA': "Aucun élément texte n'a été trouvé."
+    };
   }
 
   getHighlightedElements(): Array<HTMLElement> {
@@ -68,7 +73,7 @@ import BaseCriterion from '../common/BaseCriterion';
 
   runTest() {
     this.status = 'NA';
-    let message = "Aucun élément texte n'a été trouvé.";
+    let message = '';
     let test1Status = 'NA';
     let test2Status = 'NA';
     let test3Status = 'NA';
@@ -81,7 +86,7 @@ import BaseCriterion from '../common/BaseCriterion';
 
     // Best practice and convention is to get color and background-color on body element
     if(this.hasBackgroundColor(document.body) && this.hasColor(document.body)) {
-      status = 'C';
+      this.status = 'C';
       message = "Les déclarations CSS de color de background sont déclarées dans le body.";
       test1Status = 'C';
       test2Status = 'C';
@@ -100,7 +105,7 @@ import BaseCriterion from '../common/BaseCriterion';
           }
         }
 
-        status = allTextElementsHaveBackgroundColor && allTextElementsHaveColor ? 'C' : 'NC';
+        this.status = allTextElementsHaveBackgroundColor && allTextElementsHaveColor ? 'C' : 'NC';
         test1Status = allTextElementsHaveBackgroundColor ? 'C' : 'NC';
         test2Status = allTextElementsHaveColor ? 'C' : 'NC';
         message = allTextElementsHaveBackgroundColor ?
@@ -114,7 +119,7 @@ import BaseCriterion from '../common/BaseCriterion';
 
     let elementWithBackgroundImageList = this.getElementWithBackgroundImageList(document.body);
     if(elementWithBackgroundImageList.length > 0) {
-      status = 'NT';
+      this.status = 'NT';
       message += "<br />Certains éléments ont des images de fond à vérifier.";
       test3Status = 'NT';
     } else {
@@ -122,10 +127,11 @@ import BaseCriterion from '../common/BaseCriterion';
       message += "<br />Aucun élément n'a d'image de fond.";
     }
 
-    this.updateCriteria('10.5', status, message);
-    this.updateTest('10.5.1', test1Status);
-    this.updateTest('10.5.2', test2Status);
-    this.updateTest('10.5.3', test3Status);
+    this.testList = {
+      '1': test1Status,
+      '2': test2Status,
+      '3': test3Status
+    };
 
     if (elementWithBackgroundImageList.length > 0) {
       this.logResults('10.5 - Éléments avec background image', elementWithBackgroundImageList);
@@ -136,6 +142,8 @@ import BaseCriterion from '../common/BaseCriterion';
     if($backgroundElementList.length > 0) {
       this.logResults('10.5 - Éléments sans background', $backgroundElementList);
     }
+
+    this.elementList = $colorElementList.concat($backgroundElementList).concat(elementWithBackgroundImageList);
 
     return 'NT';
   }

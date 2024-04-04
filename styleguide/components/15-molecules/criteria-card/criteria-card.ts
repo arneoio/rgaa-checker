@@ -113,18 +113,18 @@ export default class CriteriaCard {
   }
 
   saveStatus(newStatus: string) {
-    // let savedStatus = JSON.parse(localStorage.getItem('accessibilityTesterResults')) || {
-    //   "user": {},
-    //   "runner": {},
-    // };
+    let savedStatus = JSON.parse(localStorage.getItem('rgaaCheckerResults')) || {
+      "user": {},
+      "runner": {},
+    };
 
-    // // Créé une entrée pour la page courante si elle n'existe pas
-    // savedStatus.user[window.location.pathname] = savedStatus.user[window.location.pathname] || {};
+    // Créé une entrée pour la page courante si elle n'existe pas
+    savedStatus.user[window.location.href] = savedStatus.user[window.location.href] || {};
 
-    // // Sauvegarde le status dans le user
-    // savedStatus.user[window.location.pathname][this.criteriaNumber] = newStatus;
+    // Sauvegarde le status dans le user
+    savedStatus.user[window.location.href][this.criteriaNumber] = newStatus;
 
-    // // Met à jour le localStorage
-    // localStorage.setItem('accessibilityTesterResults', JSON.stringify(savedStatus));
+    // Met à jour le localStorage
+    localStorage.setItem('rgaaCheckerResults', JSON.stringify(savedStatus));
   }
 }

@@ -23,6 +23,11 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion10_1 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
+    this.messageList = {
+      'NT': "Désactivez les feuilles de styles pour valider le test 10.1.3 en vérifiant que les espaces n'ont pas été utilisés pour simuler des tableaux ou des colonnes ni pour séparer les lettres d'un mot.",
+      'NC': "Des éléments de présentation sont utilisés dans le site web.",
+      'C': "Aucun élément de présentation n'est utilisé dans le site web."
+    };
   }
 
   resetHighlight(): void {
@@ -47,12 +52,10 @@ export default class Criterion10_1 extends BaseCriterion {
 
   runTest() {
     this.status = 'NT';
-    let message = "Désactivez les feuilles de styles pour valider le test 10.1.3 en vérifiant que les espaces n'ont pas été utilisés pour simuler des tableaux ou des colonnes ni pour séparer les lettres d'un mot.";
 
     const presentationElementList = document.querySelectorAll('basefont, big, blink, center, font, marquee, s, strike, tt');
     if (presentationElementList.length > 0) {
-      status = 'NC';
-      message = "Des éléments de présentation sont utilisés dans le site web.";
+      this.status = 'NC';
     }
 
     const presentationAttributes = [
@@ -72,14 +75,14 @@ export default class Criterion10_1 extends BaseCriterion {
     const mergedPresentationAttributeList = Array.from(presentationAttributeList).concat(Array.from(sizeAttributeList)).concat(Array.from(widthAttributeList)).concat(Array.from(heightAttributeList));
 
     if (mergedPresentationAttributeList.length > 0) {
-      status = 'NC';
-      message = "Des attributs de présentation sont utilisés dans le site web.";
+      this.status = 'NC';
     }
 
-    this.updateCriteria('10.1', status, message);
-    this.updateTest('10.1.1', presentationElementList.length > 0 ? 'NC' : 'C');
-    this.updateTest('10.1.2', mergedPresentationAttributeList.length > 0 ? 'NC' : 'C');
-    this.updateTest('10.1.3', 'NT');
+    this.testList = {
+      '1': presentationElementList.length > 0 ? 'NC' : 'C',
+      '2': mergedPresentationAttributeList.length > 0 ? 'NC' : 'C',
+      '3': 'NT',
+    };
 
     if (presentationElementList.length > 0) {
       this.logResults('10.1 - Liste des éléments de présentation', presentationElementList);
@@ -88,6 +91,8 @@ export default class Criterion10_1 extends BaseCriterion {
     if (mergedPresentationAttributeList.length > 0) {
       this.logResults('10.1 - Liste des attributs de présentation', mergedPresentationAttributeList);
     }
+
+    this.elementList = Array.from(presentationElementList).concat(Array.from(mergedPresentationAttributeList)) as HTMLElement[];
 
     return this.status;
   }

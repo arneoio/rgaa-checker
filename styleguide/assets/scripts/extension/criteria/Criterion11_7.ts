@@ -25,21 +25,26 @@ export default class Criterion11_7 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
     this.querySelector = FormUtils.getGroupFieldQuerySelector();
+    this.messageList = {
+      'NA': "Aucun regroupement de champ n'a été trouvé.",
+      'NT': "Vérifiez si les légendes associés aux regroupements de champs sont pertinentes."
+    };
   }
 
   runTest() {
     this.status = 'NA';
-    let message = "Aucun regroupement de champ n'a été trouvé.";
 
     let $elementList = document.querySelectorAll(this.querySelector);
 
     if ($elementList.length > 0) {
-      status = 'NT';
-      message = "Vérifiez si les légendes associés aux regroupements de champs sont pertinentes.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('11.7', status, message);
-    this.updateTest('11.7.1', status);
+    this.testList = {
+      '1': this.status
+    };
+
+    this.elementList = Array.from($elementList) as HTMLElement[];
 
     return this.status;
   }

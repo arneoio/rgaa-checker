@@ -25,6 +25,11 @@ export default class Criterion10_4 extends BaseCriterion {
 
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
+    this.messageList = {
+      'NT': "Zoomez le texte à 200% et vérifiez s'il reste lisible.",
+      'C': "Le texte reste lisible à 200%.",
+      'NC': "Le texte n'est pas lisible à 200%."
+    };
   }
 
   getHighlightSwitchLabel() {
@@ -41,11 +46,11 @@ export default class Criterion10_4 extends BaseCriterion {
 
   runTest() {
     this.status = 'NT';
-    let message = "Zoomez le texte à 200% et vérifiez s'il reste lisible.";
 
-    this.updateCriteria('10.4', status, message);
-    this.updateTest('10.4.1', status);
-    this.updateTest('10.4.2', status);
+    this.testList = {
+      '1': this.status,
+      '2': this.status
+    };
 
     return 'NT';
   }

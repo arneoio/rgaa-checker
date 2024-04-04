@@ -25,12 +25,17 @@ export default class Criterion11_1 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
     this.querySelector = FormUtils.getFormFieldQuerySelector();
+    this.messageList = {
+      'NT': "Certains champs de formulaire ont une étiquette invisible pour les utilisateurs, vérifiez les manuellement",
+      'NA': "Aucun champ de formulaire n'a été trouvé",
+      'C': 'Tous les champs de formulaire ont une étiquette',
+      'NC': "Certains champs de formulaire n'ont pas d'étiquette"
+    };
   }
 
   runTest() {
     this.status = 'NA';
     let statusTest1 = 'NA';
-    let message = "Aucun champ de formulaire n'a été trouvé";
     let $elementList = document.querySelectorAll(this.querySelector);
     let isCriteriaValid = true;
     let areLabelsValid = true;
@@ -66,26 +71,26 @@ export default class Criterion11_1 extends BaseCriterion {
       if (isCriteriaValid) {
         statusTest1 = 'C';
         if (hasInvisibleLabel) {
-          status = 'NT';
-          message = "Certains champs de formulaire ont une étiquette invisible pour les utilisateurs, vérifiez les manuellement";
+          this.status = 'NT';
         } else {
-          status = 'C';
-          message = 'Tous les champs de formulaire ont une étiquette';
+          this.status = 'C';
         }
       } else {
-        status = 'NC';
+        this.status = 'NC';
         statusTest1 = 'NC';
-        message = "Certains champs de formulaire n'ont pas d'étiquette";
       }
     }
 
-    this.updateCriteria('11.1', status, message);
-    this.updateTest('11.1.1', statusTest1);
-    this.updateTest('11.1.2', $elementList.length > 0 ? (areLabelsValid ? 'C' : 'NC') : 'NA');
+    this.testList = {
+      '1': statusTest1,
+      '2': $elementList.length > 0 ? (areLabelsValid ? 'C' : 'NC') : 'NA'
+    };
 
     if ($elementList.length > 0) {
       this.logResults('11.1 - Liste des champs de formulaire', $elementList);
     }
+
+    this.elementList = Array.from($elementList) as HTMLElement[];
 
     return this.status;
   }

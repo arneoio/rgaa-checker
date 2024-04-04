@@ -60,10 +60,6 @@ export default class Criterion9_1 extends BaseCriterion {
       }
     }
 
-    if(headingList.length > 0) {
-      this.logResults('9.1 - Liste des heading', headingList);
-    }
-
     this.testList = {
       '1': this.status,
       '2': this.status === 'NA' ? 'NA' : 'NT',
@@ -71,6 +67,10 @@ export default class Criterion9_1 extends BaseCriterion {
     };
 
     this.elementList = headingList;
+
+    if(headingList.length > 0) {
+      this.logResults('9.1 - Liste des heading', headingList);
+    }
 
     return this.status;
   }

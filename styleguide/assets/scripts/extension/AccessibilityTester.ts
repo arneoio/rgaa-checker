@@ -70,7 +70,7 @@ export default class AccessibilityTester {
   pageResults: any;
 
   constructor() {
-    this.localStorageKey = 'accessibilityTesterResults';
+    this.localStorageKey = 'rgaaCheckerResults';
 
     this.criterionList = {
       "1.1": new Criterion1_1(),

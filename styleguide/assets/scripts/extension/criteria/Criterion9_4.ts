@@ -24,11 +24,14 @@ export default class Criterion9_4 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
     this.querySelector = 'q, blockquote';
+    this.messageList = {
+      'NT': 'Vérifiez si les citations sont correctes et s\'il n\'en manque pas.',
+      'NA': "Aucune citation n'a été trouvée"
+    };
   }
 
   runTest() {
     this.status = 'NT';
-    let message = "Vérifiez si les citations sont correctes et s'il n'en manque pas.";
     let $elementList = document.querySelectorAll(this.querySelector);
 
     // 9.4.1: q
@@ -36,13 +39,19 @@ export default class Criterion9_4 extends BaseCriterion {
     // 9.4.2: blockquote
     let $blockquoteList = document.querySelectorAll('blockquote');
 
-    this.updateCriteria('9.4', status, message);
     this.updateTest('9.4.1', $qList.length > 0 ? 'NT' : 'NA');
     this.updateTest('9.4.2', $blockquoteList.length > 0 ? 'NT' : 'NA');
+
+    this.testList = {
+      '1': $qList.length > 0 ? 'NT' : 'NA',
+      '2': $blockquoteList.length > 0 ? 'NT' : 'NA'
+    };
 
     if($elementList.length > 0) {
       this.logResults('9.4 - Liste des citations', $elementList);
     }
+
+    this.elementList = Array.from($elementList) as HTMLElement[];
 
     return this.status;
   }

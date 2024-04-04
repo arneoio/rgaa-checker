@@ -24,22 +24,26 @@ import FormUtils from '../utils/FormUtils';
 export default class Criterion11_12 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
+    this.messageList = {
+      'NC': "Les données saisies ne peuvent pas être modifiées, mises à jour ou récupérées par l’utilisateur.",
+      'NA': "Aucun formulaire n'a été trouvé.",
+      'NT': "Vérifiez le critère manuellement."
+    };
   }
 
   runTest() {
     this.status = 'NA';
-    let message = "Aucun formulaire n'a été trouvé.";
 
     let $elementList = Array.from(document.querySelectorAll('form'));
 
     if ($elementList.length > 0) {
-      status = 'NT';
-      message = "Vérifiez le critère manuellement.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('11.12', status, message);
-    this.updateTest('11.12.1', status);
-    this.updateTest('11.12.2', status);
+    this.testList = {
+      '1': this.status,
+      '2': this.status
+    };
 
     return this.status;
   }
