@@ -66,8 +66,8 @@ export default class Criterion10_1 extends BaseCriterion {
     const sizeAttributeList = document.body.querySelectorAll('[size]:not(select)');
 
     // Vérifie si l'attribut width ou height est utilisé sauf sur les balises img, object, canvas, embed, svg
-    const widthAttributeList = document.body.querySelectorAll('[width]:not(img, object, canvas, embed, svg)');
-    const heightAttributeList = document.body.querySelectorAll('[height]:not(img, object, canvas, embed, svg)');
+    const widthAttributeList = document.body.querySelectorAll('[width]:not(img, object, canvas, embed, svg, image)');
+    const heightAttributeList = document.body.querySelectorAll('[height]:not(img, object, canvas, embed, svg, image)');
 
     const mergedPresentationAttributeList = Array.from(presentationAttributeList).concat(Array.from(sizeAttributeList)).concat(Array.from(widthAttributeList)).concat(Array.from(heightAttributeList));
 
