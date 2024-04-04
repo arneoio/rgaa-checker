@@ -1,0 +1,4 @@
+variants:
+- name: default
+  context:
+    version: X.Y.Z

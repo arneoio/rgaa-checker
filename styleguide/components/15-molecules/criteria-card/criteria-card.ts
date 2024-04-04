@@ -30,12 +30,12 @@ export default class CriteriaCard {
   }
 
   bindEvents() {
-    // Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link: HTMLElement) => {
-    //   $link.addEventListener('click', () => {
-    //     this.updateCardStatus($link, true);
-    //     document.dispatchEvent(this.criteriaUpdatedEvent);
-    //   });
-    // });
+    Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link: HTMLElement) => {
+      $link.addEventListener('click', () => {
+        this.updateCardStatus($link, true);
+        document.dispatchEvent(this.criteriaUpdatedEvent);
+      });
+    });
   }
 
   loadData(criterionData: any) {

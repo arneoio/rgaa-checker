@@ -24,8 +24,10 @@ class RGAACheckerContent {
   }
 
   init() {
-    console.log('Init RGAACheckerContent');
     chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+    chrome.runtime.sendMessage({
+      action: "pageLoaded"
+    });
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {

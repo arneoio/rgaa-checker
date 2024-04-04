@@ -1,3 +1,6 @@
-chrome.devtools.panels.create('RGAA Checker', 'images/icon64.png', 'rgaa-checker-panel.html', () => {
-  console.log('user switched to this panel');
+chrome.devtools.panels.create('RGAA Checker', 'images/icon64.png', 'rgaa-checker-panel.html', (panel) => {
+  console.log('Panel created');
+  panel.onShown.addListener((panelWindow) => {
+    chrome.runtime.sendMessage({ action: "panelShown" });
+  });
 });

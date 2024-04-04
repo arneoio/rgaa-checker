@@ -1,3 +1,5 @@
+import './app.scss';
+
 import ButtonExpand from './00-base/utils/button-expand';
 import TabUtil from './00-base/utils/tab';
 import Draggable from './00-base/utils/draggable';
@@ -5,7 +7,6 @@ import CriteriaCard from './15-molecules/criteria-card/criteria-card';
 import FilterList from './15-molecules/filter-list/filter-list';
 import TopicList from './15-molecules/topic-list/topic-list';
 import Header from './20-organisms/header/header';
-import './app.scss';
 import Summary from './20-organisms/summary/summary';
 import Devtools from './25-templates/devtools/devtools';
 
@@ -26,8 +27,12 @@ var App = {
 
     this.initOrganisms();
 
-    let devtools = new Devtools();
-    devtools.runTests(this.criteriaCardList);
+    this.devtools = new Devtools(this.criteriaCardList);
+    this.runTests();
+  },
+
+  runTests: function () {
+    this.devtools.runTests();
   },
 
   initLayout: function () {

@@ -1,0 +1,20 @@
+.t-popup {
+    width: 390px;
+}
+
+.t-popup__main {
+    padding: 16px;
+    background-color: $color-grey-lighter;
+}
+
+.t-popup__text {
+    font: 14px/1.4 $text-font;
+
+    &:not(:last-child) {
+        margin-bottom: 8px;
+    }
+
+    a {
+        color: $primary-color-1;
+    }
+}

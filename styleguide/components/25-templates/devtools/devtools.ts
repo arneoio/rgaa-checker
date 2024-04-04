@@ -4,22 +4,29 @@ import MessageSender from "../../00-base/utils/message-sender";
 export default class Devtools {
   criteriaCardList: Array<any>;
 
-  constructor() {
-    this.init();
+  constructor(criteriaCardList: Array<any>) {
+    this.init(criteriaCardList);
   }
 
-  init() {
+  init(criteriaCardList: Array<any>) {
+    this.criteriaCardList = criteriaCardList;
     chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
   }
 
-  runTests(criteriaCardList: Array<any>) {
-    this.criteriaCardList = criteriaCardList;
-
+  runTests() {
     MessageSender.sendMessage('runTests');
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
     switch (request.action) {
+      case 'pageLoaded':
+        console.log('Page loaded, run tests');
+        this.runTests();
+        break;
+      case 'panelShown':
+        console.log('panel shown, run tests');
+        this.runTests();
+        break;
       case 'testsCompleted':
         this.parseResults(request.result);
 
