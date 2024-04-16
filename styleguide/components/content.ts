@@ -77,5 +77,4 @@ class RGAACheckerContent {
   }
 }
 
-console.log('Load RGAACheckerContent script');
 new RGAACheckerContent();

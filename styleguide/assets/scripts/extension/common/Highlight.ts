@@ -49,7 +49,6 @@ export default class Highlight {
 
   public activate(criterion: BaseCriterion) {
     let $highlightElementList: Array<HTMLElement> = criterion.getHighlightedElements();
-    console.log('activate highlight', $highlightElementList);
     this.clear();
     $highlightElementList.forEach(($highlightElement, index) => {
       this.addItem(index, $highlightElement, criterion);

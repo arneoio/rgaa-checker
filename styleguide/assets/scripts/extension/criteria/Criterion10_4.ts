@@ -37,12 +37,10 @@ export default class Criterion10_4 extends BaseCriterion {
   }
 
   activateHighlight(): void {
-    console.log('activate highlight');
     chrome.runtime.sendMessage({ action: "zoomIn" });
   }
 
   resetHighlight(): void {
-    console.log('resetHighlight highlight');
     chrome.runtime.sendMessage({ action: "zoomBack" });
   }
 
