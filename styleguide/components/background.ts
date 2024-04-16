@@ -22,10 +22,12 @@ class Background {
   }
 
   init() {
+    console.log('init backgruond');
     chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
+    console.log('background received message', request);
     if(request.tabId) {
       this.tabId = request.tabId;
     }
@@ -42,15 +44,25 @@ class Background {
   }
 
   zoomIn() {
-    chrome.tabs.getZoom(this.tabId, (currentZoomFactor) => {
-      this.initialZoomFactor = currentZoomFactor;
-      chrome.tabs.setZoom(this.tabId, 2); // Set zoom to 200%
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0) {
+        const tabId = tabs[0].id as number;
+        chrome.tabs.getZoom(tabId, (currentZoomFactor) => {
+          this.initialZoomFactor = currentZoomFactor;
+          chrome.tabs.setZoom(tabId, 2);
+        });
+      }
     });
   }
 
   zoomBack() {
-    chrome.tabs.getZoom(this.tabId, () => {
-      chrome.tabs.setZoom(this.tabId, this.initialZoomFactor); // Set zoom back to initial value
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0) {
+        const tabId = tabs[0].id as number;
+        chrome.tabs.getZoom(tabId, (currentZoomFactor) => {
+          chrome.tabs.setZoom(tabId, this.initialZoomFactor); // Zoom back to half, limited to 50%
+        });
+      }
     });
   }
 }

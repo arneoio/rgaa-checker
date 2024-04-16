@@ -46,4 +46,3 @@ export default class Criterion11_13 extends BaseCriterion {
     return this.status;
   }
 }
-

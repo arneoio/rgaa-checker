@@ -50,15 +50,19 @@
 }
 
 .m-criteriaCard__verification {
+    &:empty {
+        display: none;
+    }
+
     width: 100%;
-    min-height: 100px;
+    // min-height: 100px;
     border: 1px solid currentColor;
     background-color: var(--color-grey-6);
     border-radius: 4px;
     padding: 4px 8px;
     font-size: 10px;
     line-height: 1.4;
-    resize: vertical;
+    // resize: vertical;
 
     span {
         font-weight: 700;
@@ -79,7 +83,6 @@
     justify-content: space-between;
     gap: 8px;
     width: 100%;
-    z-index: 2; // Over next topic to see .m-criteriaCard__testListWrapper over
 }
 
 .m-criteriaCard__seeTestsLink {

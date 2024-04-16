@@ -97,10 +97,8 @@ export default class CriteriaCard {
     const $input = $highlightSwitch.querySelector('input') as HTMLInputElement;
     $input.addEventListener('change', () => {
       if (!$input.checked) {
-        console.log('Disable highlight');
         MessageSender.sendMessage('disableHighlight');
       } else {
-        console.log('Enable highlight');
         MessageSender.sendMessage('enableHighlight', {topicNumber: this.topicNumber, criteriaNumber: this.criteriaNumber});
         // Désactive les autres highlight
         Array.from(document.querySelectorAll('.js-criteriaCard__highlightSwitch input:checked')).forEach(($input: HTMLInputElement) => {

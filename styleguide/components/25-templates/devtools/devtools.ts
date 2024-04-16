@@ -29,7 +29,6 @@ export default class Devtools {
         break;
       case 'testsCompleted':
         this.parseResults(request.result);
-
         const criteriaUpdatedEvent = new Event('rgaachecker-initialized', {
           bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
           cancelable: true, // L'événement peut être annulé
@@ -37,7 +36,6 @@ export default class Devtools {
         document.body.dispatchEvent(criteriaUpdatedEvent);
         break;
       case 'elementsHightlighted':
-        console.log('Elements highlighted from content', request.result);
         break;
     }
   }

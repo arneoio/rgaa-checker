@@ -195,7 +195,6 @@ export default class AccessibilityTester {
   }
 
   enableHighlight(topicNumber: string, criteriaNumber: string) {
-    console.log('Enable highlight', topicNumber, criteriaNumber);
     let criterion = this.criterionList[topicNumber + '.' + criteriaNumber];
     let highlightJsonList: any[] = [];
 
