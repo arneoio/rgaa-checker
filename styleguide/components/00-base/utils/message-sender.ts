@@ -3,10 +3,6 @@ export default class MessageSender {
     let messageData = { action, ...data };
     if (typeof browser !== 'undefined') {
       return browser.runtime.sendMessage(messageData);
-      // return browser.tabs.query({active: true, currentWindow: true})
-      //   .then((tabs) => {
-      //     return browser.tabs.sendMessage(tabs[0].id, messageData);
-      //   });
     } else {
       return new Promise((resolve, reject) => {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -21,7 +17,7 @@ export default class MessageSender {
             return;
           }
 
-          chrome.tabs.sendMessage(tabs[0].id, messageData, (response) => {
+          chrome.runtime.sendMessage(messageData, (response) => {
             resolve(response);
           });
         });

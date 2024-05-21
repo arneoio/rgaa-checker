@@ -24,10 +24,12 @@ class RGAACheckerContent {
   }
 
   init() {
-    chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
-    chrome.runtime.sendMessage({
-      action: "content_pageLoaded"
-    });
+    // send message if devtools panel is open
+    if(typeof browser !== 'undefined' && browser) {
+      browser.runtime.onMessage.addListener(this.handleMessage.bind(this));
+    } else {
+      chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+    }
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
@@ -51,10 +53,17 @@ class RGAACheckerContent {
 
   runTests(sendResponse: any) {
     let testJsonResult = this.accessibilityTester.runTests();
-    chrome.runtime.sendMessage({
-      action: 'content_testsCompleted',
-      result: testJsonResult
-    });
+    if(typeof browser !== 'undefined' && browser) {
+      browser.runtime.sendMessage({
+        action: 'content_testsCompleted',
+        result: testJsonResult
+      });
+    } else {
+      chrome.runtime.sendMessage({
+        action: 'content_testsCompleted',
+        result: testJsonResult
+      });
+    }
     sendResponse(testJsonResult);
     return testJsonResult;
   }

@@ -10,7 +10,11 @@ export default class Devtools {
 
   init(criteriaCardList: Array<any>) {
     this.criteriaCardList = criteriaCardList;
-    chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+    if(typeof browser !== 'undefined' && browser) {
+      browser.runtime.onMessage.addListener(this.handleMessage.bind(this));
+    } else {
+      chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+    }
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
@@ -29,9 +33,10 @@ export default class Devtools {
       case 'elementsHightlighted':
         break;
       default:
-        return true;
+        break;
     }
 
+    sendResponse({});
     return true;
   }
 

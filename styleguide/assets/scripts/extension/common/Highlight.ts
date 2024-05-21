@@ -100,7 +100,6 @@ export default class Highlight {
   }
 
   private inspectElement($highlightElement: HTMLElement) {
-    console.log('inspectElement', $highlightElement);
     if(!$highlightElement.id) {
       $highlightElement.id = this.tempId;
     }

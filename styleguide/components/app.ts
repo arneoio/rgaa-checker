@@ -9,6 +9,7 @@ import TopicList from './15-molecules/topic-list/topic-list';
 import Header from './20-organisms/header/header';
 import Summary from './20-organisms/summary/summary';
 import Devtools from './25-templates/devtools/devtools';
+import MessageSender from './00-base/utils/message-sender';
 
 var App = {
   init: function () {
@@ -28,11 +29,14 @@ var App = {
     this.initOrganisms();
 
     this.devtools = new Devtools(this.criteriaCardList);
-    this.runTests();
+
+    this.bindEvents();
   },
 
-  runTests: function () {
-    this.devtools.runTests();
+  bindEvents: function () {
+    document.querySelector('.js-refreshTestsButtons').addEventListener('click', () => {
+      MessageSender.sendMessage('devtools_runTests');
+    });
   },
 
   initLayout: function () {

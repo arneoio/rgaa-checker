@@ -24,11 +24,19 @@
         <span class="o-header__version">v{{ version }}</span>
     </div>
     <div class="o-header__right">
+        <button class="o-header__button" title="Relancer les tests">
+            {% include '@atom/icon/icon.html.twig' with {
+              name: 'refresh',
+              attributeList: {
+                class: 'o-header__buttonIcon js-refreshTestsButtons'
+              }
+            } only %}
+        </button>
         {# <button class="o-header__settingsButton" title="Paramètres">
             {% include '@atom/icon/icon.html.twig' with {
               name: 'settings',
               attributeList: {
-                class: 'o-header__settingsIcon'
+                class: 'o-header__buttonIcon'
               }
             } only %}
         </button> #}

@@ -21,7 +21,7 @@ class Background {
   }
 
   init() {
-    if(browser) {
+    if(typeof browser !== 'undefined' && browser) {
       browser.runtime.onMessage.addListener(this.handleMessage.bind(this));
     } else {
       chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
@@ -38,9 +38,12 @@ class Background {
         break;
       case "content_testsCompleted":
         // send back to devtools
-        if(browser) {
+        if(typeof browser !== 'undefined' && browser) {
           browser.runtime.sendMessage({ action: "background_testsCompleted", result: request.result });
+        } else {
+          chrome.runtime.sendMessage({ action: "background_testsCompleted", result: request.result });
         }
+        sendResponse({});
         break;
       case "content_pageLoaded":
         this.runTests(sendResponse);
@@ -49,6 +52,7 @@ class Background {
         this.runTests(sendResponse);
         break;
       default:
+        sendResponse({});
         return true;
     }
 
@@ -56,7 +60,7 @@ class Background {
   }
 
   zoomIn() {
-    if(browser) {
+    if(typeof browser !== 'undefined' && browser) {
       return browser.tabs.query({ active: true, currentWindow: true })
       .then((tabs) => {
         if (tabs.length > 0) {
@@ -85,7 +89,7 @@ class Background {
   }
 
   zoomBack() {
-    if(browser) {
+    if(typeof browser !== 'undefined' && browser) {
       return browser.tabs.query({ active: true, currentWindow: true })
       .then((tabs) => {
         if (tabs.length > 0) {
@@ -109,7 +113,7 @@ class Background {
   }
 
   runTests(sendResponse: any) {
-    if(browser) {
+    if(typeof browser !== 'undefined' && browser) {
       return browser.tabs.query({ active: true, currentWindow: true })
       .then((tabs) => {
         if (tabs.length > 0) {
@@ -117,18 +121,24 @@ class Background {
           return browser.tabs.sendMessage(tabId, { action: "background_runTests" });
         }
       })
+      .then(() => {
+        sendResponse({});
+      })
       .catch((error) => {
         console.error("Error while running tests:", error);
+        sendResponse({});
       });
     } else {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (tabs.length > 0) {
           const tabId = tabs[0].id as number;
           chrome.tabs.sendMessage(tabId, { action: "background_runTests" });
+          sendResponse({});
         }
       });
     }
   }
+
 }
 
 new Background();
