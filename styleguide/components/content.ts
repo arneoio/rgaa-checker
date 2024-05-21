@@ -26,13 +26,13 @@ class RGAACheckerContent {
   init() {
     chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
     chrome.runtime.sendMessage({
-      action: "pageLoaded"
+      action: "content_pageLoaded"
     });
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
     switch(request.action) {
-      case "runTests":
+      case "background_runTests":
         this.runTests(sendResponse);
         break;
       case "enableHighlight":
@@ -42,7 +42,6 @@ class RGAACheckerContent {
         this.disableHighlight(sendResponse);
         break;
       default:
-        console.log('Unknown action: ' + request.action);
         sendResponse({});
         break;
     }
@@ -53,7 +52,7 @@ class RGAACheckerContent {
   runTests(sendResponse: any) {
     let testJsonResult = this.accessibilityTester.runTests();
     chrome.runtime.sendMessage({
-      action: 'testsCompleted',
+      action: 'content_testsCompleted',
       result: testJsonResult
     });
     sendResponse(testJsonResult);

@@ -11,7 +11,6 @@ const SVG_ICON_PATH = path.resolve(ASSETS_PATH, 'icons/');
 let BUILD_FOLDER = path.resolve(__dirname, process.env.FRACTAL_STATIC_FOLDER);
 const ENTRY_FILE = `${STYLEGUIDE_PATH}/components/app.ts`;
 const POPUP_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/popup.ts`;
-const DEVTOOLS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/devtools.ts`;
 const BACKGROUND_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/background.ts`;
 const CONTENT_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/content.ts`;
 
@@ -27,6 +26,8 @@ module.exports = (env, argv) => {
     builtExtension = argv.env.app;
     BUILD_FOLDER = `${BUILD_FOLDER}/${builtExtension}`;
   }
+
+  const DEVTOOLS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/devtools_${builtExtension}.ts`;
 
   const copyPatterns = [
     {
@@ -119,7 +120,7 @@ module.exports = (env, argv) => {
             MiniCssExtractPlugin.loader,
             'css-loader',
             'postcss-loader',
-            'resolve-url-loader',
+            devMode && 'resolve-url-loader',
             {
               loader: 'sass-loader',
               options: {

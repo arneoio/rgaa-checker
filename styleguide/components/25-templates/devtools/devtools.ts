@@ -13,21 +13,12 @@ export default class Devtools {
     chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
   }
 
-  runTests() {
-    MessageSender.sendMessage('runTests');
-  }
-
   handleMessage(request: any, sender: any, sendResponse: any) {
     switch (request.action) {
-      case 'pageLoaded':
-        console.log('Page loaded, run tests');
-        this.runTests();
+      case 'devtools_panelShown':
+        MessageSender.sendMessage('devtools_runTests');
         break;
-      case 'panelShown':
-        console.log('panel shown, run tests');
-        this.runTests();
-        break;
-      case 'testsCompleted':
+      case 'background_testsCompleted':
         this.parseResults(request.result);
         const criteriaUpdatedEvent = new Event('rgaachecker-initialized', {
           bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
@@ -37,7 +28,11 @@ export default class Devtools {
         break;
       case 'elementsHightlighted':
         break;
+      default:
+        return true;
     }
+
+    return true;
   }
 
   parseResults(criteriaList: any) {

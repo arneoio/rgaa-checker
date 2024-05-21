@@ -8,6 +8,7 @@
     "96": "images/icon96.png"
   },
   "browser_action": {
+    "default_popup": "rgaa-checker-panel.html",
     "default_icon": {
       "48": "images/icon48.png",
       "96": "images/icon96.png"
@@ -21,6 +22,13 @@
     "scripts": ["background.js"],
     "persistent": false
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "devtools_page": "rgaa-checker-devtools.html",
   "web_accessible_resources": [
     "rgaa-checker-panel.html",
     "app.js",

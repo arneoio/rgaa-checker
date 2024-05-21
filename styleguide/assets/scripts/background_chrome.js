@@ -92,7 +92,6 @@ chrome.action.onClicked.addListener(async (tab) => {
 let initialZoomFactor = 1;
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    console.log('Message received', request);
     switch(request.action) {
       case "zoomIn":
         chrome.tabs.getZoom(sender.tab.id, (currentZoomFactor) => {

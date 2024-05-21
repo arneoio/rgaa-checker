@@ -15,22 +15,20 @@
  */
 class Background {
   initialZoomFactor: number = 1;
-  tabId: number = 0;
 
   constructor() {
     this.init();
   }
 
   init() {
-    console.log('init backgruond');
-    chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+    if(browser) {
+      browser.runtime.onMessage.addListener(this.handleMessage.bind(this));
+    } else {
+      chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+    }
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
-    console.log('background received message', request);
-    if(request.tabId) {
-      this.tabId = request.tabId;
-    }
     switch(request.action) {
       case "zoomIn":
         this.zoomIn();
@@ -38,32 +36,98 @@ class Background {
       case "zoomBack":
         this.zoomBack();
         break;
+      case "content_testsCompleted":
+        // send back to devtools
+        if(browser) {
+          browser.runtime.sendMessage({ action: "background_testsCompleted", result: request.result });
+        }
+        break;
+      case "content_pageLoaded":
+        this.runTests(sendResponse);
+        break;
+      case "devtools_runTests":
+        this.runTests(sendResponse);
+        break;
+      default:
+        return true;
     }
 
     return true;
   }
 
   zoomIn() {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length > 0) {
-        const tabId = tabs[0].id as number;
-        chrome.tabs.getZoom(tabId, (currentZoomFactor) => {
-          this.initialZoomFactor = currentZoomFactor;
-          chrome.tabs.setZoom(tabId, 2);
-        });
-      }
-    });
+    if(browser) {
+      return browser.tabs.query({ active: true, currentWindow: true })
+      .then((tabs) => {
+        if (tabs.length > 0) {
+          const tabId = tabs[0].id as number;
+          return browser.tabs.getZoom(tabId)
+            .then((currentZoomFactor) => {
+              this.initialZoomFactor = currentZoomFactor;
+              return browser.tabs.setZoom(tabId, 2);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error("Error while zooming in:", error);
+      });
+    } else {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs.length > 0) {
+          const tabId = tabs[0].id as number;
+          chrome.tabs.getZoom(tabId, (currentZoomFactor) => {
+            this.initialZoomFactor = currentZoomFactor;
+            chrome.tabs.setZoom(tabId, 2);
+          });
+        }
+      });
+    }
   }
 
   zoomBack() {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length > 0) {
-        const tabId = tabs[0].id as number;
-        chrome.tabs.getZoom(tabId, (currentZoomFactor) => {
-          chrome.tabs.setZoom(tabId, this.initialZoomFactor); // Zoom back to half, limited to 50%
-        });
-      }
-    });
+    if(browser) {
+      return browser.tabs.query({ active: true, currentWindow: true })
+      .then((tabs) => {
+        if (tabs.length > 0) {
+          const tabId = tabs[0].id as number;
+          return browser.tabs.setZoom(tabId, this.initialZoomFactor);
+        }
+      })
+      .catch((error) => {
+        console.error("Error while zooming back:", error);
+      });
+    } else {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs.length > 0) {
+          const tabId = tabs[0].id as number;
+          chrome.tabs.getZoom(tabId, (currentZoomFactor) => {
+            chrome.tabs.setZoom(tabId, this.initialZoomFactor); // Zoom back to half, limited to 50%
+          });
+        }
+      });
+    }
+  }
+
+  runTests(sendResponse: any) {
+    if(browser) {
+      return browser.tabs.query({ active: true, currentWindow: true })
+      .then((tabs) => {
+        if (tabs.length > 0) {
+          const tabId = tabs[0].id as number;
+          return browser.tabs.sendMessage(tabId, { action: "background_runTests" });
+        }
+      })
+      .catch((error) => {
+        console.error("Error while running tests:", error);
+      });
+    } else {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs.length > 0) {
+          const tabId = tabs[0].id as number;
+          chrome.tabs.sendMessage(tabId, { action: "background_runTests" });
+        }
+      });
+    }
   }
 }
 
