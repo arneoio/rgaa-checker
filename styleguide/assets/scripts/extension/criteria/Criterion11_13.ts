@@ -22,25 +22,27 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion11_13 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
+    this.messageList = {
+      'NA': "Aucun formulaire n'a été trouvé.",
+      'NT': "Vérifiez le critère manuellement."
+    };
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun formulaire n'a été trouvé.";
+    this.status = 'NA';
 
     let $elementList = Array.from(document.querySelectorAll('form'));
 
     if ($elementList.length > 0) {
-      status = 'NT';
-      message = "Vérifiez le critère manuellement.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('11.13', status, message);
-    this.updateTest('11.13.1', status);
+    this.testList = {
+      '1': this.status
+    };
 
-    return status;
+    return this.status;
   }
 }
-

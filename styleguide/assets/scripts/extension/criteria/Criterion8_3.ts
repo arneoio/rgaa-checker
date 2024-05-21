@@ -21,8 +21,12 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: C, NC
  */
 export default class Criterion8_3 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
+    this.messageList = {
+      'C': 'La langue par défaut est présente.',
+      'NC': 'La langue par défaut n\'est pas présente.'
+    }
   }
 
   runTest() {
@@ -52,11 +56,12 @@ export default class Criterion8_3 extends BaseCriterion {
       isCriteriaValid = isLanguageDefinedForAllTextElements;
     }
 
-    let status = isCriteriaValid ? 'C' : 'NC';
-    let message = isCriteriaValid ? "La langue par défaut est présente." : "La langue par défaut n'est pas présente.";
-    this.updateCriteria('8.3', status, message);
-    this.updateTest('8.3.1', status);
+    this.status = isCriteriaValid ? 'C' : 'NC';
 
-    return status;
+    this.testList = {
+      '1': this.status
+    }
+
+    return this.status;
   }
 }

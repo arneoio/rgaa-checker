@@ -15,7 +15,6 @@
  */
 
 import BaseCriterion from '../common/BaseCriterion';
-declare var browser: typeof chrome;
 
 /**
  * Dans chaque page web, les déclarations CSS de couleurs de fond d’élément et de police sont-elles correctement utilisées ?
@@ -24,9 +23,14 @@ declare var browser: typeof chrome;
   export default class Criterion10_7 extends BaseCriterion {
   $highlightElementList: Array<HTMLElement> = [];
 
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
-    this.initHighlight();
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
+    this.messageList = {
+      'NT': "Vérifie que l'ordre de tabulation est cohérent et que le focus des éléments est bien visible lorsqu'ils le prennent.",
+      'NA': "Aucun élément de la page n'a de prise de focus.",
+      'C': "Les éléments de la page ont une prise de focus visible.",
+      'NC': "Les éléments de la page n'ont pas tous une prise de focus visible."
+    };
   }
 
   getHighlightedElements(): Array<HTMLElement> {
@@ -35,20 +39,19 @@ declare var browser: typeof chrome;
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun élément de la page n'a de prise de focus.";
+    this.status = 'NA';
 
     let focusableElementList = this.getFocusableElementList();
 
     if(focusableElementList.length > 0) {
-      status = 'NT';
-      message = "Vérifie que l'ordre de tabulation est cohérent et que le focus des éléments est bien visible lorsqu'ils le prennent.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('10.7', status, message);
-    this.updateTest('10.7.1', status);
+    this.testList = {
+      '1': this.status
+    };
 
-    return 'NT';
+    return this.status;
   }
 
   private getTextElementList(rootElement: HTMLElement): HTMLElement[] {

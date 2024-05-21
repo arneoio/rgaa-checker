@@ -22,15 +22,17 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion11_2 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = FormUtils.getFormFieldQuerySelector();
-    this.initHighlight();
+    this.messageList = {
+      'NA': "Aucun champ de formulaire n'a été trouvé",
+      'NT': "Vérifiez si les étiquettes des champs de formulaire sont pertinentes."
+    };
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun champ de formulaire n'a été trouvé";
+    this.status = 'NA';
     let $elementList = document.querySelectorAll(this.querySelector);
     const labelFieldList: any = [];
 
@@ -40,23 +42,25 @@ export default class Criterion11_2 extends BaseCriterion {
     });
 
     if ($elementList.length > 0) {
-      status = 'NT';
-      message = "Vérifiez si les étiquettes des champs de formulaire sont pertinentes.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('11.2', status, message);
-    this.updateTest('11.2.1', status);
-    this.updateTest('11.2.2', status);
-    this.updateTest('11.2.3', status);
-    this.updateTest('11.2.4', status);
-    this.updateTest('11.2.5', status);
-    this.updateTest('11.2.6', status);
+    this.testList = {
+      '1': this.status,
+      '2': this.status,
+      '3': this.status,
+      '4': this.status,
+      '5': this.status,
+      '6': this.status
+    };
 
     if ($elementList.length > 0) {
       this.logResults('11.2 - Liste des étiquettes de formulaire', labelFieldList);
     }
 
-    return status;
+    this.elementList = Array.from($elementList) as HTMLElement[];
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

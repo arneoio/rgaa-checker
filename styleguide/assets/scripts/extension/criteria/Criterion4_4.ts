@@ -22,29 +22,34 @@ import MediaUtils from '../utils/MediaUtils';
  * Traite: NA, NT
  */
 export default class Criterion4_4 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = `audio, video, object, svg, canvas, [type='application/x-shockwave-flash'], bgsound`;
+    this.messageList = {
+      'NT': 'Des médias temporels sont présents.',
+      'NA': "Aucun média temporel n'est présent dans la page"
+    };
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun média temporel.";
+    this.status = 'NA';
 
     let $temporalMediaList = MediaUtils.getTemporalMediaList();
     if ($temporalMediaList.length) {
-      status = 'NT';
-      message = "Des médias temporels sont présents.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('4.4', status, message);
-    this.updateTest('4.4.1', status);
+    this.testList = {
+      '1': this.status,
+    };
 
     if ($temporalMediaList.length > 0) {
       this.logResults('4.4 - Médias temporels', $temporalMediaList);
     }
 
-    return status;
+    this.elementList = $temporalMediaList;
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

@@ -21,21 +21,25 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NA, NC, NT (validation manuelle)
  */
 export default class Criterion9_1 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'h1, h2, h3, h4, h5, h6, [role="heading"][aria-level]';
-    this.initHighlight();
+    this.messageList = {
+      'NT': 'Vérifiez si les titres sont présents et correctement balisés.',
+      'NA': "Aucun titre n'a été trouvé",
+      'NC': 'La hiérarchie des titres n\'est pas respectée.',
+      'C': 'La hiérarchie des titres est respectée.'
+    };
   }
 
   runTest() {
-    let status = 'NA';
+    this.status = 'NA';
     let headingList: Array<any> = [];
-    let message = 'Vérifiez si les titres sont présents et correctement balisés.';
 
     const $headingList = document.querySelectorAll(this.querySelector);
 
     if($headingList.length > 0) {
-      status = 'NT';
+      this.status = 'NT';
     }
 
     // Récupère le niveau et le titre de chaque heading
@@ -52,21 +56,23 @@ export default class Criterion9_1 extends BaseCriterion {
 
       if (nextHeading && nextHeading.level - currentHeading.level > 1) {
         nextHeading.isValid = false;
-        status = 'NC';
-        message = 'La hiérarchie des titres n\'est pas respectée.';
+        this.status = 'NC';
       }
     }
 
-    this.updateCriteria('9.1', status, message);
-    this.updateTest('9.1.1', status);
-    this.updateTest('9.1.2', status === 'NA' ? 'NA' : 'NT');
-    this.updateTest('9.1.3', status);
+    this.testList = {
+      '1': this.status,
+      '2': this.status === 'NA' ? 'NA' : 'NT',
+      '3': this.status
+    };
+
+    this.elementList = headingList;
 
     if(headingList.length > 0) {
       this.logResults('9.1 - Liste des heading', headingList);
     }
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

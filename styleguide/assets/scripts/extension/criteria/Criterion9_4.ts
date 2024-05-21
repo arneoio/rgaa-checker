@@ -21,15 +21,17 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT (validation manuelle)
  */
 export default class Criterion9_4 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'q, blockquote';
-    this.initHighlight();
+    this.messageList = {
+      'NT': 'Vérifiez si les citations sont correctes et s\'il n\'en manque pas.',
+      'NA': "Aucune citation n'a été trouvée"
+    };
   }
 
   runTest() {
-    let status = 'NT';
-    let message = "Vérifiez si les citations sont correctes et s'il n'en manque pas.";
+    this.status = 'NT';
     let $elementList = document.querySelectorAll(this.querySelector);
 
     // 9.4.1: q
@@ -37,15 +39,21 @@ export default class Criterion9_4 extends BaseCriterion {
     // 9.4.2: blockquote
     let $blockquoteList = document.querySelectorAll('blockquote');
 
-    this.updateCriteria('9.4', status, message);
     this.updateTest('9.4.1', $qList.length > 0 ? 'NT' : 'NA');
     this.updateTest('9.4.2', $blockquoteList.length > 0 ? 'NT' : 'NA');
+
+    this.testList = {
+      '1': $qList.length > 0 ? 'NT' : 'NA',
+      '2': $blockquoteList.length > 0 ? 'NT' : 'NA'
+    };
 
     if($elementList.length > 0) {
       this.logResults('9.4 - Liste des citations', $elementList);
     }
 
-    return status;
+    this.elementList = Array.from($elementList) as HTMLElement[];
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

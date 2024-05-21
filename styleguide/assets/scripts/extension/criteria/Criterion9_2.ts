@@ -21,34 +21,38 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NC, NT (validation manuelle)
  */
 export default class Criterion9_2 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'main, header, footer, nav';
-    this.initHighlight();
+    this.messageList = {
+      'NT': 'Vérifiez si les éléments structurants sont présents et correctement balisés.',
+      'NC': 'La balise &lt;main&gt; est absente.',
+      'C': 'La structure du document est cohérente.'
+    };
   }
 
   runTest() {
-    let status = 'NT';
-    let message = 'Vérifiez si les éléments structurants sont présents et correctement balisés.';
+    this.status = 'NT';
     let $elementList = document.querySelectorAll(this.querySelector);
     let $main = document.querySelectorAll('main');
 
     if($main.length === 0) {
-      status = 'NC';
-      message = 'La balise &lt;main&gt; est absente.';
+      this.status = 'NC';
     } else if($main.length > 1) {
-      status = 'NC';
-      message = 'La balise &lt;main&gt; est présente plusieurs fois.';
+      this.status = 'NC';
     }
 
-    this.updateCriteria('9.2', status, message);
-    this.updateTest('9.2.1', status);
+    this.testList = {
+      '1': this.status,
+    };
+
+    this.elementList = Array.from($elementList) as HTMLElement[];
 
     if($elementList.length > 0) {
       this.logResults('9.2 - Liste des éléments structurant', $elementList);
     }
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

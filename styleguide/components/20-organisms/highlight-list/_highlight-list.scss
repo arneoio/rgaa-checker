@@ -42,28 +42,18 @@
 
 .o-highlightList__item {
     display: flex;
-    gap: 8px;
     justify-content: flex-start;
     align-items: center;
     position: relative;
     padding: 8px;
+    gap: 8px;
     border-radius: 8px;
     border: 1px solid var(--color-grey-5);
     background-color: $color-white;
 }
 
-.o-highlightList__content {
-    display: flex;
-    gap: 4px;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-grow: 1;
-    cursor: pointer;
-}
-
 .o-highlightList__button {
-    padding: 8px;
+    padding: 8px 0;
 }
 
 .o-highlightList__buttonIcon {
@@ -75,7 +65,22 @@
     height: 24px;
 }
 
+.o-highlightList__content {
+    display: grid;
+    grid-template-areas:
+        'tag checkbox'
+        'text checkbox'
+        'status checkbox';
+    grid-template-columns: 1fr auto;
+    gap: 4px 8px;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    cursor: pointer;
+}
+
 .o-highlightList__tag {
+    justify-self: flex-start;
     display: inline-block;
     padding: 4px;
     border-radius: 4px;
@@ -83,8 +88,36 @@
     color: var(--secondary-color-orange);
     font-size: 12px;
     font-weight: 700;
+    grid-area: tag;
 }
 
 .o-highlightList__text {
+    grid-area: text;
     font-size: 12px;
+    line-height: 1.2;
+
+    img {
+        width: auto;
+        height: auto;
+        max-width: 140px;
+        max-height: 140px;
+        object-fit: contain;
+    }
+}
+
+.o-highlightList__visibilityStatus {
+    grid-area: status;
+}
+
+.o-highlightList__visibilityIcon {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background-color: var(--color-grey-6);
+    color: var(--color-grey-3);
+    cursor: help;
+}
+
+.o-highlightList__checkbox {
+    grid-area: checkbox;
 }

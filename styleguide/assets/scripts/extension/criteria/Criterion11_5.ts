@@ -22,33 +22,36 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion11_5 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = FormUtils.getGroupFieldQuerySelector();
-    this.initHighlight();
+    this.messageList = {
+      'NA': "Aucun champ de formulaire n'a été trouvé",
+      'NT': "Aucun regroupement de champ n'a été trouvé. Vérifiez s'i devrait y en avoir."
+    };
   }
 
   runTest() {
-    let status = 'NT';
-    let message = "Aucun regroupement de champ n'a été trouvé. Vérifiez s'i devrait y en avoir.";
-
+    this.status = 'NT';
 
     let $fieldList = document.querySelectorAll(FormUtils.getFormFieldQuerySelector());
     if ($fieldList.length === 0) {
-      status = 'NA';
-      message = "Aucun champ de formulaire n'a été trouvé";
+      this.status = 'NA';
     }
 
     let $elementList = document.querySelectorAll(this.querySelector);
 
     if ($elementList.length > 0) {
-      message = "Vérifiez si les regroupements de champs sont pertinents.";
+      this.messageList['NT'] = "Vérifiez si les regroupements de champs sont pertinents.";
     }
 
-    this.updateCriteria('11.5', status, message);
-    this.updateTest('11.5.1', status);
+    this.testList = {
+      '1': this.status,
+    };
 
-    return status;
+    this.elementList = Array.from($elementList) as HTMLElement[];
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

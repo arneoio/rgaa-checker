@@ -1,0 +1,20 @@
+<div class="t-popup">
+    <header class="o-header" role="banner">
+        <div class="o-header__left">
+            {% include '@atom/icon/icon.html.twig' with {
+              name: 'arneo-logo',
+              attributeList: {
+                class: 'o-header__logo'
+              }
+            } only %}
+            <p href="https://github.com/arneoio/rgaa-checker/blob/main/README.md" class="o-header__externalLink">
+                RGAA Checker
+            </p>
+            <span class="o-header__version">v{{ version }}</span>
+        </div>
+    </header>
+    <main role="main" class="t-popup__main">
+      <p class="t-popup__text">Pour lancer l'analyse, ouvrez les outils de développement, puis rendez vous dans l'onglet <strong>RGAA Checker</strong></p>
+      <p class="t-popup__text">Pour en savoir plus, visitez le <a href="https://github.com/arneoio/rgaa-checker" target="_blank" title="Github du RGAA Checker (nouvelle fenêtre)">Github du RGAA Checker</a></p>
+    </main>
+</div>

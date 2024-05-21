@@ -22,27 +22,31 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion11_7 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = FormUtils.getGroupFieldQuerySelector();
-    this.initHighlight();
+    this.messageList = {
+      'NA': "Aucun regroupement de champ n'a été trouvé.",
+      'NT': "Vérifiez si les légendes associés aux regroupements de champs sont pertinentes."
+    };
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun regroupement de champ n'a été trouvé.";
+    this.status = 'NA';
 
     let $elementList = document.querySelectorAll(this.querySelector);
 
     if ($elementList.length > 0) {
-      status = 'NT';
-      message = "Vérifiez si les légendes associés aux regroupements de champs sont pertinentes.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('11.7', status, message);
-    this.updateTest('11.7.1', status);
+    this.testList = {
+      '1': this.status
+    };
 
-    return status;
+    this.elementList = Array.from($elementList) as HTMLElement[];
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

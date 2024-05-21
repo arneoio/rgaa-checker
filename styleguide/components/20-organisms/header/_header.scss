@@ -4,7 +4,8 @@
     justify-content: space-between;
     gap: 32px;
     padding: 6px 8px;
-    background-color: $color-white;
+    background-color: var(--color-grey-2);
+    color: $color-white;
 }
 
 .o-header__left {
@@ -33,7 +34,7 @@
 
 .o-header__version {
     font-size: 10px;
-    color: $color-grey-dark;
+    color: var(--color-grey-6);
 }
 
 .o-header__right {
@@ -42,22 +43,12 @@
     gap: 16px;
 }
 
-.o-header__settingsButton {
+.o-header__button {
     display: flex;
     padding: 0;
 }
 
-.o-header__settingsIcon {
-    width: 24px;
-    height: 24px;
-}
-
-.o-header__closeButton {
-    display: flex;
-    padding: 0;
-}
-
-.o-header__closeIcon {
+.o-header__buttonIcon {
     width: 24px;
     height: 24px;
 }

@@ -22,28 +22,32 @@ import FormUtils from '../utils/FormUtils';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion11_4 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = FormUtils.getFormFieldQuerySelector();
-    this.initHighlight();
+    this.messageList = {
+      'NT': "Vérifiez si les étiquettes sont accolées aux champs.",
+      'NA': "Aucun champ de formulaire n'a été trouvé"
+    };
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun champ de formulaire n'a été trouvé";
+    this.status = 'NA';
     let $elementList = document.querySelectorAll(this.querySelector);
 
     if ($elementList.length > 0) {
-      status = 'NT';
-      message = "Vérifiez si les étiquettes sont accolées aux champs.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('11.4', status, message);
-    this.updateTest('11.4.1', status);
-    this.updateTest('11.4.2', status);
-    this.updateTest('11.4.3', status);
+    this.testList = {
+      '1': this.status,
+      '2': this.status,
+      '3': this.status
+    };
 
-    return status;
+    this.elementList = Array.from($elementList) as HTMLElement[];
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

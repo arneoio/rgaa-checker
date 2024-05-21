@@ -22,10 +22,10 @@ export default class ButtonExpand {
     return 'buttonexpandtoggle';
   }
 
-  init($rootElement: HTMLElement) {
+  init() {
     var id = this.domNode.getAttribute('aria-controls');
     if (id) {
-      this.controlledNode = $rootElement.querySelector(`#${id}`) as HTMLElement;
+      this.controlledNode = document.querySelector(`#${id}`) as HTMLElement;
     }
 
     this.domNode.addEventListener('keydown', this.handleKeydown.bind(this));

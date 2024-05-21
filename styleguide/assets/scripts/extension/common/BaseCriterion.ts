@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-import { Criterion } from "./Criterion";
+import { ICriterion } from "./ICriterion";
 
-export default abstract class BaseCriterion implements Criterion {
-  $wrapper: HTMLElement;
-  $highLightWrapper: HTMLElement;
+export default abstract class BaseCriterion implements ICriterion {
   $criteriaCard: HTMLElement;
   querySelector: string;
   querySelectorList: Array<HTMLElement>;
@@ -27,10 +25,14 @@ export default abstract class BaseCriterion implements Criterion {
   topicNumber: number;
   topicSlug: string;
   criteriaNumber: number;
+  status: string = 'NT';
+  messageList: any = {};
+  elementList: Array<HTMLElement> = [];
+  testList: any = {};
+  HIGHLIGHT_CONTENT_MAX_LENGTH: number = 100;
+  isHighlightActive: boolean = false;
 
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    this.$wrapper = $wrapper;
-    this.$highLightWrapper = $highLightWrapper;
+  constructor(isTestMode: boolean = false) {
     this.isTestMode = isTestMode;
     if(this.isTestMode) {
       return;
@@ -39,97 +41,88 @@ export default abstract class BaseCriterion implements Criterion {
     this.topicNumber = parseInt(criteriaNumber.split('.')[0]);
     this.topicSlug = this.getTopicSlug(this.topicNumber);
     this.criteriaNumber = parseInt(criteriaNumber.split('.')[1]);
-    this.$criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
     this.querySelector = '';
   }
 
-  initHighlight() {
-    if(this.isTestMode) {
-      return;
+  sendActionMessage(action: string) {
+    // Send message to background script to zoom in for firefox or chrome
+    if(typeof browser !== 'undefined') {
+      browser.runtime.sendMessage({
+        tabId: chrome.devtools.inspectedWindow.tabId,
+        action: action
+      });
+    } else {
+      chrome.runtime.sendMessage({
+        tabId: chrome.devtools.inspectedWindow.tabId,
+        action: action
+      });
     }
-
-    // Affiche le switch
-    const $highlightSwitch = this.$criteriaCard.querySelector('.js-criteriaCard__highlightSwitch');
-    ($highlightSwitch.querySelector('.js-toggleSwitch__label') as HTMLElement).innerText = this.getHighlightText();
-    $highlightSwitch.classList.remove('-hidden');
-
-    // Ajoute le listener sur le switch
-    const $input = $highlightSwitch.querySelector('input') as HTMLInputElement;
-    $input.addEventListener('change', () => {
-      if (!$input.checked) {
-        this.resetHighlight();
-      } else {
-        // Désactive les autres highlight
-        Array.from(this.$wrapper.querySelectorAll('.js-criteriaCard__highlightSwitch input:checked')).forEach(($input: HTMLInputElement) => {
-          if ($input !== $highlightSwitch.querySelector('input')) {
-            $input.checked = false;
-            // Trigger le change pour reset le highlight du bon critère
-            $input.dispatchEvent(new Event('change'));
-          }
-        });
-
-        this.activateHighlight();
-      }
-    });
   }
 
   updateCriteria(criteriaNumber: string, status: string, verification?: string) {
-    if (this.isTestMode) {
-      return;
-    }
-    let $criteriaCard = this.$wrapper.querySelector(`.js-criteriaCard[data-criteria="${criteriaNumber}"]`) as HTMLElement;
-    if (!$criteriaCard) {
-      return;
-    }
-    $criteriaCard.dataset.status = status;
-
-    if (verification) {
-      let $criteriaVerification = $criteriaCard.querySelector('.js-criteriaCard__verification') as HTMLElement;
-      $criteriaVerification.innerHTML = verification;
-    }
-
-    let $criteriaSelector = $criteriaCard.querySelector(`.js-criteriaSelector__link[data-status="${status}"]`) as HTMLElement;
-
-    // Trigger click on criteriaSelector to update its status
-    if (!this.isInitialTestDone) {
-      const initializedEvent = new Event('rgaachecker-criteria-initialized', {
-        bubbles: true,
-        cancelable: true,
-      });
-
-      $criteriaSelector.dispatchEvent(initializedEvent);
-    } else {
-      $criteriaSelector.click();
-    }
+    // TODO: remove
   }
 
   updateTest(testNumber: string, status: string) {
-    if (this.isTestMode) {
-      return;
-    }
-
-    let $criteriaTest = this.$wrapper.querySelector(`.js-criteriaCard__test__number[data-test="${testNumber}"]`) as HTMLElement;
-    if (!$criteriaTest) {
-      return;
-    }
-
-    $criteriaTest.dataset.status = status;
+    // TODO: remove
   }
 
   abstract runTest(): string;
 
+  formatJSON(): any {
+    let result = {
+      topicNumber: this.topicNumber,
+      criteriaNumber: this.criteriaNumber,
+      status: this.status,
+      messageList: this.messageList,
+      elementList: this.querySelectorList,
+      testList: this.testList,
+      highlightSwitchLabel: this.getHighlightSwitchLabel(),
+    }
+
+    return result;
+  }
+
   getHighlightedElements(): Array<HTMLElement> {
+    if(!this.querySelector) {
+      return [];
+    }
+
     return Array.from(document.querySelectorAll(this.querySelector));
   }
 
-  getHighlightText(): string {
+  /**
+   * Get the label for the highlight switch
+   * @returns {string} Switch label
+   */
+  getHighlightSwitchLabel(): string {
     return 'Highlight';
   }
 
+  /**
+   * Get the content to display in the highlight list
+   * @param $element
+   * @returns string content to display, default similar to highlightLabel
+   */
+  getHighlightListContent($element: HTMLElement) {
+    let text = $element.textContent;
+    return text.length > this.HIGHLIGHT_CONTENT_MAX_LENGTH ? text.substring(0, this.HIGHLIGHT_CONTENT_MAX_LENGTH) + '...' : text;
+  }
+
+  /**
+   * Get the label to display over the highlighted element
+   * @param $element
+   * @returns string label to display
+   */
   getHighlightLabel($element: HTMLElement) {
     return '';
   }
 
+  /**
+   * Get the slug for the topic number
+   * @param topicNumber
+   * @returns string slug
+   */
   getTopicSlug(topicNumber: number): string {
     switch (topicNumber) {
       case 1:
@@ -172,23 +165,32 @@ export default abstract class BaseCriterion implements Criterion {
     console.groupEnd();
   };
 
+  disableHighlight() {
+    if(this.isHighlightActive) {
+      this.resetHighlight();
+      this.isHighlightActive = false;
+    }
+  }
+
   resetHighlight() {
+    // Remove all highlights
+    this.isHighlightActive = false;
     document.querySelectorAll('*').forEach(($element: HTMLElement) => {
       $element.style.opacity = null; $element.style.outline = null;
-    }
-    );
-    // Remove all highlights
-    this.$highLightWrapper.innerHTML = '';
+    });
+  }
+
+  enableHighlight() {
+    this.isHighlightActive = true;
+    this.activateHighlight();
+    return this.getHighlightedElements();
   }
 
   activateHighlight() {
-    const $highlightSwitch = this.$criteriaCard.querySelector('.js-criteriaCard__highlightSwitch');
-
     // Retourne le tableau pour manipuler les éléments dans l'ordre inverse, optimisation pour le hideRecursive
-    this.querySelectorList = [...this.getHighlightedElements().reverse()];
-    if ($highlightSwitch.querySelector('input').checked) {
-      this.hideRecursive(document.body);
-    }
+    let $highlightElementList = this.getHighlightedElements();
+    this.querySelectorList = [...$highlightElementList.reverse()];
+    this.hideRecursive(document.body);
   }
 
   hideRecursive($element: HTMLElement, canBeHidden: boolean = true): boolean {
@@ -206,23 +208,23 @@ export default abstract class BaseCriterion implements Criterion {
     if ($element === this.querySelectorList[this.querySelectorList.length - 1]) {
       // On supprime le dernier élément de la liste
       this.querySelectorList.pop();
-      if (this.$highLightWrapper) {
-        // On créé un élément dans le wrapper à la même position que l'élément matchant pour le mettre en avant
-        let $highlight = document.createElement('div');
-        let bounding = $element.getBoundingClientRect();
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      // if (this.$highlightWrapper) {
+      //   // On créé un élément dans le wrapper à la même position que l'élément matchant pour le mettre en avant
+      //   let $highlight = document.createElement('div');
+      //   let bounding = $element.getBoundingClientRect();
+      //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-        $highlight.style.top = `${bounding.top + scrollTop}px`;
-        $highlight.style.left = `${bounding.left}px`;
-        $highlight.style.width = `${bounding.width}px`;
-        $highlight.style.height = `${bounding.height}px`;
-        this.$highLightWrapper.appendChild($highlight);
+      //   $highlight.style.top = `${bounding.top + scrollTop}px`;
+      //   $highlight.style.left = `${bounding.left}px`;
+      //   $highlight.style.width = `${bounding.width}px`;
+      //   $highlight.style.height = `${bounding.height}px`;
+      //   this.$highlightWrapper.appendChild($highlight);
 
-        // Ajoute un label à l'élément mis en avant
-        let $label = document.createElement('p');
-        $label.innerText = this.getHighlightLabel($element);
-        $highlight.appendChild($label);
-      }
+      //   // Ajoute un label à l'élément mis en avant
+      //   let $label = document.createElement('p');
+      //   $label.innerText = this.getHighlightLabel($element);
+      //   $highlight.appendChild($label);
+      // }
 
       $element.childNodes.forEach((e: HTMLElement) => {
         this.hideRecursive(e, false);

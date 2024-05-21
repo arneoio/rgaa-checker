@@ -15,20 +15,34 @@
       "32": "images/icon32.png",
       "48": "images/icon48.png",
       "128": "images/icon128.png"
-    }
+    },
+    "default_popup": "rgaa-checker-popup.html"
   },
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "debugger"
   ],
   "background": {
-    "service_worker": "scripts/background.js"
+    "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ],
+  "devtools_page": "rgaa-checker-devtools.html",
   "web_accessible_resources": [
     {
       "resources": [
-        "pages/panel.html",
-        "app.js"
+        "rgaa-checker-panel.html",
+        "app.js",
+        "app.css"
       ],
       "matches": [
         "<all_urls>"

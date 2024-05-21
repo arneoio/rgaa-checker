@@ -21,9 +21,13 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT (validation manuelle)
  */
 export default class Criterion10_3 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
-    this.initHighlight();
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
+    this.messageList = {
+      'NT': "Désactivez les feuilles de styles pour vérifier que l'ordre dans lequel les contenus sont implémentés ne pose pas de problème de compréhension.",
+      'C': "Aucun élément de présentation n'est utilisé dans le site web.",
+      'NC': "Des éléments de présentation sont utilisés dans le site web."
+    };
   }
 
   resetHighlight(): void {
@@ -42,18 +46,18 @@ export default class Criterion10_3 extends BaseCriterion {
     });
   }
 
-  getHighlightText() {
+  getHighlightSwitchLabel() {
     return "Switch les styles";
   }
 
   runTest() {
-    let status = 'NT';
-    let message = "Désactivez les feuilles de styles pour vérifier que l'ordre dans lequel les contenus sont implémentés ne pose pas de problème de compréhension.";
+    this.status = 'NT';
 
-    this.updateCriteria('10.3', status, message);
-    this.updateTest('10.3.1', status);
+    this.testList = {
+      '1': this.status
+    };
 
-    return status;
+    return this.status;
   }
 }
 

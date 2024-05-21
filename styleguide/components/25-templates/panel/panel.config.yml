@@ -1,5 +1,3 @@
-display:
-  max-width: 480px
 variants:
 - name: default
   context:

@@ -21,23 +21,26 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NC, NA, NT (validation manuelle)
  */
 export default class Criterion11_8 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'select';
-    this.initHighlight();
+    this.messageList = {
+      'C': "Certains select ont des optgroup, tous correctement associés à un label. Vérifiez leur pertinence.<br />Vérifiez si les autres select devraient avoir des regroupements.",
+      'NC': "Certains optgroup n'ont pas de label associé.",
+      'NA': "Aucun select n'a été trouvé.",
+      'NT': "Certains select ont des optgroup. Vérifiez leur pertinence."
+    };
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun select n'a été trouvé.";
+    this.status = 'NA';
 
     let $elementList = Array.from(document.querySelectorAll(this.querySelector));
     let hasAllOptiongroup = true;
     let hasAtLeastOneOptiongroup = false;
 
     if ($elementList.length > 0) {
-      status = 'NT';
-      message = "Certains select ont des optgroup, tous correctement associés à un label. Vérifiez leur pertinence.<br />Vérifiez si les autres select devraient avoir des regroupements.";
+      this.status = 'NT';
 
       $elementList.forEach(($element: HTMLElement) => {
         const $optgroupList = $element.querySelectorAll('optgroup');
@@ -48,23 +51,19 @@ export default class Criterion11_8 extends BaseCriterion {
           hasAtLeastOneOptiongroup = true;
           // Vérifie si l'attribut label est défini
           if (!$optgroup.getAttribute('label')) {
-            status = 'NC';
-            message = "Certains optgroup n'ont pas de label associé.";
+            this.status = 'NC';
           }
         });
       });
-
-      if (hasAllOptiongroup) {
-        message = 'Tous les select présents ont un optgroup. Vérifiez leur pertinence.';
-      }
     }
 
-    this.updateCriteria('11.8', status, message);
-    this.updateTest('11.8.1', $elementList.length > 0 ? 'NT' : 'NA');
-    this.updateTest('11.8.2', $elementList.length === 0 ? 'NA' : (status === 'NC' ? 'NC' : 'C'));
-    this.updateTest('11.8.3', hasAtLeastOneOptiongroup ? 'NT' : 'NA');
+    this.testList = {
+      '1': $elementList.length > 0 ? 'NT' : 'NA',
+      '2': $elementList.length === 0 ? 'NA' : (this.status === 'NC' ? 'NC' : 'C'),
+      '3': hasAtLeastOneOptiongroup ? 'NT' : 'NA'
+    };
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

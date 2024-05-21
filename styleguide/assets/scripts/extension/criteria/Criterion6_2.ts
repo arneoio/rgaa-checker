@@ -22,10 +22,14 @@ import LinkUtils from '../utils/LinkUtils';
  * Traite: NA, C, NC
  */
 export default class Criterion6_2 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'a:not([aria-hidden="true"]), [role="link"]:not([aria-hidden="true"])';
-    this.initHighlight();
+    this.messageList = {
+      'C': 'Tous les liens ont un intitulé.',
+      'NC': "Certains liens n'ont pas d'intitulé.",
+      'NA': "Aucun lien n'a été trouvé dans la page."
+    }
   }
 
   getHighlightedElements(): Array<HTMLElement> {
@@ -48,8 +52,7 @@ export default class Criterion6_2 extends BaseCriterion {
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun lien n'a été trouvé dans la page.";
+    this.status = 'NA';
 
     let isCriteriaValid = true;
     // Sélectionnez tous les liens et les éléments avec role="link"
@@ -63,14 +66,16 @@ export default class Criterion6_2 extends BaseCriterion {
       }
 
       isCriteriaValid = $linkListWithoutLabel.length === 0;
-      status = isCriteriaValid ? 'C' : 'NC';
-      message = isCriteriaValid ? "Tous les liens ont un intitulé." : "Certains liens n'ont pas d'intitulé.";
+      this.status = isCriteriaValid ? 'C' : 'NC';
     }
 
-    this.updateCriteria('6.2', status, message);
-    this.updateTest('6.2.1', status);
+    this.testList = {
+      '1': this.status
+    }
 
-    return status;
+    this.elementList = Array.from($linkList) as HTMLElement[];
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

@@ -22,10 +22,13 @@ import TableUtils from '../utils/TableUtils';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion5_2 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'table';
-    this.initHighlight();
+    this.messageList = {
+      'NT': 'Vérifiez que le résumé de chaque tableau complexe est pertinent.',
+      'NA': "Aucun tableau complexe n'a été trouvé."
+    }
   }
 
   getHighlightedElements() {
@@ -33,7 +36,7 @@ export default class Criterion5_2 extends BaseCriterion {
   }
 
   runTest() {
-    let status = 'NA';
+    this.status = 'NA';
 
     let $complexTableList = TableUtils.getComplexTableList();
     let describedTableList: any = [];
@@ -48,17 +51,20 @@ export default class Criterion5_2 extends BaseCriterion {
           });
         }
       });
-      status = 'NT';
+      this.status = 'NT';
     }
-
-    this.updateCriteria('5.2', status);
-    this.updateTest('5.2.1', status);
 
     if (describedTableList.length > 0) {
       this.logResults('5.2 - Description des tableaux complexes', describedTableList);
     }
 
-    return status;
+    this.testList = {
+      '1': this.status
+    }
+
+    this.elementList = describedTableList;
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {

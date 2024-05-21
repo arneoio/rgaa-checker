@@ -26,6 +26,12 @@
 ] %}
 
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
+    {% include '@atom/icon/icon.html.twig' with {
+      name: 'check-circle',
+      attributeList: {
+        class: 'm-criteriaCard__checkedIcon'
+      }
+    } only %}
     <div class="m-criteriaCard__top">
         <div class="m-criteriaCard__top__left">
             <span class="m-criteriaCard__criteriaNumber">{{ criteriaCard.topicNumber }}.{{ criteriaCard.criterium.number }}</span>
@@ -41,7 +47,7 @@
           }
         } only %}
     </div>
-    <div class="m-criteriaCard__verification js-criteriaCard__verification"></div>
+    <div class="m-criteriaCard__verification js-criteriaCard__verification" rows="4"></div>
     <div class="m-criteriaCard__text js-criteriaCard__text">
         {{ criteriaCard.criterium.title }}
     </div>

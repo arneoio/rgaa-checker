@@ -21,8 +21,12 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: C, NC
  */
 export default class Criterion8_5 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
+    this.messageList = {
+      'C': 'La page a un titre.',
+      'NC': "La page n'a pas de titre."
+    }
   }
 
   runTest() {
@@ -32,14 +36,14 @@ export default class Criterion8_5 extends BaseCriterion {
 
     if (!pageTitleElement) {
       isCriteriaValid = false;
-    } else {
     }
 
-    let status = isCriteriaValid ? 'C' : 'NC';
-    let message = isCriteriaValid ? "La page a un titre." : "La page n'a pas de titre.";
-    this.updateCriteria('8.5', status, message);
-    this.updateTest('8.5.1', status);
+    this.status = isCriteriaValid ? 'C' : 'NC';
 
-    return status;
+    this.testList = {
+      '1': this.status
+    }
+
+    return this.status;
   }
 }

@@ -21,20 +21,26 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT
  */
 export default class Criterion8_2 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
+    this.messageList = {
+      'C': 'Le code source de la page web est valide selon le type de document spécifié.',
+      'NC': 'Le code source de la page web n\'est pas valide selon le type de document spécifié.',
+      'NT': 'Vérifiez le code source de la page web à l\'aide du validateur du W3C'
+    }
   }
 
   runTest() {
-    let status = 'NT';
+    this.status = 'NT';
     // Ajoute un lien vers le validateur du W3C de l'url courante
     const currentUrl = window.location.href;
     const w3cUrl = `https://validator.w3.org/nu/?doc=${encodeURIComponent(currentUrl)}`;
-    let message = `Vérifiez le code source de la page web à l'aide du <strong><a href="${w3cUrl}" target="_blank">validateur du W3C</a></strong>.`;
+    this.messageList['NT'] = `Vérifiez le code source de la page web à l'aide du <strong><a href="${w3cUrl}" target="_blank">validateur du W3C</a></strong>.`;
 
-    this.updateCriteria('8.2', status, message);
-    this.updateTest('8.2.1', status);
+    this.testList = {
+      '1': this.status
+    }
 
-    return status;
+    return this.status;
   }
 }

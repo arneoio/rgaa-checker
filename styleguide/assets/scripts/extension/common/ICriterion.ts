@@ -1,5 +1,5 @@
 /*
- * Criterion.ts - Copyright (c) 2023-2024 - Arneo
+ * ICriterion.ts - Copyright (c) 2023-2024 - Arneo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export interface Criterion {
+export interface ICriterion {
   // Run criterion test
   runTest(): string;
 
@@ -22,7 +22,7 @@ export interface Criterion {
   getHighlightedElements(): Array<HTMLElement>;
 
   // get the highlight selector to use in querySelector
-  getHighlightText(): string;
+  getHighlightSwitchLabel(): string;
 
   // reset highlight
   resetHighlight(): void;

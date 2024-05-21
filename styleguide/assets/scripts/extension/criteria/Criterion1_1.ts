@@ -22,29 +22,32 @@ import ImageUtils from '../utils/ImageUtils';
  * Traite: NA, NT
  */
 export default class Criterion1_1 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'img, [role="img"], area, input[type="image"], img[ismap], object[type^="image/"], embed[type^="image/"]';
-    this.initHighlight();
+    let warningMessage = "/!\\ En l'état actuel, la distinction entre images porteuses et non porteuses d'information n'est pas faite. Nous listons ici toutes les images sans alternative textuelle.";
+    this.messageList = {
+      'NT': 'Toutes les images de la page ont une alternative textuelle.' + warningMessage,
+      'NC': 'Toutes les images de la page n\'ont pas d\'alternative textuelle.' + warningMessage,
+      'NA': 'Aucune image n\'a été trouvée dans la page.' + warningMessage
+    }
   }
 
-  getHighlightedElements(): Array<HTMLElement> {
-    const noAltImageList: any = [];
-    let $imageList = Array.from(document.querySelectorAll(this.querySelector));
+  // getHighlightedElements(): Array<HTMLElement> {
+  //   const noAltImageList: any = [];
+  //   let $imageList = Array.from(document.querySelectorAll(this.querySelector));
 
-    $imageList.forEach(($image: HTMLElement) => {
-      if (!ImageUtils.hasImageLabel($image)) {
-        noAltImageList.push($image);
-      }
-    });
+  //   $imageList.forEach(($image: HTMLElement) => {
+  //     if (!ImageUtils.hasImageLabel($image)) {
+  //       noAltImageList.push($image);
+  //     }
+  //   });
 
-    return noAltImageList;
-  }
+  //   return noAltImageList;
+  // }
 
   runTest() {
-    let status = 'NA';
-    let warningMessage = "/!\\ En l'état actuel, la distinction entre images porteuses et non porteuses d'information n'est pas faite. Nous listons ici toutes les images sans alternative textuelle.";
-    let message = "Aucune image n'a été trouvée dans la page.";
+    this.status = 'NA';
 
     let $noLabelImageList: any = [];
 
@@ -122,21 +125,20 @@ export default class Criterion1_1 extends BaseCriterion {
 
     if (!imageHasLabel || !areaHasLabel || !inputHasLabel || !mapImageHasLabel || !svgHasLabel || !objectHasLabel || !embedHasLabel || !canvasHasLabel) {
       // status = 'NC';
-      message = "Toutes les images de la page n'ont pas d'alternative textuelle.";
     } else if ($imageList.length || $areaList.length || $inputList.length || $mapImageList.length || $svgList.length || $objectList.length || $embedList.length || $canvasList.length) {
-      status = 'NT';
-      message = "Toutes les images de la page ont une alternative textuelle.";
+      this.status = 'NT';
     }
 
-    this.updateCriteria('1.1', status, message + '<br />' + warningMessage);
-    this.updateTest('1.1.1', $imageList.length ? (imageHasLabel ? 'NT' : 'NC') : 'NA');
-    this.updateTest('1.1.2', $areaList.length ? (areaHasLabel ? 'NT' : 'NC') : 'NA');
-    this.updateTest('1.1.3', $inputList.length ? (inputHasLabel ? 'NT' : 'NC') : 'NA');
-    this.updateTest('1.1.4', $mapImageList.length ? (mapImageHasLabel ? 'NT' : 'NC') : 'NA');
-    this.updateTest('1.1.5', $svgList.length ? (svgHasLabel ? 'NT' : 'NC') : 'NA');
-    this.updateTest('1.1.6', $objectList.length ? (objectHasLabel ? 'NT' : 'NC') : 'NA');
-    this.updateTest('1.1.7', $embedList.length ? (embedHasLabel ? 'NT' : 'NC') : 'NA');
-    this.updateTest('1.1.8', $canvasList.length ? (canvasHasLabel ? 'NT' : 'NC') : 'NA');
+    this.testList = {
+      1: $imageList.length ? (imageHasLabel ? 'NT' : 'NC') : 'NA',
+      2: $areaList.length ? (areaHasLabel ? 'NT' : 'NC') : 'NA',
+      3: $inputList.length ? (inputHasLabel ? 'NT' : 'NC') : 'NA',
+      4: $mapImageList.length ? (mapImageHasLabel ? 'NT' : 'NC') : 'NA',
+      5: $svgList.length ? (svgHasLabel ? 'NT' : 'NC') : 'NA',
+      6: $objectList.length ? (objectHasLabel ? 'NT' : 'NC') : 'NA',
+      7: $embedList.length ? (embedHasLabel ? 'NT' : 'NC') : 'NA',
+      8: $canvasList.length ? (canvasHasLabel ? 'NT' : 'NC') : 'NA',
+    }
 
     let $allImageList = document.querySelectorAll(this.querySelector);
     if($allImageList.length > 0) {
@@ -147,11 +149,22 @@ export default class Criterion1_1 extends BaseCriterion {
       this.logResults('1.1 - Liste des images sans alternative textuelle', $noLabelImageList);
     }
 
-    return status;
+    this.elementList = $noLabelImageList;
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {
     return ImageUtils.getImageLabel($element);
+  }
+
+  getHighlightListContent($element: HTMLElement) {
+    // For images, display the image
+    if ($element.tagName === 'IMG') {
+      return `<img src="${($element as HTMLImageElement).src}" alt="${ImageUtils.getImageLabel($element)}">`;
+    } else {
+      return this.getHighlightLabel($element);
+    }
   }
 }
 

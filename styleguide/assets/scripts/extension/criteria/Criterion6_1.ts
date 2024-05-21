@@ -22,22 +22,23 @@ import LinkUtils from '../utils/LinkUtils';
  * Traite: NA, NT (validation manuelle)
  */
 export default class Criterion6_1 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'a:not([role]), [role="link"]';
-    this.initHighlight();
+    this.messageList = {
+      'NT': 'Vérifiez la pertinence des intitulés des liens.',
+      'NA': "Aucun lien n'a été trouvé dans la page."
+    }
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun lien n'a été trouvé dans la page.";
+    this.status = 'NA';
 
     let isCriteriaValid = true;
     // Sélectionnez tous les liens et les éléments avec role="link"
     const $linkList = document.querySelectorAll(this.querySelector);
-
+    const linkListWithLabel: any = [];
     if ($linkList.length) {
-      const linkListWithLabel: any = [];
 
       $linkList.forEach(($link: HTMLElement) => {
         let linkLabel = LinkUtils.getLinkLabel($link);
@@ -49,22 +50,28 @@ export default class Criterion6_1 extends BaseCriterion {
 
       if (linkListWithLabel.length > 0) {
         this.logResults('6.1 - Intitulé des liens', linkListWithLabel);
-        status = 'NT';
-        message = "Vérifiez la pertinence des intitulés des liens.";
+        this.status = 'NT';
       }
     }
 
-    this.updateCriteria('6.1', status, message);
-    this.updateTest('6.1.1', status);
-    this.updateTest('6.1.2', status);
-    this.updateTest('6.1.3', status);
-    this.updateTest('6.1.4', status);
-    this.updateTest('6.1.5', status);
+    this.testList = {
+      '1': this.status,
+      '2': this.status,
+      '3': this.status,
+      '4': this.status,
+      '5': this.status
+    }
 
-    return status;
+    this.elementList = linkListWithLabel;
+
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {
     return LinkUtils.getLinkLabel($element) + ($element.getAttribute('aria-hidden') === 'true' ? ' (aria-hidden)' : '');
+  }
+
+  getHighlightListContent($element: HTMLElement) {
+    return this.getHighlightLabel($element);
   }
 }

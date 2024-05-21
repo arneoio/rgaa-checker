@@ -21,27 +21,32 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NA, NT
  */
 export default class Criterion5_6 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'table:not([role="presentation"])';
-    this.initHighlight();
+    this.messageList = {
+      'NT': "Vérifiez si les tableaux de données ont un titre pertinent.",
+      'NA': "Aucun tableau de données n'a été trouvé."
+    }
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun tableau de données n'a été trouvé.";
+    this.status = 'NA';
 
     let $tableList = document.querySelectorAll(this.querySelector);
     if ($tableList.length) {
     }
 
-    this.updateCriteria('5.5', status, message);
-    this.updateTest('5.5.1', status);
-
     if ($tableList.length > 0) {
       this.logResults('5.5 - Liste des tableaux de données', $tableList);
     }
 
-    return status;
+    this.testList = {
+      '1': this.status
+    }
+
+    this.elementList = Array.from($tableList) as Array<HTMLElement>;
+
+    return this.status;
   }
 }

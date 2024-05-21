@@ -22,10 +22,14 @@ import TableUtils from '../utils/TableUtils';
  * Traite: NA, C, NC
  */
 export default class Criterion5_4 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'table:not([role="presentation"])';
-    this.initHighlight();
+    this.messageList = {
+      'C': 'Tous les tableaux de données ont un titre correctement associé.',
+      'NC': "Tous les tableaux de données n'ont pas de titre correctement associé.",
+      'NA': "Aucun tableau de données n'a été trouvé."
+    }
   }
 
   getHighlightedElements(): HTMLElement[] {
@@ -44,29 +48,29 @@ export default class Criterion5_4 extends BaseCriterion {
   }
 
   runTest() {
-    let status = 'NA';
-    let message = "Aucun tableau de données n'a été trouvé.";
+    this.status = 'NA';
 
     let $tableList = document.querySelectorAll(this.querySelector);
     if ($tableList.length) {
-      status = 'C';
-      message = "Tous les tableaux de données ont un titre.";
+      this.status = 'C';
     }
 
     let $tableListWithoutCaption = this.getHighlightedElements();
     if ($tableListWithoutCaption.length > 0) {
-      status = 'NC';
-      message = "Tous les tableaux de données n'ont pas de titre.";
+      this.status = 'NC';
     }
-
-    this.updateCriteria('5.4', status, message);
-    this.updateTest('5.4.1', status);
 
     if ($tableListWithoutCaption.length > 0) {
       this.logResults('5.4 - Liste des tableaux de données sans titre', $tableListWithoutCaption);
     }
 
-    return status;
+    this.testList = {
+      '1': this.status
+    }
+
+    this.elementList = $tableListWithoutCaption;
+
+    return this.status;
   }
 }
 

@@ -10,6 +10,9 @@ const ASSETS_PATH = path.resolve(__dirname, process.env.STYLEGUIDE_ASSETS_PATH);
 const SVG_ICON_PATH = path.resolve(ASSETS_PATH, 'icons/');
 let BUILD_FOLDER = path.resolve(__dirname, process.env.FRACTAL_STATIC_FOLDER);
 const ENTRY_FILE = `${STYLEGUIDE_PATH}/components/app.ts`;
+const POPUP_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/popup.ts`;
+const BACKGROUND_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/background.ts`;
+const CONTENT_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/content.ts`;
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== 'production';
@@ -24,6 +27,8 @@ module.exports = (env, argv) => {
     BUILD_FOLDER = `${BUILD_FOLDER}/${builtExtension}`;
   }
 
+  const DEVTOOLS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/devtools_${builtExtension}.ts`;
+
   const copyPatterns = [
     {
       from: path.resolve(`${ASSETS_PATH}/images`),
@@ -32,10 +37,6 @@ module.exports = (env, argv) => {
     {
       from: path.resolve(`${ASSETS_PATH}/manifest_${builtExtension}.json`),
       to: path.resolve(`${BUILD_FOLDER}/manifest.json`),
-    },
-    {
-      from: path.resolve(`${ASSETS_PATH}/scripts/background_${builtExtension}.js`),
-      to: path.resolve(`${BUILD_FOLDER}/scripts/background.js`),
     },
     {
       from: path.resolve(`${ASSETS_PATH}/scripts/extension`),
@@ -56,6 +57,10 @@ module.exports = (env, argv) => {
   return {
     entry: {
       app: ENTRY_FILE,
+      popup: POPUP_ENTRY_FILE,
+      devtools: DEVTOOLS_ENTRY_FILE,
+      background: BACKGROUND_ENTRY_FILE,
+      content: CONTENT_ENTRY_FILE,
       icons: glob.sync(
         path.resolve(path.join(SVG_ICON_PATH, '**/*.svg')).replace(/\\/g, '/'),
       ),
@@ -115,11 +120,11 @@ module.exports = (env, argv) => {
             MiniCssExtractPlugin.loader,
             'css-loader',
             'postcss-loader',
-            'resolve-url-loader',
+            devMode && 'resolve-url-loader',
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: true,
+                sourceMap: devMode ? true : false,
               },
             },
           ],

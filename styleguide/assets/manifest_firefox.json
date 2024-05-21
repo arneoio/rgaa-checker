@@ -8,6 +8,7 @@
     "96": "images/icon96.png"
   },
   "browser_action": {
+    "default_popup": "rgaa-checker-panel.html",
     "default_icon": {
       "48": "images/icon48.png",
       "96": "images/icon96.png"
@@ -18,11 +19,19 @@
     "scripting"
   ],
   "background": {
-    "scripts": ["scripts/background.js"],
+    "scripts": ["background.js"],
     "persistent": false
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "devtools_page": "rgaa-checker-devtools.html",
   "web_accessible_resources": [
-    "pages/panel.html",
-    "app.js"
+    "rgaa-checker-panel.html",
+    "app.js",
+    "app.css"
   ]
 }

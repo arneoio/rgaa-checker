@@ -21,15 +21,17 @@ import BaseCriterion from '../common/BaseCriterion';
  * Traite: NT (validation manuelle)
  */
 export default class Criterion9_3 extends BaseCriterion {
-  constructor($wrapper: HTMLElement, $highLightWrapper: HTMLElement, isTestMode: boolean = false) {
-    super($wrapper, $highLightWrapper, isTestMode);
+  constructor(isTestMode: boolean = false) {
+    super(isTestMode);
     this.querySelector = 'ul, ol, dl, [role="list"]';
-    this.initHighlight();
+    this.messageList = {
+      'NT': 'Vérifiez si les éléments mis en liste sont corrects et s\'il n\'en manque pas.',
+      'NA': "Aucune liste n'a été trouvée"
+    };
   }
 
   runTest() {
-    let status = 'NT';
-    let message = "Vérifiez si les éléments mis en liste sont corrects et s'il n'en manque pas.";
+    this.status = 'NT';
     let $elementList = document.querySelectorAll(this.querySelector);
 
     // 9.3.1: ul et [role="list"]
@@ -39,16 +41,19 @@ export default class Criterion9_3 extends BaseCriterion {
     // 9.3.3: dl
     let $dlList = document.querySelectorAll('dl');
 
-    this.updateCriteria('9.3', status, message);
-    this.updateTest('9.3.1', $ulList.length > 0 ? 'NT' : 'NA');
-    this.updateTest('9.3.2', $olList.length > 0 ? 'NT' : 'NA');
-    this.updateTest('9.3.3', $dlList.length > 0 ? 'NT' : 'NA');
+    this.testList = {
+      '1': $ulList.length > 0 ? 'NT' : 'NA',
+      '2': $olList.length > 0 ? 'NT' : 'NA',
+      '3': $dlList.length > 0 ? 'NT' : 'NA'
+    };
+
+    this.elementList = Array.from($elementList) as HTMLElement[];
 
     if($elementList.length > 0) {
       this.logResults('9.3 - Liste des listes', $elementList);
     }
 
-    return status;
+    return this.status;
   }
 
   getHighlightLabel($element: HTMLElement) {
