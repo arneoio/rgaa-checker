@@ -33,14 +33,15 @@ class RGAACheckerContent {
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
+    console.log('content handleMessage', request.action);
     switch(request.action) {
       case "background_runTests":
         this.runTests(sendResponse);
         break;
-      case "enableHighlight":
+      case "background_enableHighlight":
         this.enableHighlight(request.topicNumber, request.criteriaNumber, sendResponse);
         break;
-      case "disableHighlight":
+      case "background_disableHighlight":
         this.disableHighlight(sendResponse);
         break;
       default:
@@ -71,7 +72,7 @@ class RGAACheckerContent {
   enableHighlight(topicNumber: string, criteriaNumber: string, sendResponse: any) {
     let highlightedElementList = this.accessibilityTester.enableHighlight(topicNumber, criteriaNumber);
     chrome.runtime.sendMessage({
-      action: 'elementsHightlighted',
+      action: 'content_elementsHightlighted',
       result: highlightedElementList
     });
     sendResponse(true);
