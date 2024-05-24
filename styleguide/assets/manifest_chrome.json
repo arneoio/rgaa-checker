@@ -19,9 +19,7 @@
     "default_popup": "rgaa-checker-popup.html"
   },
   "permissions": [
-    "activeTab",
-    "scripting",
-    "debugger"
+    "activeTab"
   ],
   "background": {
     "service_worker": "background.js"
