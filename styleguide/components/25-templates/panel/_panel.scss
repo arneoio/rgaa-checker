@@ -87,10 +87,7 @@
 }
 
 .l-extension__highlightList {
-    position: fixed;
-    top: 64px;
-    left: 16px;
     width: 100%;
-    max-width: 320px;
-    z-index: 2;
+    max-height: 30vh;
+    overflow: auto;
 }

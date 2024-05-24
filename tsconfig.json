@@ -17,5 +17,5 @@
     ],
     "include": [
         "styleguide/assets/scripts/**/*.ts"
-    ]
+, "styleguide/components/00-base/utils/highlight.ts"    ]
 }

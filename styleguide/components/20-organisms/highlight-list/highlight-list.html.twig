@@ -1,4 +1,4 @@
-{% set componentClass = 'o-highlightList js-highlightList js-draggable' %}
+{% set componentClass = 'o-highlightList js-highlightList' %}
 {% set defaultTag = 'div' %}
 {% set attributeList = attributeList is defined ? attributeList : {} %}
 {% set attributeList = attributeList|merge({'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
@@ -6,6 +6,15 @@
 
 {% macro highlightItem(isEmpty, highlight) %}
     <li class="o-highlightList__item js-highlightList__item">
+        <span title="Élément non visible" class="o-highlightList__button -disabled js-highlightList__visibilityStatus">
+            {% include '@atom/icon/icon.html.twig' with {
+              name: 'visibility-off',
+              isAriaHidden: false,
+              attributeList: {
+                class: 'o-highlightList__buttonIcon',
+              },
+            } only %}
+        </span>
         <button class="o-highlightList__button js-highlightList__itemPageButton" type="button">
             {% include '@atom/icon/icon.html.twig' with {
               name: 'visibility-on',
@@ -32,15 +41,6 @@
             <p class="o-highlightList__text js-highlightList__itemText">
                 {{ highlight.text }}
             </p>
-            <span title="Élément non visible" class="o-highlightList__visibilityStatus js-highlightList__visibilityStatus">
-                {% include '@atom/icon/icon.html.twig' with {
-                  name: 'visibility-off',
-                  isAriaHidden: false,
-                  attributeList: {
-                    class: 'o-highlightList__visibilityIcon',
-                  },
-                } only %}
-            </span>
 {% endif %}
             {% include '@atom/form/checkbox/checkbox.html.twig' with {
               attributeList: {
@@ -55,7 +55,7 @@
 
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
     <header class="o-highlightList__header">
-        <h2 class="o-highlightList__title js-draggable__handle">
+        <h2 class="o-highlightList__title">
             Éléments mis en avant
         </h2>
         <button class="o-highlightList__closeButton js-highlightList__closeButton" title="Fermer">

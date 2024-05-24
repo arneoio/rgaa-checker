@@ -45,10 +45,10 @@
               </ul>
             </main>
         </div>
+        {% include '@organism/highlight-list/highlight-list.html.twig' with {
+          attributeList: {
+            class: 'l-extension__highlightList -hidden',
+          },
+        } only %}
     </div>
-    {% include '@organism/highlight-list/highlight-list.html.twig' with {
-      attributeList: {
-        class: 'l-extension__highlightList js-draggable -hidden',
-      },
-    } only %}
 </{{ tag }}>

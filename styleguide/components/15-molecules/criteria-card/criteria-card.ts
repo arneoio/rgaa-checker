@@ -1,3 +1,4 @@
+import Highlight from "../../00-base/utils/highlight";
 import MessageSender from "../../00-base/utils/message-sender";
 
 export default class CriteriaCard {
@@ -98,6 +99,7 @@ export default class CriteriaCard {
     $input.addEventListener('change', () => {
       if (!$input.checked) {
         MessageSender.sendMessage('devtools_disableHighlight');
+        Highlight.getInstance().hide();
       } else {
         MessageSender.sendMessage('devtools_enableHighlight', {topicNumber: this.topicNumber, criteriaNumber: this.criteriaNumber});
         // Désactive les autres highlight

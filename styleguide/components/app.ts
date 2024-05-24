@@ -17,7 +17,6 @@ import './app.scss';
 
 import ButtonExpand from './00-base/utils/button-expand';
 import TabUtil from './00-base/utils/tab';
-import Draggable from './00-base/utils/draggable';
 import CriteriaCard from './15-molecules/criteria-card/criteria-card';
 import FilterList from './15-molecules/filter-list/filter-list';
 import TopicList from './15-molecules/topic-list/topic-list';
@@ -72,14 +71,6 @@ var App = {
     if ($tabWrapperList.length) {
       $tabWrapperList.forEach(($tabWrapper) => {
         new TabUtil($tabWrapper as HTMLElement);
-      });
-    }
-
-    // Init draggable elements
-    const $draggableList = Array.from(document.querySelectorAll('.js-draggable'));
-    if ($draggableList.length) {
-      $draggableList.forEach(($draggable) => {
-        new Draggable($draggable as HTMLElement);
       });
     }
 

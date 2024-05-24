@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BaseCriterion from './BaseCriterion';
+import BaseCriterion from '../../../assets/scripts/extension/common/BaseCriterion';
 
 export default class Highlight {
   private static instance: Highlight | null = null;
@@ -47,11 +47,10 @@ export default class Highlight {
     this.hide();
   }
 
-  public activate(criterion: BaseCriterion) {
-    let $highlightElementList: Array<HTMLElement> = criterion.getHighlightedElements();
+  public activate(highlightJsonList: any) {
     this.clear();
-    $highlightElementList.forEach(($highlightElement, index) => {
-      this.addItem(index, $highlightElement, criterion);
+    highlightJsonList.forEach((highlightJson: any, index: number) => {
+      this.addItem(index, highlightJson);
     });
     this.show();
   }
@@ -71,14 +70,14 @@ export default class Highlight {
     }
   }
 
-  private addItem(index: number, $highlightElement: HTMLElement, criterion: BaseCriterion) {
+  private addItem(index: number, highlightJson: any) {
     const $item = this.itemTemplate.content.cloneNode(true) as HTMLElement;
     let $tag: HTMLElement = $item.querySelector('.js-highlightList__itemTag') as HTMLElement;
-    $tag.textContent = $highlightElement.tagName.toUpperCase();
-    $tag.classList.add(`-tag${$highlightElement.tagName.toUpperCase()}`);
+    $tag.textContent = highlightJson.tag;
+    $tag.classList.add(`-tag${highlightJson.tag}`);
 
     // Set text to display
-    $item.querySelector('.js-highlightList__itemText').innerHTML = criterion.getHighlightListContent($highlightElement);
+    $item.querySelector('.js-highlightList__itemText').innerHTML = highlightJson.text;
     // Setcheckbox value
     ($item.querySelector('.js-highlightList__itemCheckbox') as HTMLInputElement).value = index.toString();
 
@@ -86,14 +85,12 @@ export default class Highlight {
     //   this.inspectElement($highlightElement);
     // });
     $item.querySelector('.js-highlightList__itemPageButton').addEventListener('click', () => {
-      this.highlightElement($highlightElement);
+      // this.highlightElement($highlightElement);
     });
-    let isElementVisible = $highlightElement.checkVisibility({
-      opacityProperty: true,
-      visibilityProperty: true,
-    } as any); // Obligé de mettre "any", opacityProperty n'est pas reconnu
-    if(isElementVisible) {
+    if(highlightJson.isVisible) {
       $item.querySelector('.js-highlightList__visibilityStatus').remove();
+    } else {
+      $item.querySelector('.js-highlightList__itemPageButton').remove();
     }
 
     this.$list.appendChild($item);
