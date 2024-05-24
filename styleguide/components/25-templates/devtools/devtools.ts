@@ -45,7 +45,8 @@ export default class Devtools {
         });
         document.body.dispatchEvent(criteriaUpdatedEvent);
         break;
-      case 'elementsHightlighted':
+      case 'background_elementsHightlighted':
+        console.log('background_elementsHightlighted', request);
         break;
       default:
         break;

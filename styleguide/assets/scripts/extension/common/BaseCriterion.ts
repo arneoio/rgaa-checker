@@ -175,9 +175,6 @@ export default abstract class BaseCriterion implements ICriterion {
   resetHighlight() {
     // Remove all highlights
     this.isHighlightActive = false;
-    document.querySelectorAll('*').forEach(($element: HTMLElement) => {
-      $element.style.opacity = null; $element.style.outline = null;
-    });
   }
 
   enableHighlight() {
@@ -187,73 +184,5 @@ export default abstract class BaseCriterion implements ICriterion {
   }
 
   activateHighlight() {
-    // Retourne le tableau pour manipuler les éléments dans l'ordre inverse, optimisation pour le hideRecursive
-    let $highlightElementList = this.getHighlightedElements();
-    this.querySelectorList = [...$highlightElementList.reverse()];
-    this.hideRecursive(document.body);
-  }
-
-  hideRecursive($element: HTMLElement, canBeHidden: boolean = true): boolean {
-    if ($element.nodeType !== Node.ELEMENT_NODE) {
-      return true;
-    }
-
-    // Ne pas cacher l'élément de l'extension
-    if ($element.id === 'arneo-browser-extension') {
-      return false;
-    }
-
-    // L'élément matche la recherche: mise en avant
-    // Les éléments matchant sont dans l'ordre inverse de la liste
-    if ($element === this.querySelectorList[this.querySelectorList.length - 1]) {
-      // On supprime le dernier élément de la liste
-      this.querySelectorList.pop();
-      // if (this.$highlightWrapper) {
-      //   // On créé un élément dans le wrapper à la même position que l'élément matchant pour le mettre en avant
-      //   let $highlight = document.createElement('div');
-      //   let bounding = $element.getBoundingClientRect();
-      //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      //   $highlight.style.top = `${bounding.top + scrollTop}px`;
-      //   $highlight.style.left = `${bounding.left}px`;
-      //   $highlight.style.width = `${bounding.width}px`;
-      //   $highlight.style.height = `${bounding.height}px`;
-      //   this.$highlightWrapper.appendChild($highlight);
-
-      //   // Ajoute un label à l'élément mis en avant
-      //   let $label = document.createElement('p');
-      //   $label.innerText = this.getHighlightLabel($element);
-      //   $highlight.appendChild($label);
-      // }
-
-      $element.childNodes.forEach((e: HTMLElement) => {
-        this.hideRecursive(e, false);
-      });
-
-      return false;
-    }
-
-    // L'élément n'a pas d'enfant ou est en aria hidden et ne match pas: on le masque
-    if (($element.childElementCount === 0 || $element.getAttribute('aria-hidden') === 'true') && canBeHidden) {
-      $element.style.opacity = '0.2';
-      return !canBeHidden;
-    } else {
-      // On vérifie si parmis les enfants tous match ou pas pour ne masquer que le plus haut niveau ne matchant pas, on ne veut pas masquer récursivement
-      let hasAllChildrenHidden = true;
-      $element.childNodes.forEach((e: HTMLElement) => {
-        var isChildHidden = this.hideRecursive(e, canBeHidden);
-        if (!isChildHidden) {
-          hasAllChildrenHidden = false;
-        }
-      });
-
-      if (hasAllChildrenHidden && canBeHidden) {
-        $element.style.opacity = '0.2';
-        $element.querySelectorAll('*').forEach((e: HTMLElement) => {
-          e.style.opacity = null;
-        });
-      }
-      return hasAllChildrenHidden;
-    }
   }
 }

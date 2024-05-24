@@ -17,6 +17,9 @@ import AccessibilityTester from '../assets/scripts/extension/AccessibilityTester
 
 class RGAACheckerContent {
   accessibilityTester: AccessibilityTester;
+  $highlightWrapper: HTMLElement;
+  $highlightCanvas: HTMLCanvasElement;
+  highlightContext: CanvasRenderingContext2D;
 
   constructor() {
     this.accessibilityTester = new AccessibilityTester();
