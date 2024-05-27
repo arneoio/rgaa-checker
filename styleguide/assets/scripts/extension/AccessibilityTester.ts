@@ -267,6 +267,7 @@ export default class AccessibilityTester {
 
         $highlightElementList.forEach(($highlightElement: HTMLElement, index: number) => {
           highlightJsonList.push({
+            xpath: this.getXPath($highlightElement),
             tag: $highlightElement.tagName,
             text: this.hightlightedCriterion.getHighlightListContent($highlightElement),
             isVisible: $highlightElement.checkVisibility({
@@ -290,6 +291,26 @@ export default class AccessibilityTester {
 
   resetHighlight() {
     this.highlightContext.clearRect(0, 0, this.$highlightCanvas.width, this.$highlightCanvas.height);
+  }
+
+  getXPath(element: HTMLElement) {
+    let xpath = '';
+    for ( ; element && element.nodeType === Node.ELEMENT_NODE; element = element.parentNode as HTMLElement) {
+      let id = element.id;
+      if (id) {
+        return `id("${id}")${xpath}`;
+      }
+      let nodeName = element.nodeName;
+      let sibling = element;
+      let count = 1;
+      while (sibling = sibling.previousElementSibling as HTMLElement) {
+        if (sibling.nodeName === nodeName) {
+          count++;
+        }
+      }
+      xpath = `/${nodeName}[${count}]${xpath}`;
+    }
+    return xpath;
   }
 
   showHighlight() {

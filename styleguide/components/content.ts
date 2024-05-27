@@ -74,6 +74,7 @@ class RGAACheckerContent {
 
   enableHighlight(topicNumber: string, criteriaNumber: string, sendResponse: any) {
     let highlightedElementList = this.accessibilityTester.enableHighlight(topicNumber, criteriaNumber);
+    console.log('highlightedElementList', highlightedElementList);
     chrome.runtime.sendMessage({
       action: 'content_elementsHightlighted',
       result: highlightedElementList
