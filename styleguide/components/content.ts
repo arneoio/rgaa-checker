@@ -47,6 +47,9 @@ class RGAACheckerContent {
       case "background_disableHighlight":
         this.disableHighlight(sendResponse);
         break;
+      case "background_highlightElement":
+        this.highlightElement(request.xpath);
+        break;
       default:
         sendResponse({});
         break;
@@ -74,7 +77,6 @@ class RGAACheckerContent {
 
   enableHighlight(topicNumber: string, criteriaNumber: string, sendResponse: any) {
     let highlightedElementList = this.accessibilityTester.enableHighlight(topicNumber, criteriaNumber);
-    console.log('highlightedElementList', highlightedElementList);
     chrome.runtime.sendMessage({
       action: 'content_elementsHightlighted',
       result: highlightedElementList
@@ -87,6 +89,25 @@ class RGAACheckerContent {
     this.accessibilityTester.disableHighlight();
     sendResponse(true);
     return true;
+  }
+
+  highlightElement(xpath: string) {
+    let $highlightElement = this.getElementByXpath(xpath);
+    if($highlightElement) {
+      $highlightElement.scrollIntoView({behavior: "smooth", block: "center"});
+      $highlightElement.style.border = '2px solid red';
+      setTimeout(() => {
+        // add a class to trigger the highlight animation
+        $highlightElement.classList.add('-rgaacheckerHighlight');
+        setTimeout(() => {
+          $highlightElement.classList.remove('-rgaacheckerHighlight');
+        }, 1000);
+      }, 500);
+    }
+  }
+
+  getElementByXpath(path: string) {
+    return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue as HTMLElement;
   }
 }
 

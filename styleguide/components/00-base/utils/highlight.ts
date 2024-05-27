@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BaseCriterion from '../../../assets/scripts/extension/common/BaseCriterion';
+import MessageSender from './message-sender';
 
 export default class Highlight {
   private static instance: Highlight | null = null;
@@ -82,7 +82,6 @@ export default class Highlight {
     ($item.querySelector('.js-highlightList__itemCheckbox') as HTMLInputElement).value = index.toString();
 
     $item.querySelector('.js-highlightList__itemConsoleButton').addEventListener('click', () => {
-      console.log('hightlight in console', highlightJson);
       this.inspectElement(highlightJson);
     });
     $item.querySelector('.js-highlightList__itemPageButton').addEventListener('click', () => {
@@ -103,14 +102,6 @@ export default class Highlight {
   }
 
   private highlightElement(highlightJson:any) {
-
-    // $highlightElement.scrollIntoView({behavior: "smooth", block: "center"});
-    // setTimeout(() => {
-    //   // add a class to trigger the highlight animation
-    //   $highlightElement.classList.add('-rgaacheckerHighlight');
-    //   setTimeout(() => {
-    //     $highlightElement.classList.remove('-rgaacheckerHighlight');
-    //   }, 1000);
-    // }, 500);
+    MessageSender.sendMessage('devtools_highlightElement', {xpath: highlightJson.xpath});
   }
 }

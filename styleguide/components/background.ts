@@ -29,7 +29,6 @@ class Background {
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
-    console.log('background handleMessage', request.action);
     switch(request.action) {
       case "zoomIn":
         this.zoomIn();
@@ -68,6 +67,11 @@ class Background {
           chrome.runtime.sendMessage(request);
         }
         sendResponse({});
+        break;
+      case 'devtools_highlightElement':
+        request.action = "background_highlightElement";
+        this.sendMessageToContent(request, sendResponse);
+        break;
       default:
         sendResponse({});
         return true;

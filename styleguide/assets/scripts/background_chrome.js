@@ -108,45 +108,6 @@ chrome.runtime.onMessage.addListener(
           }
         });
         break;
-      case "inspectElement":
-        console.log('Inspecting element', request.elementId);
-        // inspect the element using manifest v3
-        chrome.debugger.attach({ tabId: sender.tab.id }, "1.3", function() {
-          chrome.debugger.sendCommand({ tabId: sender.tab.id }, "DOM.enable", {}, function() {
-            chrome.debugger.sendCommand({ tabId: sender.tab.id }, "DOM.getDocument", {}, function(result) {
-              const rootNodeId = result.root.nodeId;
-              chrome.debugger.sendCommand({ tabId: sender.tab.id }, "DOM.querySelector", {
-                nodeId: rootNodeId,
-                selector: "#" + request.elementId
-              }, function(node) {
-                console.log('Element found', node);
-                if (node.nodeId) {
-                  chrome.debugger.sendCommand({ tabId: sender.tab.id }, "DOM.highlightNode", {
-                    highlightConfig: {
-                      contentColor: { r: 0, g: 0, b: 0, a: 0 },
-                      paddingColor: { r: 0, g: 0, b: 0, a: 0 },
-                      marginColor: { r: 0, g: 0, b: 0, a: 0 },
-                      borderColor: { r: 255, g: 0, b: 0, a: 1 },
-                      showInfo: true
-                    },
-                    nodeId: node.nodeId
-                  }, function() {
-                    console.log('Element highlighted', node.nodeId);
-                    // If id was added by the extension, remove it
-                    if(request.elementId === 'rgaachecker-hightlight-id')
-                    {
-                      chrome.debugger.sendCommand({ tabId: sender.tab.id }, "DOM.removeAttribute", {
-                        nodeId: node.nodeId,
-                        name: 'id'
-                      });
-                    }
-                  });
-                }
-              });
-            });
-          });
-        });
-        break;
     }
   }
 );
