@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import MessageSender from "../../00-base/utils/message-sender";
-
+import Highlight from "../../00-base/utils/highlight";
 
 export default class Devtools {
   criteriaCardList: Array<any>;
@@ -45,7 +45,8 @@ export default class Devtools {
         });
         document.body.dispatchEvent(criteriaUpdatedEvent);
         break;
-      case 'elementsHightlighted':
+      case 'background_elementsHightlighted':
+        Highlight.getInstance().activate(request.result);
         break;
       default:
         break;

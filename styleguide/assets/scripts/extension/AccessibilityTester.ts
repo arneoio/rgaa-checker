@@ -68,9 +68,16 @@ export default class AccessibilityTester {
   localStorageKey: string;
   previousResults: any;
   pageResults: any;
+  highlightWrapperId: string;
+  $highlightWrapper: HTMLElement;
+  $highlightCanvas: HTMLCanvasElement;
+  $highlightElementList: HTMLElement[];
+  highlightContext: CanvasRenderingContext2D;
+  hightlightedCriterion: any;
 
   constructor() {
     this.localStorageKey = 'rgaaCheckerResults';
+    this.highlightWrapperId = 'rgaaChecker__highlightWrapper';
 
     this.criterionList = {
       "1.1": new Criterion1_1(),
@@ -123,6 +130,22 @@ export default class AccessibilityTester {
       "11.12": new Criterion11_12(),
       "11.13": new Criterion11_13(),
     };
+
+    this.initHighlight();
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    // on scroll or resize, refresh highlight
+    window.addEventListener('scroll', () => {
+      this.refreshHighlight();
+    });
+
+    window.addEventListener('resize', () => {
+      this.$highlightCanvas.width = window.innerWidth;
+      this.$highlightCanvas.height = window.innerHeight;
+      this.refreshHighlight();
+    });
   }
 
   loadSavedData() {
@@ -194,8 +217,30 @@ export default class AccessibilityTester {
     });
   }
 
+  initHighlight() {
+    if(this.$highlightWrapper) {
+      return;
+    }
+
+    this.$highlightElementList = [];
+
+    // Create highlight wrapper
+    this.$highlightWrapper = document.createElement('div');
+    this.$highlightWrapper.id = this.highlightWrapperId;
+    document.body.appendChild(this.$highlightWrapper);
+
+    // Create highlight canvas
+    this.$highlightCanvas = document.createElement('canvas');
+    this.$highlightCanvas.id = 'rgaaChecker__highlightCanvas';
+    this.$highlightCanvas.width = window.innerWidth;
+    this.$highlightCanvas.height = window.innerHeight;
+    this.$highlightWrapper.appendChild(this.$highlightCanvas);
+
+    this.highlightContext = this.$highlightCanvas.getContext('2d');
+  }
+
   enableHighlight(topicNumber: string, criteriaNumber: string) {
-    let criterion = this.criterionList[topicNumber + '.' + criteriaNumber];
+    this.hightlightedCriterion = this.criterionList[topicNumber + '.' + criteriaNumber];
     let highlightJsonList: any[] = [];
 
     // Reset all highlights except the one to enable
@@ -203,12 +248,16 @@ export default class AccessibilityTester {
       if (key !== topicNumber + '.' + criteriaNumber) {
         this.criterionList[key].disableHighlight();
       } else {
-        let $highlightElementList = criterion.enableHighlight();
+        let $highlightElementList = this.hightlightedCriterion.enableHighlight();
+
+        this.$highlightElementList = $highlightElementList;
+        this.showHighlight();
 
         $highlightElementList.forEach(($highlightElement: HTMLElement, index: number) => {
           highlightJsonList.push({
+            xpath: this.getXPath($highlightElement),
             tag: $highlightElement.tagName,
-            text: criterion.getHighlightListContent($highlightElement),
+            text: this.hightlightedCriterion.getHighlightListContent($highlightElement),
             isVisible: $highlightElement.checkVisibility({
               opacityProperty: true,
               visibilityProperty: true,
@@ -222,9 +271,80 @@ export default class AccessibilityTester {
   }
 
   disableHighlight() {
-    console.log('Reset highlight');
+    this.resetHighlight();
     Object.keys(this.criterionList).forEach((key: string) => {
       this.criterionList[key].disableHighlight();
     });
+  }
+
+  resetHighlight() {
+    this.highlightContext.clearRect(0, 0, this.$highlightCanvas.width, this.$highlightCanvas.height);
+  }
+
+  getXPath(element: HTMLElement) {
+    let xpath = '';
+    for ( ; element && element.nodeType === Node.ELEMENT_NODE; element = element.parentNode as HTMLElement) {
+      let id = element.id;
+      if (id) {
+        return `id("${id}")${xpath}`;
+      }
+      let nodeName = element.nodeName;
+      let sibling = element;
+      let count = 1;
+      while (sibling = sibling.previousElementSibling as HTMLElement) {
+        if (sibling.nodeName === nodeName) {
+          count++;
+        }
+      }
+      xpath = `/${nodeName}[${count}]${xpath}`;
+    }
+    return xpath;
+  }
+
+  showHighlight() {
+    this.resetHighlight();
+
+    if(this.$highlightElementList.length === 0) {
+      return;
+    }
+
+    this.highlightContext.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    this.highlightContext.strokeStyle = 'rgba(255, 0, 0, 1)';
+    this.highlightContext.setLineDash([5, 5]);
+    this.highlightContext.lineWidth = 1;
+    this.highlightContext.fillRect(0, 0, this.$highlightCanvas.width, this.$highlightCanvas.height);
+
+    // Check highlight element in viewport and visible
+    this.$highlightElementList.forEach(($highlightElement: HTMLElement) => {
+      if(!$highlightElement.checkVisibility({
+        opacityProperty: true,
+        visibilityProperty: true,
+      } as any)) {
+        return;
+      }
+
+      let boundingList = $highlightElement.getClientRects();
+      if(boundingList.length === 0) {
+        return;
+      }
+
+      for(let i = 0; i < boundingList.length; ++i) {
+        let bounding = boundingList[i];
+        if(bounding.width === 0 || bounding.height === 0) {
+          return;
+        }
+        if (bounding.top + bounding.height < 0 || bounding.top > window.innerHeight) {
+          return;
+        }
+
+        // remove a rect in canvas at element position
+        this.highlightContext.clearRect(bounding.left, bounding.top, bounding.width, bounding.height);
+        this.highlightContext.strokeRect(bounding.left, bounding.top, bounding.width, bounding.height);
+      }
+    });
+  }
+
+  refreshHighlight() {
+    this.showHighlight();
   }
 }

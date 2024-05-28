@@ -18,9 +18,6 @@
     },
     "default_popup": "rgaa-checker-popup.html"
   },
-  "permissions": [
-    "activeTab"
-  ],
   "background": {
     "service_worker": "background.js"
   },
@@ -40,7 +37,8 @@
       "resources": [
         "rgaa-checker-panel.html",
         "app.js",
-        "app.css"
+        "app.css",
+        "rgaa-checker-content.css"
       ],
       "matches": [
         "<all_urls>"

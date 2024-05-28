@@ -42,6 +42,14 @@ module.exports = (env, argv) => {
       from: path.resolve(`${ASSETS_PATH}/scripts/extension`),
       to: path.resolve(`${BUILD_FOLDER}/scripts/extension`),
     },
+    {
+      from: path.resolve(`${ASSETS_PATH}/scripts/extension`),
+      to: path.resolve(`${BUILD_FOLDER}/scripts/extension`),
+    },
+    {
+      from: path.resolve(`${ASSETS_PATH}/css`),
+      to: path.resolve(`${BUILD_FOLDER}`),
+    },
   ];
 
   if (devMode) {

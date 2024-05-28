@@ -1,3 +1,4 @@
+import Highlight from "../../00-base/utils/highlight";
 import MessageSender from "../../00-base/utils/message-sender";
 
 export default class CriteriaCard {
@@ -97,9 +98,10 @@ export default class CriteriaCard {
     const $input = $highlightSwitch.querySelector('input') as HTMLInputElement;
     $input.addEventListener('change', () => {
       if (!$input.checked) {
-        MessageSender.sendMessage('disableHighlight');
+        MessageSender.sendMessage('devtools_disableHighlight');
+        Highlight.getInstance().hide();
       } else {
-        MessageSender.sendMessage('enableHighlight', {topicNumber: this.topicNumber, criteriaNumber: this.criteriaNumber});
+        MessageSender.sendMessage('devtools_enableHighlight', {topicNumber: this.topicNumber, criteriaNumber: this.criteriaNumber});
         // Désactive les autres highlight
         Array.from(document.querySelectorAll('.js-criteriaCard__highlightSwitch input:checked')).forEach(($input: HTMLInputElement) => {
           if ($input !== $highlightSwitch.querySelector('input')) {

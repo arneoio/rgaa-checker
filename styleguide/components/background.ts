@@ -1,5 +1,5 @@
 /*
- * background_chrome.js - Copyright (c) 2023-2024 - Arneo
+ * background.ts - Copyright (c) 2023-2024 - Arneo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,10 +46,31 @@ class Background {
         sendResponse({});
         break;
       case "content_pageLoaded":
-        this.runTests(sendResponse);
+        this.sendMessageToContent({ action: "background_runTests" }, sendResponse);
         break;
       case "devtools_runTests":
-        this.runTests(sendResponse);
+        this.sendMessageToContent({ action: "background_runTests" }, sendResponse);
+        break;
+      case "devtools_enableHighlight":
+        request.action = "background_enableHighlight";
+        this.sendMessageToContent(request, sendResponse);
+        break;
+      case "devtools_disableHighlight":
+        this.sendMessageToContent({ action: "background_disableHighlight" }, sendResponse);
+        break;
+      case "content_elementsHightlighted":
+        // send back to devtools
+        request.action = "background_elementsHightlighted";
+        if(typeof browser !== 'undefined' && browser) {
+          browser.runtime.sendMessage(request);
+        } else {
+          chrome.runtime.sendMessage(request);
+        }
+        sendResponse({});
+        break;
+      case 'devtools_highlightElement':
+        request.action = "background_highlightElement";
+        this.sendMessageToContent(request, sendResponse);
         break;
       default:
         sendResponse({});
@@ -112,27 +133,27 @@ class Background {
     }
   }
 
-  runTests(sendResponse: any) {
+  sendMessageToContent(request: any, sendResponse: any) {
     if(typeof browser !== 'undefined' && browser) {
       return browser.tabs.query({ active: true, currentWindow: true })
       .then((tabs) => {
         if (tabs.length > 0) {
           const tabId = tabs[0].id as number;
-          return browser.tabs.sendMessage(tabId, { action: "background_runTests" });
+          return browser.tabs.sendMessage(tabId, request);
         }
       })
       .then(() => {
         sendResponse({});
       })
       .catch((error) => {
-        console.error("Error while running tests:", error);
+        console.error("Error while sending message to content:", error);
         sendResponse({});
       });
     } else {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (tabs.length > 0) {
           const tabId = tabs[0].id as number;
-          chrome.tabs.sendMessage(tabId, { action: "background_runTests" });
+          chrome.tabs.sendMessage(tabId, request);
           sendResponse({});
         }
       });
