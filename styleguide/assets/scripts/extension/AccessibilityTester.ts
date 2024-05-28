@@ -227,14 +227,6 @@ export default class AccessibilityTester {
     // Create highlight wrapper
     this.$highlightWrapper = document.createElement('div');
     this.$highlightWrapper.id = this.highlightWrapperId;
-    this.$highlightWrapper.style.position = 'fixed';
-    this.$highlightWrapper.style.top = '0';
-    this.$highlightWrapper.style.left = '0';
-    this.$highlightWrapper.style.width = '100%';
-    this.$highlightWrapper.style.height = '100%';
-    this.$highlightWrapper.style.zIndex = '10000';
-    this.$highlightWrapper.style.pointerEvents = 'none';
-    this.$highlightWrapper.style.overflow = 'hidden';
     document.body.appendChild(this.$highlightWrapper);
 
     // Create highlight canvas
@@ -242,10 +234,6 @@ export default class AccessibilityTester {
     this.$highlightCanvas.id = 'rgaaChecker__highlightCanvas';
     this.$highlightCanvas.width = window.innerWidth;
     this.$highlightCanvas.height = window.innerHeight;
-    this.$highlightCanvas.style.position = 'fixed';
-    this.$highlightCanvas.style.top = '0';
-    this.$highlightCanvas.style.left = '0';
-
     this.$highlightWrapper.appendChild(this.$highlightCanvas);
 
     this.highlightContext = this.$highlightCanvas.getContext('2d');

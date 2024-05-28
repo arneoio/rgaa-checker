@@ -85,7 +85,6 @@ export default class Highlight {
       this.inspectElement(highlightJson);
     });
     $item.querySelector('.js-highlightList__itemPageButton').addEventListener('click', () => {
-      console.log('hightlight in page');
       this.highlightElement(highlightJson);
     });
     if(highlightJson.isVisible) {

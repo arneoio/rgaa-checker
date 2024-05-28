@@ -1,5 +1,5 @@
 /*
- * background_chrome.js - Copyright (c) 2023-2024 - Arneo
+ * content.ts - Copyright (c) 2023-2024 - Arneo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,10 @@ class RGAACheckerContent {
   $highlightWrapper: HTMLElement;
   $highlightCanvas: HTMLCanvasElement;
   highlightContext: CanvasRenderingContext2D;
+  isStylesInjected: boolean;
 
   constructor() {
+    this.isStylesInjected = false;
     this.accessibilityTester = new AccessibilityTester();
     this.init();
   }
@@ -36,7 +38,6 @@ class RGAACheckerContent {
   }
 
   handleMessage(request: any, sender: any, sendResponse: any) {
-    console.log('content handleMessage', request.action);
     switch(request.action) {
       case "background_runTests":
         this.runTests(sendResponse);
@@ -76,6 +77,11 @@ class RGAACheckerContent {
   }
 
   enableHighlight(topicNumber: string, criteriaNumber: string, sendResponse: any) {
+    if(!this.isStylesInjected) {
+      this.injectStyles();
+      this.isStylesInjected = true;
+    }
+
     let highlightedElementList = this.accessibilityTester.enableHighlight(topicNumber, criteriaNumber);
     chrome.runtime.sendMessage({
       action: 'content_elementsHightlighted',
@@ -98,9 +104,9 @@ class RGAACheckerContent {
       $highlightElement.style.border = '2px solid red';
       setTimeout(() => {
         // add a class to trigger the highlight animation
-        $highlightElement.classList.add('-rgaacheckerHighlight');
+        $highlightElement.classList.add('-rgaachecker__highlight');
         setTimeout(() => {
-          $highlightElement.classList.remove('-rgaacheckerHighlight');
+          $highlightElement.classList.remove('-rgaachecker__highlight');
         }, 1000);
       }, 500);
     }
@@ -108,6 +114,14 @@ class RGAACheckerContent {
 
   getElementByXpath(path: string) {
     return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue as HTMLElement;
+  }
+
+  injectStyles() {
+    let $style = document.createElement('link');
+    $style.rel = 'stylesheet';
+    $style.type = 'text/css';
+    $style.href = chrome.runtime.getURL('rgaa-checker-content.css');
+    document.head.appendChild($style);
   }
 }
 

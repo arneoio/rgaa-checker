@@ -1,5 +1,5 @@
 /*
- * background_chrome.js - Copyright (c) 2023-2024 - Arneo
+ * background.ts - Copyright (c) 2023-2024 - Arneo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

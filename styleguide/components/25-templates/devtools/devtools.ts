@@ -46,7 +46,6 @@ export default class Devtools {
         document.body.dispatchEvent(criteriaUpdatedEvent);
         break;
       case 'background_elementsHightlighted':
-        console.log('background_elementsHightlighted', request.result);
         Highlight.getInstance().activate(request.result);
         break;
       default:
