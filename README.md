@@ -6,6 +6,11 @@ Accélérez et simplifiez vos audits d'accessibilité RGAA directement dans votr
 
 Conçue pour les auditeurs, développeurs et tous les acteurs du web soucieux de l'accessibilité, cette extension disponible pour les navigateurs Chrome et Firefox automatise la vérification des critères d'accessibilité RGAA, vous offrant un gain de temps significatif et une analyse précise.
 
+L'extension est disponible:
+
+- sur le [Chrome Web Store](https://chromewebstore.google.com/detail/rgaa-checker/eenibcgdpolkdophaaiikdcofgkjlllm?hl=fr) pour Chrome
+- sur [Firefox Add-ons](https://addons.mozilla.org/fr/firefox/addon/rgaa-checker/) pour Firefox.
+
 Le [RGAA](https://fr.wikipedia.org/wiki/R%C3%A9f%C3%A9rentiel_g%C3%A9n%C3%A9ral_d%27am%C3%A9lioration_de_l%27accessibilit%C3%A9), aligné sur les normes [WCAG](https://en.wikipedia.org/wiki/Web_Content_Accessibility_Guidelines), vise à assurer l'accessibilité numérique pour les personnes handicapées, ciblant les services publics et les grandes entreprises en France avec un CA supérieur à 250 millions d'euros, pour un internet plus inclusif.
 
 Pour plus de détails, veuillez consulter le [site officiel du RGAA](https://accessibilite.numerique.gouv.fr/).
