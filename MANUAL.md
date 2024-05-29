@@ -1,5 +1,34 @@
 # MANUEL UTILISATEUR
 
+## Accéder à l'extension
+
+### Télécharger l'extension
+
+L'extension est disponible:
+
+- sur le [Chrome Web Store](https://chromewebstore.google.com/detail/rgaa-checker/eenibcgdpolkdophaaiikdcofgkjlllm?hl=fr) pour Chrome
+- sur [Firefox Add-ons](https://addons.mozilla.org/fr/firefox/addon/rgaa-checker/) pour Firefox.
+
+L'extension RGAA Checker s'intègre dans les outils de développement de votre navigateur, vous permettant ainsi d'effectuer des analyses conformes aux normes RGAA directement dans cet environnement spécialisé.
+
+### Ouvrir l'extension sur chrome
+
+1. Lancez Google Chrome sur votre ordinateur.
+2. Accédez à une page Web que vous souhaitez analyser avec RGAA Checker.
+3. Cliquez avec le bouton droit de la souris sur n'importe quel endroit de la page.
+4. Sélectionnez "Inspecter" dans le menu contextuel. Cela ouvrira l'outil de développement de Chrome.
+5. Dans la barre de navigation de l'outil de développement, recherchez l'onglet "RGAA Checker".
+6. Cliquez sur cet onglet pour ouvrir l'extension RGAA Checker dans DevTools.
+
+### Ouvrir l'extension sur Firefox
+
+1. Lancez Mozilla Firefox sur votre ordinateur.
+2. Accédez à une page Web que vous souhaitez analyser avec RGAA Checker.
+3. Cliquez avec le bouton droit de la souris sur n'importe quel endroit de la page.
+4. Sélectionnez "Inspecter l'élément" dans le menu contextuel. Cela ouvrira l'outil de développement de Firefox.
+5. Dans la barre de navigation de l'outil de développement, recherchez l'onglet "RGAA Checker".
+6. Cliquez sur cet onglet pour ouvrir l'extension RGAA Checker dans DevTools.
+
 ## Principe et fonctionnement
 
 L'extension s'appuie sur la [liste des critères et tests fournis pour la DISIC](https://github.com/DISIC/RGAA/blob/master/v4.0/JSON/criteres.json).
@@ -33,9 +62,7 @@ Le taux de conformité se base sur les [recommandations de la DINUM](https://acc
 
 Le pourcentage correspond au nombre de critères conformes par rapport au nombre total de critères applicables. `C / (C + NC) * 100`
 
-L'indication en dessous du pourcentage indique le nombre de critères évalués par l'outil (`C + NC + NA`) par rapport au nombre total de critères total. **Le taux de conformité ne prenant pas en compte les critères non traités, il n'est pas représentatif de la conformité réelle de la page** tant que tous les critères ne sont pas traités. C'est pour cela que nous indiquons également le nombre de critères évalués par rapport au nombre total de critères.
-
-Le taux de conformité est mis à jour à chaque fois que vous changez l'état d'un critère.
+L'indication en dessous du pourcentage indique le nombre de critères évalués par l'outil (`C + NC + NA`) par rapport au nombre total de critères total. **Le taux de conformité ne s'affiche qu'une fois tous les critères évalués**. Tant qu'il reste des critères en `NT`, le taux de conformité ne sera pas affiché.
 
 ## Mise en avant des éléments
 
@@ -46,6 +73,13 @@ Sur plusieurs critères vous trouverez un switch **Highlight**. En cliquant dess
 C'était important pour nous car on peut toujours voir le contexte des éléments dans la page tout en les retrouvant facilement. Et pour certains critères comme ceux de la thématique de structuration de l'information, ça permet d'aller plus loin que ce que l'on peut faire à la main. Au delà de voir si des titres ou des listes sont conformes etbien structurés, on peut également voir si par endroit on aurait dû avoir des listes ou des titres dans la sémantique mais qui ont été oubliés.
 
 ![Éléménts mis en avant dans une page](doc/manual/highlighted.png)
+
+Les éléments mis en avant sont également affiché dans l'onglet. 2 options sont alors possibles :
+
+- Voir l'élément dans la page, dans son contexte, si celui-ci est visible. (l'icone change si l'élément n'est pas visible)
+- Voir l'élément dans le code source de la page, dans l'onglet _Elements_ des devtools. Ceci permet de voir les éléments qui ne sont pas visibles à l'oeil nu et de les retrouver facilement.
+
+![Éléménts mis en avant dans les devtools](doc/manual/highlighted-devtools.png)
 
 ### Autres options de mise en avant
 
@@ -84,7 +118,7 @@ Tout en haut de l'extension, vous avez un bouton **Copier le résultat**. Ca per
 
 ![alt text](doc/manual/export.png)
 
-Sur le fichier de la grille, il faut ensuite se placer dans l'onglet _P01_ (ou autre suivant la page correspondante) et de se placer dans la première cellule de la colonne **Statut**. Ensuite il suffit de coller le contenu du presse papier. Les données sont séparées par des tabulations, ce qui permet de coller directement dans le fichier.
+Sur le fichier de la grille, il faut ensuite se placer dans l'onglet _P01_ (ou autre suivant la page correspondante) et de se placer dans la première cellule de la colonne **Critère** (cellule B4). Ensuite il suffit de coller le contenu du presse papier. Les données sont séparées par des tabulations, ce qui permet de coller directement dans le fichier.
 
 ![alt text](doc/manual/grid.png)
 
@@ -112,11 +146,13 @@ Nous aimerions ajouter des paramètres pour pouvoir personnaliser l'extension. P
 - pouvoir exporter les données dans un autre format que le texte brut.
 - les dimensions et la disposition de la fenêtre.
 
-### Réduire la fenêtre ou relancer les tests
+### Relancer les tests
 
-Pour réduire la fenêtre de l'extension il suffit de cliquer sur la croix en haut à droite.
+Si vous souhaitez relancer les tests, vous pouvez cliquer sur le bouton **Relancer les tests** en haut à droite de l'extension. Cela permet de mettre à jour les critères en fonction des changements de la page entre deux moments.
 
-Pour relancer les tests, il suffit de cliquer sur l'icône de l'extension dans la barre d'outils du navigateur pour fermer la fenêtre et cliquer à nouveau pour la rouvrir.
+Si vous chargez une nouvelle page, il faudra également relancer manuellement les tests pour que les critères soient mis à jour.
+
+![alt text](doc/manual/relaunch.png)
 
 ### Navigation dans les thématiques
 
