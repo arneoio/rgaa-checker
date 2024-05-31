@@ -17,7 +17,7 @@
 import BaseCriterion from '../common/BaseCriterion';
 
 /**
- * Dans chaque page web, chaque citation est-elle correctement indiquée ?
+ * Dans chaque page web, les propriétés d’espacement du texte peuvent-elles être redéfinies par l’utilisateur sans perte de contenu ou de fonctionnalité (hors cas particuliers) ?
  * Traite: NT (validation manuelle)
  */
 export default class Criterion10_12 extends BaseCriterion {
