@@ -79,6 +79,7 @@ class RGAACheckerContent {
   enableHighlight(topicNumber: string, criteriaNumber: string, sendResponse: any) {
     if(!this.isStylesInjected) {
       this.injectStyles();
+      this.accessibilityTester.initHighlight();
       this.isStylesInjected = true;
     }
 
@@ -101,7 +102,6 @@ class RGAACheckerContent {
     let $highlightElement = this.getElementByXpath(xpath);
     if($highlightElement) {
       $highlightElement.scrollIntoView({behavior: "smooth", block: "center"});
-      $highlightElement.style.border = '2px solid red';
       setTimeout(() => {
         // add a class to trigger the highlight animation
         $highlightElement.classList.add('-rgaachecker__highlight');

@@ -53,6 +53,42 @@ Que vous travailliez sur des sites en développement ou que vous souhaitiez éva
 | 5.1     | ✅  | ✅  | ✅  |            |                                                                                                                        |
 | 5.2     |     |     | ✅  |     ✅     | Trouve les tableaux complexe et les liste dans la console.                                                             |
 | 5.3     |     |     | ✅  |            |                                                                                                                        |
+| 5.4     |     | ✅  | ✅  |            |                                                                                                                        |
+| 5.5     |     |     | ✅  |            |                                                                                                                        |
+| 5.6     |     |     | ✅  |            |                                                                                                                        |
+| 6.1     |     |     | ✅  |     ✅     | Mise en avant des liens et de leur intitulé                                                                            |
+| 6.2     | ✅  | ✅  |     |            |                                                                                                                        |
+| 8.1     | ✅  | ✅  |     |            |                                                                                                                        |
+| 8.2     |     |     |     |            |                                                                                                                        |
+| 8.3     | ✅  | ✅  |     |            |                                                                                                                        |
+| 8.4     |     | ✅  | ✅  |     ✅     | Affichage de la langue de la page                                                                                      |
+| 8.5     | ✅  | ✅  |     |            |                                                                                                                        |
+| 8.6     |     | ✅  | ✅  |     ✅     | Affichage du titre de la page                                                                                          |
+| 8.7     |     | ✅  |     |            |                                                                                                                        |
+| 8.8     |     | ✅  | ✅  |            |                                                                                                                        |
+| 8.10    |     | ✅  |     |            |                                                                                                                        |
+| 9.1     |     | ✅  | ✅  |            |                                                                                                                        |
+| 9.3     |     |     |     |     ✅     | Met en avant les listes                                                                                                |
+| 9.4     |     |     |     |     ✅     | Met en avant les citations                                                                                             |
+| 10.1    |     | ✅  |     |            |                                                                                                                        |
+| 10.2    |     |     |     |     ✅     | Désactive les styles de la page                                                                                        |
+| 10.3    |     |     |     |     ✅     | Désactive les styles de la page                                                                                        |
+| 10.4    |     |     |     |     ✅     | Zoom le contenu à 200%                                                                                                 |
+| 10.5    | ✅  | ✅  |     |            |                                                                                                                        |
+| 10.7    | ✅  | ✅  |     |            |                                                                                                                        |
+| 11.1    | ✅  | ✅  | ✅  |     ✅     |                                                                                                                        |
+| 11.2    |     |     | ✅  |     ✅     |                                                                                                                        |
+| 11.3    |     |     | ✅  |     ✅     |                                                                                                                        |
+| 11.4    |     |     | ✅  |     ✅     |                                                                                                                        |
+| 11.5    |     |     | ✅  |     ✅     |                                                                                                                        |
+| 11.6    | ✅  | ✅  | ✅  |            |                                                                                                                        |
+| 11.7    |     |     | ✅  |     ✅     |                                                                                                                        |
+| 11.8    |     | ✅  | ✅  |     ✅     |                                                                                                                        |
+| 11.9    |     | ✅  | ✅  |     ✅     |                                                                                                                        |
+| 11.10   |     | ✅  |     |     ✅     |                                                                                                                        |
+| 11.11   |     | ✅  |     |     ✅     |                                                                                                                        |
+| 11.12   |     | ✅  |     |     ✅     |                                                                                                                        |
+| 11.13   |     | ✅  |     |     ✅     |                                                                                                                        |
 
 ## Installation
 
