@@ -130,12 +130,9 @@ export default class AccessibilityTester {
       "11.12": new Criterion11_12(),
       "11.13": new Criterion11_13(),
     };
-
-    this.initHighlight();
-    this.bindEvents();
   }
 
-  bindEvents() {
+  bindCanvasEvents() {
     // on scroll or resize, refresh highlight
     window.addEventListener('scroll', () => {
       this.refreshHighlight();
@@ -146,6 +143,11 @@ export default class AccessibilityTester {
       this.$highlightCanvas.height = window.innerHeight;
       this.refreshHighlight();
     });
+
+    setInterval(() => {
+      console.log('Refresh highlight');
+      this.refreshHighlight();
+    }, 1000);
   }
 
   loadSavedData() {
@@ -237,6 +239,8 @@ export default class AccessibilityTester {
     this.$highlightWrapper.appendChild(this.$highlightCanvas);
 
     this.highlightContext = this.$highlightCanvas.getContext('2d');
+
+    this.bindCanvasEvents();
   }
 
   enableHighlight(topicNumber: string, criteriaNumber: string) {

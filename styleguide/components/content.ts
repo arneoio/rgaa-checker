@@ -79,6 +79,7 @@ class RGAACheckerContent {
   enableHighlight(topicNumber: string, criteriaNumber: string, sendResponse: any) {
     if(!this.isStylesInjected) {
       this.injectStyles();
+      this.accessibilityTester.initHighlight();
       this.isStylesInjected = true;
     }
 
