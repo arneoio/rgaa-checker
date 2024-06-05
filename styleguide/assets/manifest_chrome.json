@@ -31,6 +31,9 @@
       ]
     }
   ],
+  "permissions": [
+    "storage"
+  ],
   "devtools_page": "rgaa-checker-devtools.html",
   "web_accessible_resources": [
     {

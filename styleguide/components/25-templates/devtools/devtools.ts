@@ -16,6 +16,10 @@
 import MessageSender from "../../00-base/utils/message-sender";
 import Highlight from "../../00-base/utils/highlight";
 
+interface StorageData {
+  [key: string]: any;  // Utilise `any`, ou un type plus spécifique si possible
+}
+
 export default class Devtools {
   criteriaCardList: Array<any>;
 
@@ -38,7 +42,7 @@ export default class Devtools {
         MessageSender.sendMessage('devtools_runTests');
         break;
       case 'background_testsCompleted':
-        this.parseResults(request.result);
+        this.parseResults(request);
         const criteriaUpdatedEvent = new Event('rgaachecker-initialized', {
           bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
           cancelable: true, // L'événement peut être annulé
@@ -56,7 +60,11 @@ export default class Devtools {
     return true;
   }
 
-  parseResults(criteriaList: any) {
+  parseResults(request: any) {
+    console.log('Parse results', request);
+    let host = request.host || '';
+    let url = request.url || '';
+    let criteriaList = request.result || {};
     // results data structure
     // 4.2: {
     //   topicNumber: 4,
@@ -77,5 +85,72 @@ export default class Devtools {
       }
       criterion.loadData(criterionData);
     });
+
+    if(!host || !url) {
+      return;
+    }
+
+    let previousStorageData: StorageData = {};
+    if(typeof browser !== 'undefined' && browser) {
+      browser.storage.local.get('rgaachecker-results').then((data: StorageData) => {
+        console.log('Loaded previous results from local storage', previousStorageData);
+        previousStorageData = data['rgaachecker-results'] || {};
+      });
+    }
+    else {
+      chrome.storage.local.get('rgaachecker-results').then((data: StorageData) => {
+        previousStorageData = data['rgaachecker-results'] || {};
+        this.saveResults(previousStorageData, host, url, criteriaList);
+      });
+    }
+  }
+
+  saveResults(previousStorageData: StorageData, host: string, url: string, criteriaList: any) {
+    // Save the results in the devtools local storage, separated by host and url
+    if(!host || !url) {
+      return;
+    }
+
+    if(!previousStorageData[host]) {
+      previousStorageData[host] = {};
+    }
+    if(!previousStorageData[host][url]) {
+      previousStorageData[host][url] = {
+        'user': JSON.stringify({}),
+        'runner': JSON.stringify(criteriaList)
+      }
+    } else {
+      // Save the new results
+      let resultList: any = {};
+      Object.keys(criteriaList).forEach((key: string) => {
+        resultList[key] = criteriaList[key]['status'];
+      });
+
+      // Check if there are differences between the previous and the new results
+      let previousCriterionData = JSON.parse(previousStorageData[host][url]['runner']);
+      const diff: any = {};
+      Object.keys(resultList).forEach((key: string) => {
+        if(typeof previousCriterionData[key] !== 'undefined' && previousCriterionData[key] !== resultList[key]) {
+          diff[key] = {
+            'previous': previousCriterionData[key],
+            'current': resultList[key]
+          };
+          return;
+        }
+      });
+      if(Object.keys(diff).length > 0) {
+        console.log('Diff:', diff);
+      }
+
+      previousStorageData[host][url]['runner'] = JSON.stringify(resultList);
+    }
+
+    if(typeof browser !== 'undefined' && browser) {
+      browser.storage.local.set({ 'rgaachecker-results': previousStorageData });
+    } else {
+      chrome.storage.local.set({ 'rgaachecker-results': previousStorageData }).then(() => {
+        console.log('Saved results in local storage', previousStorageData);
+      });
+    }
   }
 }
