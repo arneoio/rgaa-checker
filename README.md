@@ -67,7 +67,7 @@ Que vous travailliez sur des sites en développement ou que vous souhaitiez éva
 | 8.7     |     | ✅  |     |            |                                                                                                                        |
 | 8.8     |     | ✅  | ✅  |            |                                                                                                                        |
 | 8.10    |     | ✅  |     |            |                                                                                                                        |
-| 9.1     |     | ✅  | ✅  |            |                                                                                                                        |
+| 9.1     |     | ✅  | ✅  |            | Vérifie si la hiérarchie des titres est correcte.                                                                      |
 | 9.3     |     |     |     |     ✅     | Met en avant les listes                                                                                                |
 | 9.4     |     |     |     |     ✅     | Met en avant les citations                                                                                             |
 | 10.1    |     | ✅  |     |            |                                                                                                                        |
