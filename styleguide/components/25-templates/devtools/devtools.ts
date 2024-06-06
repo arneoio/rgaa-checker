@@ -42,6 +42,7 @@ export default class Devtools {
         MessageSender.sendMessage('devtools_runTests');
         break;
       case 'background_testsCompleted':
+        this.updateUrl(request.host, request.url);
         this.parseResults(request);
         const criteriaUpdatedEvent = new Event('rgaachecker-initialized', {
           bubbles: true, // L'événement peut se propager à travers la hiérarchie DOM
@@ -105,6 +106,18 @@ export default class Devtools {
     }
   }
 
+  updateUrl(host: string, url: string) {
+    let $host = document.querySelector('.js-summary__host') as HTMLElement;
+    if($host) {
+      $host.textContent = host;
+    }
+
+    let $url = document.querySelector('.js-summary__url') as HTMLElement;
+    if($url) {
+      $url.textContent = url;
+    }
+  }
+
   saveResults(previousStorageData: StorageData, host: string, url: string, criteriaList: any) {
     // Save the results in the devtools local storage, separated by host and url
     if(!host || !url) {
@@ -139,7 +152,7 @@ export default class Devtools {
         }
       });
       if(Object.keys(diff).length > 0) {
-        console.log('Diff:', diff);
+        this.showDiff(diff);
       }
 
       previousStorageData[host][url]['runner'] = JSON.stringify(resultList);
@@ -152,5 +165,27 @@ export default class Devtools {
         console.log('Saved results in local storage', previousStorageData);
       });
     }
+  }
+
+  showDiff(diff: any) {
+    let $diffContainer = document.querySelector('.js-summary__differences') as HTMLElement;
+    if(!$diffContainer) {
+      return;
+    }
+
+    $diffContainer.classList.remove('-hidden');
+    let $diffList = document.querySelector('.js-summary__differences__list') as HTMLElement;
+    if(!$diffList) {
+      return;
+    }
+
+    Object.keys(diff).forEach((key: string) => {
+      let $diffItem = document.createElement('li');
+      $diffItem.classList.add(`-status-${diff[key].current}`);
+      $diffItem.innerHTML = `Critere <strong>${key}</strong>:
+          <span class="-status-${diff[key].previous.toLowerCase()}">${diff[key].previous}</span>
+          ➡ <span class="-status-${diff[key].current.toLowerCase()}">${diff[key].current}</span>`;
+      $diffList.appendChild($diffItem);
+    });
   }
 }
