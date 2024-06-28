@@ -38,10 +38,11 @@ class Background {
         break;
       case "content_testsCompleted":
         // send back to devtools
+        request.action = "background_testsCompleted";
         if(typeof browser !== 'undefined' && browser) {
-          browser.runtime.sendMessage({ action: "background_testsCompleted", result: request.result });
+          browser.runtime.sendMessage(request);
         } else {
-          chrome.runtime.sendMessage({ action: "background_testsCompleted", result: request.result });
+          chrome.runtime.sendMessage(request);
         }
         sendResponse({});
         break;

@@ -12,7 +12,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     gap: 6px;
+}
+
+.o-summary__top__url {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 500;
+    width: 100%;
 }
 
 .o-summary__top__title {
@@ -29,6 +37,53 @@
 
 .o-summary__top__textarea {
     display: none;
+}
+
+.o-summary__differences {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-shrink: 0;
+    gap: 6px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: $color-white;
+}
+
+.o-summary__differences__title {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.o-summary__differences__list {
+    padding-left: 16px;
+    font-size: 12px;
+
+    li {
+        list-style: disc;
+    }
+
+    span {
+        display: inline-block;
+        padding: 4px;
+        border-radius: 4px;
+        font-weight: 700;
+
+        &.-status-c {
+            background-color: var(--secondary-color-green-soft);
+            color: var(--secondary-color-green);
+        }
+
+        &.-status-nc {
+            background-color: var(--secondary-color-red-soft);
+            color: var(--secondary-color-red);
+        }
+
+        &.-status-na {
+            background-color: var(--secondary-color-orange-soft);
+            color: var(--secondary-color-orange);
+        }
+    }
 }
 
 .o-summary__frame {

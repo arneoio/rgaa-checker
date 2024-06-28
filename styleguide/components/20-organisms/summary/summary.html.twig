@@ -17,6 +17,11 @@
 {% endfor %}
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
     <div class="o-summary__top">
+        <p class="o-summary__top__url"><strong>URL testée :</strong> <span class="js-summary__host"></span><span class="js-summary__url"></span></p>
+        <div class="o-summary__differences o-summary__frame -hidden js-summary__differences">
+            <h2 class="o-summary__differences__title">Différences depuis les derniers tests:</h2>
+            <ul class="o-summary__differences__list js-summary__differences__list"></ul>
+        </div>
         <h2 class="o-summary__top__title">Simplifiez votre audit</h2>
         <button class="o-summary__top__download js-summary__copyButton">Copier le résultat</button>
         <textarea id="summary__result" class="js-summary__textarea o-summary__top__textarea"></textarea>

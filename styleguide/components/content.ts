@@ -61,16 +61,16 @@ class RGAACheckerContent {
 
   runTests(sendResponse: any) {
     let testJsonResult = this.accessibilityTester.runTests();
+    let messageParams = {
+      action: 'content_testsCompleted',
+      result: testJsonResult,
+      host: window.location.host,
+      url: window.location.pathname + window.location.search
+    };
     if(typeof browser !== 'undefined' && browser) {
-      browser.runtime.sendMessage({
-        action: 'content_testsCompleted',
-        result: testJsonResult
-      });
+      browser.runtime.sendMessage(messageParams);
     } else {
-      chrome.runtime.sendMessage({
-        action: 'content_testsCompleted',
-        result: testJsonResult
-      });
+      chrome.runtime.sendMessage(messageParams);
     }
     sendResponse(testJsonResult);
     return testJsonResult;

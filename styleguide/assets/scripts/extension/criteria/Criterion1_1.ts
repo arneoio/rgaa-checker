@@ -29,7 +29,7 @@ export default class Criterion1_1 extends BaseCriterion {
     this.messageList = {
       'NT': 'Toutes les images de la page ont une alternative textuelle.' + warningMessage,
       'NC': 'Toutes les images de la page n\'ont pas d\'alternative textuelle.' + warningMessage,
-      'NA': 'Aucune image n\'a été trouvée dans la page.' + warningMessage
+      'NA': 'Aucune image n\'a été trouvée dans la page.'
     }
   }
 
@@ -149,7 +149,7 @@ export default class Criterion1_1 extends BaseCriterion {
       this.logResults('1.1 - Liste des images sans alternative textuelle', $noLabelImageList);
     }
 
-    this.elementList = $noLabelImageList;
+    this.elementList = Array.from($allImageList) as HTMLElement[];
 
     return this.status;
   }

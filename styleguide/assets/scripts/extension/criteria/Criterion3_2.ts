@@ -1,5 +1,5 @@
 /*
- * Criterion5_6.ts - Copyright (c) 2023-2024 - Arneo
+ * Criterion3_2.ts - Copyright (c) 2023-2024 - Arneo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,37 +17,22 @@
 import BaseCriterion from '../common/BaseCriterion';
 
 /**
- * Pour chaque tableau de données ayant un titre, celui-ci est-il pertinent ?
- * Traite: NA, NT
+ * Dans chaque page web, le contraste entre la couleur du texte et la couleur de son arrière-plan est-il suffisamment élevé (hors cas particuliers) ?
+ * Traite: C, NC
  */
-export default class Criterion5_6 extends BaseCriterion {
+export default class Criterion2_2 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
-    this.querySelector = 'table:not([role="presentation"])';
     this.messageList = {
-      'NT': "Vérifiez si les tableaux de données ont un titre pertinent.",
-      'NA': "Aucun tableau de données n'a été trouvé."
+      'C': 'Le contraste entre la couleur du texte et la couleur de son arrière-plan est suffisamment élevé pour tous les éléments textuels.',
+      'NC': 'Le contraste entre la couleur du texte et la couleur de son arrière-plan n\'est pas suffisamment élevé pour tous les éléments textuels.'
     }
   }
 
   runTest() {
     this.status = 'NA';
 
-    let $tableList = document.querySelectorAll(this.querySelector);
-    if ($tableList.length) {
-      this.status = 'NT';
-    }
-
-    if ($tableList.length > 0) {
-      this.logResults('5.5 - Liste des tableaux de données', $tableList);
-    }
-
-    this.testList = {
-      '1': this.status
-    }
-
-    this.elementList = Array.from($tableList) as Array<HTMLElement>;
-
     return this.status;
   }
 }
+

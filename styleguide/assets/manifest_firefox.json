@@ -8,15 +8,14 @@
     "96": "images/icon96.png"
   },
   "browser_action": {
-    "default_popup": "rgaa-checker-panel.html",
+    "default_popup": "rgaa-checker-popup.html",
     "default_icon": {
       "48": "images/icon48.png",
       "96": "images/icon96.png"
     }
   },
   "permissions": [
-    "activeTab",
-    "scripting"
+    "storage"
   ],
   "background": {
     "scripts": ["background.js"],

@@ -25,10 +25,10 @@ export default class Criterion9_1 extends BaseCriterion {
     super(isTestMode);
     this.querySelector = 'h1, h2, h3, h4, h5, h6, [role="heading"][aria-level]';
     this.messageList = {
-      'NT': 'Vérifiez si les titres sont présents et correctement balisés.',
+      'NT': 'La hiérachie des titres est correcte.<br />Vérifiez si les titres sont présents et correctement balisés.',
       'NA': "Aucun titre n'a été trouvé",
       'NC': 'La hiérarchie des titres n\'est pas respectée.',
-      'C': 'La hiérarchie des titres est respectée.'
+      'C': 'La hiérarchie des titres est respectée et les titres sont correctement balisés.'
     };
   }
 
