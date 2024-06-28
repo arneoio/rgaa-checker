@@ -35,6 +35,7 @@ export default class Criterion5_6 extends BaseCriterion {
 
     let $tableList = document.querySelectorAll(this.querySelector);
     if ($tableList.length) {
+      this.status = 'NT';
     }
 
     if ($tableList.length > 0) {

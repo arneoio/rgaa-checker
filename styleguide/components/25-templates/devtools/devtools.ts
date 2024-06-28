@@ -179,6 +179,9 @@ export default class Devtools {
       return;
     }
 
+    // Clear the list
+    $diffList.innerHTML = '';
+
     Object.keys(diff).forEach((key: string) => {
       let $diffItem = document.createElement('li');
       $diffItem.classList.add(`-status-${diff[key].current}`);
