@@ -68,6 +68,7 @@ export default class AccessibilityTester {
   localStorageKey: string;
   previousResults: any;
   pageResults: any;
+  isHighlightEnabled: boolean;
   highlightWrapperId: string;
   $highlightWrapper: HTMLElement;
   $highlightCanvas: HTMLCanvasElement;
@@ -78,6 +79,7 @@ export default class AccessibilityTester {
   constructor() {
     this.localStorageKey = 'rgaaCheckerResults';
     this.highlightWrapperId = 'rgaaChecker__highlightWrapper';
+    this.isHighlightEnabled = false;
 
     this.criterionList = {
       "1.1": new Criterion1_1(),
@@ -145,7 +147,6 @@ export default class AccessibilityTester {
     });
 
     setInterval(() => {
-      console.log('Refresh highlight');
       this.refreshHighlight();
     }, 1000);
   }
@@ -174,7 +175,6 @@ export default class AccessibilityTester {
         };
       }
     });
-    console.log('Différence', diff);
 
     // Save results of runner to localStorage for current page
     this.previousResults.runner[window.location.pathname] = this.pageResults;
@@ -244,6 +244,7 @@ export default class AccessibilityTester {
   }
 
   enableHighlight(topicNumber: string, criteriaNumber: string) {
+    this.isHighlightEnabled = true;
     this.hightlightedCriterion = this.criterionList[topicNumber + '.' + criteriaNumber];
     let highlightJsonList: any[] = [];
 
@@ -275,6 +276,7 @@ export default class AccessibilityTester {
   }
 
   disableHighlight() {
+    this.isHighlightEnabled = false;
     this.resetHighlight();
     Object.keys(this.criterionList).forEach((key: string) => {
       this.criterionList[key].disableHighlight();
@@ -349,6 +351,8 @@ export default class AccessibilityTester {
   }
 
   refreshHighlight() {
-    this.showHighlight();
+    if(this.isHighlightEnabled) {
+      this.showHighlight();
+    }
   }
 }
