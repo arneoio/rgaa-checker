@@ -62,7 +62,6 @@ export default class Devtools {
   }
 
   parseResults(request: any) {
-    console.log('Parse results', request);
     let host = request.host || '';
     let url = request.url || '';
     let criteriaList = request.result || {};
@@ -94,7 +93,6 @@ export default class Devtools {
     let previousStorageData: StorageData = {};
     if(typeof browser !== 'undefined' && browser) {
       browser.storage.local.get('rgaachecker-results').then((data: StorageData) => {
-        console.log('Loaded previous results from local storage', previousStorageData);
         previousStorageData = data['rgaachecker-results'] || {};
       });
     }
@@ -124,35 +122,39 @@ export default class Devtools {
       return;
     }
 
+    // Save the new results
+    let resultList: any = {};
+    Object.keys(criteriaList).forEach((key: string) => {
+      resultList[key] = criteriaList[key]['status'];
+    });
+
     if(!previousStorageData[host]) {
       previousStorageData[host] = {};
     }
     if(!previousStorageData[host][url]) {
       previousStorageData[host][url] = {
         'user': JSON.stringify({}),
-        'runner': JSON.stringify(criteriaList)
+        'runner': JSON.stringify(resultList)
       }
     } else {
-      // Save the new results
-      let resultList: any = {};
-      Object.keys(criteriaList).forEach((key: string) => {
-        resultList[key] = criteriaList[key]['status'];
-      });
-
       // Check if there are differences between the previous and the new results
-      let previousCriterionData = JSON.parse(previousStorageData[host][url]['runner']);
-      const diff: any = {};
-      Object.keys(resultList).forEach((key: string) => {
-        if(typeof previousCriterionData[key] !== 'undefined' && previousCriterionData[key] !== resultList[key]) {
-          diff[key] = {
-            'previous': previousCriterionData[key],
-            'current': resultList[key]
-          };
-          return;
+      let isFirstRun = Object.keys(previousStorageData[host][url]['runner']).length === 0;
+
+      if(!isFirstRun) {
+        let previousCriterionData = JSON.parse(previousStorageData[host][url]['runner']);
+        const diff: any = {};
+        Object.keys(resultList).forEach((key: string) => {
+          if(typeof previousCriterionData[key] === 'string' && previousCriterionData[key] !== resultList[key]) {
+            diff[key] = {
+              'previous': previousCriterionData[key],
+              'current': resultList[key]
+            };
+            return;
+          }
+        });
+        if(Object.keys(diff).length > 0) {
+          this.showDiff(diff);
         }
-      });
-      if(Object.keys(diff).length > 0) {
-        this.showDiff(diff);
       }
 
       previousStorageData[host][url]['runner'] = JSON.stringify(resultList);
@@ -173,22 +175,26 @@ export default class Devtools {
       return;
     }
 
-    $diffContainer.classList.remove('-hidden');
     let $diffList = document.querySelector('.js-summary__differences__list') as HTMLElement;
     if(!$diffList) {
       return;
     }
 
-    // Clear the list
-    $diffList.innerHTML = '';
+    try {
+      // Clear the list
+      $diffList.innerHTML = '';
+      Object.keys(diff).forEach((key: string) => {
+        let $diffItem = document.createElement('li');
+        $diffItem.classList.add(`-status-${diff[key].current}`);
+        $diffItem.innerHTML = `Critère <strong>${key}</strong>:
+            <span class="-status-${diff[key].previous.toLowerCase()}">${diff[key].previous}</span>
+            ➡ <span class="-status-${diff[key].current.toLowerCase()}">${diff[key].current}</span>`;
+        $diffList.appendChild($diffItem);
 
-    Object.keys(diff).forEach((key: string) => {
-      let $diffItem = document.createElement('li');
-      $diffItem.classList.add(`-status-${diff[key].current}`);
-      $diffItem.innerHTML = `Critere <strong>${key}</strong>:
-          <span class="-status-${diff[key].previous.toLowerCase()}">${diff[key].previous}</span>
-          ➡ <span class="-status-${diff[key].current.toLowerCase()}">${diff[key].current}</span>`;
-      $diffList.appendChild($diffItem);
-    });
+        $diffContainer.classList.remove('-hidden');
+      });
+    } catch (error) {
+      console.error('Error while showing differences:', error);
+    }
   }
 }
