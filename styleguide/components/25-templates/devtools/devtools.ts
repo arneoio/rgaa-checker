@@ -17,7 +17,7 @@ import MessageSender from "../../00-base/utils/message-sender";
 import Highlight from "../../00-base/utils/highlight";
 
 interface StorageData {
-  [key: string]: any;  // Utilise `any`, ou un type plus spécifique si possible
+  [key: string]: any;
 }
 
 export default class Devtools {
@@ -83,7 +83,7 @@ export default class Devtools {
         console.error(`Criterion ${criterionData.topicNumber}.${criterionData.criteriaNumber} not found`);
         return;
       }
-      criterion.loadData(criterionData);
+      criterion.loadData(criterionData, host, url);
     });
 
     if(!host || !url) {
@@ -94,6 +94,7 @@ export default class Devtools {
     if(typeof browser !== 'undefined' && browser) {
       browser.storage.local.get('rgaachecker-results').then((data: StorageData) => {
         previousStorageData = data['rgaachecker-results'] || {};
+        this.saveResults(previousStorageData, host, url, criteriaList);
       });
     }
     else {
@@ -133,7 +134,6 @@ export default class Devtools {
     }
     if(!previousStorageData[host][url]) {
       previousStorageData[host][url] = {
-        'user': JSON.stringify({}),
         'runner': JSON.stringify(resultList)
       }
     } else {

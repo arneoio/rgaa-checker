@@ -1,26 +1,28 @@
 import Highlight from "../../00-base/utils/highlight";
 import MessageSender from "../../00-base/utils/message-sender";
 
+interface StorageData {
+  [key: string]: any;
+}
+
 export default class CriteriaCard {
   $element: HTMLElement;
   $statusSelector: HTMLElement;
   $toggler: HTMLElement;
   topicNumber: number;
   criteriaNumber: number;
-  previousStatus: string;
-  currentStatus: string;
   criteriaUpdatedEvent: Event;
   messageList: any = {};
+  localStorageKey: string;
 
   constructor($element: HTMLElement) {
     this.$element = $element;
+    this.localStorageKey = 'rgaaCheckerResults';
     this.$statusSelector = this.$element.querySelector('.js-criteriaSelector');
     this.$toggler = this.$statusSelector.querySelector('.js-criteriaSelector__toggler');
     let criteriaSplit = this.$element.dataset.criteria.split('.');
     this.topicNumber = parseInt(criteriaSplit.shift());
     this.criteriaNumber = parseInt(criteriaSplit.pop());
-    this.previousStatus = 'NT';
-    this.currentStatus = 'NT';
 
     this.criteriaUpdatedEvent = new Event('rgaachecker-criteria-updated', {
       bubbles: true,
@@ -33,13 +35,14 @@ export default class CriteriaCard {
   bindEvents() {
     Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link: HTMLElement) => {
       $link.addEventListener('click', () => {
-        this.updateCardStatus($link, true);
+        this.updateCardStatus($link);
+        this.saveStatus($link.dataset.status || 'NT');
         document.dispatchEvent(this.criteriaUpdatedEvent);
       });
     });
   }
 
-  loadData(criterionData: any) {
+  loadData(criterionData: any, host: string, url: string) {
     // Update criterion status
     let status = criterionData.status;
     this.$element.dataset.status = status;
@@ -50,9 +53,40 @@ export default class CriteriaCard {
     this.updateCardStatus($statusLink);
     this.updateTests(criterionData.testList);
     this.setHighlightSwitch(criterionData);
+    this.loadUserStatus(host, url);
   }
 
-  updateCardStatus($link: HTMLElement, saveUserState: boolean = false) {
+  loadUserStatus(host: string, url: string) {
+    let previousStorageData: StorageData = {};
+    if(typeof browser !== 'undefined' && browser) {
+      browser.storage.local.get('rgaachecker-results').then((data: StorageData) => {
+        previousStorageData = data['rgaachecker-results'] || {};
+        loadUserValue(previousStorageData);
+      });
+    }
+    else {
+      chrome.storage.local.get('rgaachecker-results').then((data: StorageData) => {
+        previousStorageData = data['rgaachecker-results'] || {};
+        loadUserValue(previousStorageData);
+      });
+    }
+
+    const loadUserValue = (previousStorageData: StorageData) => {
+      if(!previousStorageData[host] || !previousStorageData[host][url]) {
+        return;
+      }
+
+      let userResults = JSON.parse(previousStorageData[host][url]['user']) || {};
+      let userStatus = userResults[this.topicNumber + '.' + this.criteriaNumber];
+      if (userStatus) {
+        let $statusLink = this.$statusSelector.querySelector(`.js-criteriaSelector__link[data-status="${userStatus}"]`) as HTMLElement;
+        this.updateCardStatus($statusLink);
+        // TODO: if user status is different from the one in the runner, display a warning
+      }
+    }
+  }
+
+  updateCardStatus($link: HTMLElement) {
     let newStatus = $link.dataset.status;
 
     this.$toggler.setAttribute('aria-expanded', 'false');
@@ -61,12 +95,7 @@ export default class CriteriaCard {
     this.$statusSelector.querySelector('.js-criteriaSelector__content').classList.remove('-expanded');
     this.$element.dataset.status = newStatus;
     this.$element.querySelector('.js-criteriaCard__verification').innerHTML = this.messageList[newStatus] || '';
-
-    if (saveUserState) {
-      this.saveStatus(newStatus);
-    }
   }
-
 
   updateTests(testList: any) {
     Object.keys(testList).forEach((key: string) => {
@@ -112,19 +141,62 @@ export default class CriteriaCard {
     });
   }
 
+  // loadUserResults() {
+  //   const results = JSON.parse(localStorage.getItem(this.localStorageKey));
+  //   const userResults = results.user[window.location.pathname] || {};
+
+  //   // TODO: à améliorer. Si possible appeler la méthode updateCriteria de chaque critère plutôt que de faire ça à la main
+  //   // Mais if faut dans ce cas une classe définie pour chaque critère
+  //   // TODO: s'il y a un conflit entre les résultats de l'utilisateur et ceux du runner suite au chargement, il faut indiquer le conflit
+  //   Object.keys(userResults).forEach((key: string) => {
+  //     let $criteriaCard: HTMLElement = document.querySelector(`.js-criteriaCard[data-criteria="${key}"]`);
+  //     if ($criteriaCard) {
+  //       let $toggler: HTMLElement = $criteriaCard.querySelector(`.js-criteriaSelector__toggler`);
+  //       let $togglerText: HTMLElement = $criteriaCard.querySelector(`.js-criteriaSelector__togglerText`);
+  //       $criteriaCard.dataset.status = userResults[key];
+  //       $toggler.dataset.status = userResults[key];
+  //       $togglerText.innerText = userResults[key];
+  //     }
+  //   });
+  // }
+
   saveStatus(newStatus: string) {
-    let savedStatus = JSON.parse(localStorage.getItem('rgaaCheckerResults')) || {
-      "user": {},
-      "runner": {},
-    };
+    let host = document.querySelector('.js-summary__host')?.textContent;
+    let url = document.querySelector('.js-summary__url')?.textContent;
 
-    // Créé une entrée pour la page courante si elle n'existe pas
-    savedStatus.user[window.location.href] = savedStatus.user[window.location.href] || {};
+    if(!host || !url) {
+      return;
+    }
 
-    // Sauvegarde le status dans le user
-    savedStatus.user[window.location.href][this.criteriaNumber] = newStatus;
+    let previousStorageData: StorageData = {};
+    if(typeof browser !== 'undefined' && browser) {
+      browser.storage.local.get('rgaachecker-results').then((data: StorageData) => {
+        previousStorageData = data['rgaachecker-results'] || {};
+        saveLocalStatus(previousStorageData);
+      });
+    }
+    else {
+      chrome.storage.local.get('rgaachecker-results').then((data: StorageData) => {
+        previousStorageData = data['rgaachecker-results'] || {};
+        saveLocalStatus(previousStorageData);
+      });
+    }
 
-    // Met à jour le localStorage
-    localStorage.setItem('rgaaCheckerResults', JSON.stringify(savedStatus));
+    const saveLocalStatus = (previousStorageData: StorageData) => {
+      if(!previousStorageData[host] || !previousStorageData[host][url]) {
+        return;
+      }
+
+      let userResults = JSON.parse(previousStorageData[host][url]['user']) || {};
+      userResults[this.topicNumber + '.' + this.criteriaNumber] = newStatus;
+      previousStorageData[host][url]['user'] = JSON.stringify(userResults);
+
+      if(typeof browser !== 'undefined' && browser) {
+        browser.storage.local.set({'rgaachecker-results': previousStorageData});
+      }
+      else {
+        chrome.storage.local.set({'rgaachecker-results': previousStorageData});
+      }
+    }
   }
 }

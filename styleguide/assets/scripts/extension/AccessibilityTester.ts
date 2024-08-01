@@ -65,8 +65,6 @@ import Criterion11_13 from "./criteria/Criterion11_13";
 
 export default class AccessibilityTester {
   criterionList: any;
-  localStorageKey: string;
-  previousResults: any;
   pageResults: any;
   isHighlightEnabled: boolean;
   highlightWrapperId: string;
@@ -77,7 +75,6 @@ export default class AccessibilityTester {
   hightlightedCriterion: any;
 
   constructor() {
-    this.localStorageKey = 'rgaaCheckerResults';
     this.highlightWrapperId = 'rgaaChecker__highlightWrapper';
     this.isHighlightEnabled = false;
 
@@ -151,44 +148,11 @@ export default class AccessibilityTester {
     }, 1000);
   }
 
-  loadSavedData() {
-    // Get previous results from localStorage
-    this.previousResults = JSON.parse(localStorage.getItem(this.localStorageKey)) || {
-      "user": {},
-      "runner": {},
-    };
-  }
-
   runTests() {
-    this.loadSavedData();
-    var jsonResult = this.runCriteriaTests();
-
-    // Get results of runner for current page
-    let currentPageResults = this.previousResults.runner[window.location.pathname] || {};
-    // Get difference between previous and current results
-    const diff: any = {};
-    Object.keys(this.pageResults).forEach((key: string) => {
-      if (typeof currentPageResults[key] !== 'undefined' && currentPageResults[key] !== this.pageResults[key]) {
-        diff[key] = {
-          "previous": currentPageResults[key],
-          "current": this.pageResults[key],
-        };
-      }
-    });
-
-    // Save results of runner to localStorage for current page
-    this.previousResults.runner[window.location.pathname] = this.pageResults;
-    localStorage.setItem(this.localStorageKey, JSON.stringify(this.previousResults));
-
-    this.loadUserResults();
-
-    return jsonResult;
-  }
-
-  runCriteriaTests() {
     this.pageResults = {};
     var jsonResult: any = {};
 
+    // Run tests for each criterion and store the result
     Object.keys(this.criterionList).forEach((key: string) => {
       const criterion = this.criterionList[key];
       const criteraStatus = criterion.runTest();
@@ -198,25 +162,6 @@ export default class AccessibilityTester {
     });
 
     return jsonResult;
-  }
-
-  loadUserResults() {
-    const results = JSON.parse(localStorage.getItem(this.localStorageKey));
-    const userResults = results.user[window.location.pathname] || {};
-
-    // TODO: à améliorer. Si possible appeler la méthode updateCriteria de chaque critère plutôt que de faire ça à la main
-    // Mais if faut dans ce cas une classe définie pour chaque critère
-    // TODO: s'il y a un conflit entre les résultats de l'utilisateur et ceux du runner suite au chargement, il faut indiquer le conflit
-    Object.keys(userResults).forEach((key: string) => {
-      let $criteriaCard: HTMLElement = document.querySelector(`.js-criteriaCard[data-criteria="${key}"]`);
-      if ($criteriaCard) {
-        let $toggler: HTMLElement = $criteriaCard.querySelector(`.js-criteriaSelector__toggler`);
-        let $togglerText: HTMLElement = $criteriaCard.querySelector(`.js-criteriaSelector__togglerText`);
-        $criteriaCard.dataset.status = userResults[key];
-        $toggler.dataset.status = userResults[key];
-        $togglerText.innerText = userResults[key];
-      }
-    });
   }
 
   initHighlight() {
@@ -299,7 +244,7 @@ export default class AccessibilityTester {
       let count = 1;
       while (sibling = sibling.previousElementSibling as HTMLElement) {
         if (sibling.nodeName === nodeName) {
-          count++;
+          ++count;
         }
       }
       xpath = `/${nodeName}[${count}]${xpath}`;
