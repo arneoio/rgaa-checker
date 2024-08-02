@@ -1,5 +1,6 @@
 import Highlight from "../../00-base/utils/highlight";
 import MessageSender from "../../00-base/utils/message-sender";
+import LocalStorage from "../../00-base/utils/local-storage";
 
 interface StorageData {
   [key: string]: any;
@@ -57,33 +58,14 @@ export default class CriteriaCard {
   }
 
   loadUserStatus(host: string, url: string) {
-    let previousStorageData: StorageData = {};
-    if(typeof browser !== 'undefined' && browser) {
-      browser.storage.local.get('rgaachecker-results').then((data: StorageData) => {
-        previousStorageData = data['rgaachecker-results'] || {};
-        loadUserValue(previousStorageData);
-      });
-    }
-    else {
-      chrome.storage.local.get('rgaachecker-results').then((data: StorageData) => {
-        previousStorageData = data['rgaachecker-results'] || {};
-        loadUserValue(previousStorageData);
-      });
-    }
-
-    const loadUserValue = (previousStorageData: StorageData) => {
-      if(!previousStorageData[host] || !previousStorageData[host][url]) {
-        return;
-      }
-
-      let userResults = JSON.parse(previousStorageData[host][url]['user']) || {};
-      let userStatus = userResults[this.topicNumber + '.' + this.criteriaNumber];
-      if (userStatus) {
-        let $statusLink = this.$statusSelector.querySelector(`.js-criteriaSelector__link[data-status="${userStatus}"]`) as HTMLElement;
-        this.updateCardStatus($statusLink);
-        // TODO: if user status is different from the one in the runner, display a warning
-      }
-    }
+      LocalStorage.getUserData(host, url).then((userStoredData: any) => {
+        let userStatus = userStoredData[this.topicNumber + '.' + this.criteriaNumber];
+        if (userStatus) {
+          let $statusLink = this.$statusSelector.querySelector(`.js-criteriaSelector__link[data-status="${userStatus}"]`) as HTMLElement;
+          this.updateCardStatus($statusLink);
+          // TODO: if user status is different from the one in the runner, display a warning
+        }
+    });
   }
 
   updateCardStatus($link: HTMLElement) {
@@ -168,35 +150,6 @@ export default class CriteriaCard {
       return;
     }
 
-    let previousStorageData: StorageData = {};
-    if(typeof browser !== 'undefined' && browser) {
-      browser.storage.local.get('rgaachecker-results').then((data: StorageData) => {
-        previousStorageData = data['rgaachecker-results'] || {};
-        saveLocalStatus(previousStorageData);
-      });
-    }
-    else {
-      chrome.storage.local.get('rgaachecker-results').then((data: StorageData) => {
-        previousStorageData = data['rgaachecker-results'] || {};
-        saveLocalStatus(previousStorageData);
-      });
-    }
-
-    const saveLocalStatus = (previousStorageData: StorageData) => {
-      if(!previousStorageData[host] || !previousStorageData[host][url]) {
-        return;
-      }
-
-      let userResults = JSON.parse(previousStorageData[host][url]['user']) || {};
-      userResults[this.topicNumber + '.' + this.criteriaNumber] = newStatus;
-      previousStorageData[host][url]['user'] = JSON.stringify(userResults);
-
-      if(typeof browser !== 'undefined' && browser) {
-        browser.storage.local.set({'rgaachecker-results': previousStorageData});
-      }
-      else {
-        chrome.storage.local.set({'rgaachecker-results': previousStorageData});
-      }
-    }
+    LocalStorage.saveUserData(host, url, this.topicNumber, this.criteriaNumber, newStatus);
   }
 }

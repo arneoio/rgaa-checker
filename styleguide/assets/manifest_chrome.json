@@ -39,6 +39,7 @@
     {
       "resources": [
         "rgaa-checker-panel.html",
+        "rgaa-checker-synthesis.html",
         "app.js",
         "app.css",
         "rgaa-checker-content.css"
