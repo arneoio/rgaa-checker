@@ -22,7 +22,7 @@ import FilterList from './15-molecules/filter-list/filter-list';
 import TopicList from './15-molecules/topic-list/topic-list';
 import Header from './20-organisms/header/header';
 import Summary from './20-organisms/summary/summary';
-import Devtools from './25-templates/devtools/devtools';
+import Panel from './25-templates/panel/panel';
 import MessageSender from './00-base/utils/message-sender';
 
 var App = {
@@ -42,7 +42,7 @@ var App = {
 
     this.initOrganisms();
 
-    this.devtools = new Devtools(this.criteriaCardList);
+    new Panel(this.criteriaCardList);
 
     this.bindEvents();
   },

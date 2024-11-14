@@ -21,7 +21,7 @@ interface StorageData {
   [key: string]: any;
 }
 
-export default class Devtools {
+export default class Panel {
   criteriaCardList: Array<any>;
 
   constructor(criteriaCardList: Array<any>) {

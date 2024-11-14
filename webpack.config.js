@@ -20,15 +20,20 @@ module.exports = (env, argv) => {
   let builtExtension = 'chrome';
 
   if (!devMode) {
-    if(!argv.env || !argv.env.app || ['chrome', 'firefox'].indexOf(argv.env.app) < 0)
-    {
-      throw new Error('Please specify the extension type in the environment variable "app"');
+    if (
+      !argv.env ||
+      !argv.env.app ||
+      ['chrome', 'firefox'].indexOf(argv.env.app) < 0
+    ) {
+      throw new Error(
+        'Please specify the extension type in the environment variable "app"',
+      );
     }
     builtExtension = argv.env.app;
     BUILD_FOLDER = `${BUILD_FOLDER}/${builtExtension}`;
   }
 
-  const DEVTOOLS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/devtools_${builtExtension}.ts`;
+  const DEVTOOLS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/25-templates/devtools/devtools_${builtExtension}.ts`;
 
   const copyPatterns = [
     {
