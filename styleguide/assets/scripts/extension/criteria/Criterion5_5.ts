@@ -15,6 +15,7 @@
  */
 
 import BaseCriterion from '../common/BaseCriterion';
+import TableUtils from '../utils/TableUtils';
 
 /**
  * Pour chaque tableau de données ayant un titre, celui-ci est-il pertinent ?
@@ -23,23 +24,42 @@ import BaseCriterion from '../common/BaseCriterion';
 export default class Criterion5_5 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
-    this.querySelector = 'table:not([role="presentation"])';
+    this.querySelector = 'table:not([role="presentation"]), [role="table"]';
     this.messageList = {
       'NT': "Vérifiez si les tableaux de données ont un titre pertinent.",
       'NA': "Aucun tableau de données n'a été trouvé."
     }
   }
 
+  getHighlightedElements(): HTMLElement[] {
+    let $tableList = document.querySelectorAll(this.querySelector);
+    let $tableListWithCaption: HTMLElement[] = [];
+
+    Array.from($tableList).forEach(($table: HTMLTableElement) => {
+      let title = TableUtils.getTableDescription($table);
+
+      if (title) {
+        $tableListWithCaption.push($table);
+      }
+    });
+
+    return $tableListWithCaption;
+  }
+
   runTest() {
     this.status = 'NA';
 
     let $tableList = document.querySelectorAll(this.querySelector);
-    if ($tableList.length) {
-      this.status = 'NT';
-    }
 
-    if ($tableList.length > 0) {
-      this.logResults('5.5 - Liste des tableaux de données', $tableList);
+    let $tableListWithCaption = this.getHighlightedElements();
+    if ($tableListWithCaption.length > 0) {
+      this.logResults('5.4 - Liste des tableaux de données sans titre associé', $tableListWithCaption);
+      this.status = 'NT';
+    } else {
+      if ($tableList.length) {
+        this.status = 'NA';
+        this.messageList['NA'] = "Les tableaux de données n'ont pas de titre associé.";
+      }
     }
 
     this.testList = {
@@ -51,4 +71,3 @@ export default class Criterion5_5 extends BaseCriterion {
     return this.status;
   }
 }
-

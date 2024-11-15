@@ -62,6 +62,8 @@ import Criterion11_10 from "./criteria/Criterion11_10";
 import Criterion11_11 from "./criteria/Criterion11_11";
 import Criterion11_12 from "./criteria/Criterion11_12";
 import Criterion11_13 from "./criteria/Criterion11_13";
+import Criterion5_6 from "./criteria/Criterion5_6";
+import Criterion5_7 from "./criteria/Criterion5_7";
 
 export default class AccessibilityTester {
   criterionList: any;
@@ -94,6 +96,8 @@ export default class AccessibilityTester {
       "5.3": new Criterion5_3(),
       "5.4": new Criterion5_4(),
       "5.5": new Criterion5_5(),
+      "5.6": new Criterion5_6(),
+      "5.7": new Criterion5_7(),
       "6.1": new Criterion6_1(),
       "6.2": new Criterion6_2(),
       "8.1": new Criterion8_1(),
