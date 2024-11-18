@@ -15,7 +15,6 @@
  */
 
 import BaseCriterion from '../common/BaseCriterion';
-import FormUtils from '../utils/FormUtils';
 
 /**
  * La finalité d’un champ de saisie peut-elle être déduite pour faciliter le remplissage automatique des champs avec les données de l’utilisateur ?

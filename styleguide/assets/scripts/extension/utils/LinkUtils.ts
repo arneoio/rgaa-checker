@@ -86,4 +86,36 @@ export default class LinkUtils {
     // Concaténer les parties de l'intitulé dans l'ordre
     return titleParts.join(' ').trim();
   }
+
+  static getDownloadableDocumentList() {
+    // Extension list for downloadable documents
+    const documentExtensionList = ['.pdf', '.epub', '.doc', '.docx', '.odt', '.xls', '.xlsx', '.ods', '.csv', '.ppt', '.pptx', '.odp'];
+
+    const linkList = document.querySelectorAll('a[href]');
+    const downloadableDocumentList: HTMLElement[] = [];
+
+    // Check if the link is a downloadable document
+    linkList.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && documentExtensionList.some(extension => href.toLowerCase().endsWith(extension))) {
+        downloadableDocumentList.push(link as HTMLElement);
+      }
+    });
+
+    // Search for download buttons
+    const documentTextList = ['download', 'télécharger'];
+    const formElements = document.querySelectorAll('form');
+
+    formElements.forEach(form => {
+      const buttons = form.querySelectorAll('button, input[type="submit"]');
+      buttons.forEach(button => {
+        const buttonText = button.textContent || '';
+        if (documentTextList.some(text => buttonText.toLowerCase().includes(text))) {
+          downloadableDocumentList.push(button as HTMLElement);
+        }
+      });
+    });
+
+    return downloadableDocumentList;
+  }
 }
