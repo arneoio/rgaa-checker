@@ -33,6 +33,10 @@ export default class Criterion8_4 extends BaseCriterion {
     }
   }
 
+  getHighlightSwitchLabel(): string {
+    return '';
+  }
+
   runTest() {
     let documentLanguage = '';
     this.status = 'NT';

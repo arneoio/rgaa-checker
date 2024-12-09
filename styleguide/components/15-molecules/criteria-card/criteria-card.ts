@@ -91,17 +91,18 @@ export default class CriteriaCard {
   }
 
   setHighlightSwitch(criterionData: any) {
-    // If the status is NA, remove the highlight switch, otherwise update its label
     const $highlightSwitch = this.$element.querySelector('.js-criteriaCard__highlightSwitch');
     if (!$highlightSwitch) {
       return;
     }
 
-    if (criterionData.status === 'NA') {
-      this.$element.querySelector('.js-criteriaCard__highlightSwitch')?.remove();
+    // If the status is NA, remove the highlight switch
+    if (criterionData.status === 'NA' || criterionData.highlightSwitchLabel === '') {
+      $highlightSwitch.classList.add('-hidden');
       return;
     }
 
+    // Otherwise, display the switch and set the label
     $highlightSwitch.classList.remove('-hidden');
     ($highlightSwitch.querySelector('.js-toggleSwitch__label') as HTMLElement).innerText = criterionData.highlightSwitchLabel;
 

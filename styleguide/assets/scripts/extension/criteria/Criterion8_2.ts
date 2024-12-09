@@ -30,6 +30,10 @@ export default class Criterion8_2 extends BaseCriterion {
     }
   }
 
+  getHighlightSwitchLabel(): string {
+    return '';
+  }
+
   runTest() {
     this.status = 'NT';
     // Ajoute un lien vers le validateur du W3C de l'url courante

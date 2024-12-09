@@ -30,6 +30,7 @@ export default abstract class BaseCriterion implements ICriterion {
   elementList: Array<HTMLElement> = [];
   testList: any = {};
   HIGHLIGHT_CONTENT_MAX_LENGTH: number = 100;
+  DEFAULT_HIGHLIGHT_TEXT: string = 'Highlight';
   isHighlightActive: boolean = false;
 
   constructor(isTestMode: boolean = false) {
@@ -96,7 +97,7 @@ export default abstract class BaseCriterion implements ICriterion {
    * @returns {string} Switch label
    */
   getHighlightSwitchLabel(): string {
-    return 'Highlight';
+    return this.DEFAULT_HIGHLIGHT_TEXT;
   }
 
   /**

@@ -30,7 +30,7 @@ export default class Criterion2_2 extends BaseCriterion {
   }
 
   runTest() {
-    this.status = 'NA';
+    this.status = 'NT';
 
     return this.status;
   }
