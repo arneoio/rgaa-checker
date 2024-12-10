@@ -109,7 +109,7 @@ export default class LinkUtils {
     formElements.forEach(form => {
       const buttons = form.querySelectorAll('button, input[type="submit"]');
       buttons.forEach(button => {
-        const buttonText = button.textContent || '';
+        const buttonText = button.textContent.trim();
         if (documentTextList.some(text => buttonText.toLowerCase().includes(text))) {
           downloadableDocumentList.push(button as HTMLElement);
         }

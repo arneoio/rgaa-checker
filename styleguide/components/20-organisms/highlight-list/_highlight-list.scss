@@ -110,6 +110,34 @@
     }
 }
 
+.o-highlightList__constrastWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.o-highlightList__constrast {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 2px;
+    background-color: var(--rgaa-checker-3-2-background-color);
+    border: 1px solid var(--rgaa-checker-3-2-color);
+    cursor: help;
+
+    &::before {
+        content: '';
+        width: 20px;
+        height: 20px;
+        background-color: var(--rgaa-checker-3-2-color);
+        border-radius: 50%;
+    }
+}
+
 .o-highlightList__checkbox {
     grid-area: checkbox;
 }

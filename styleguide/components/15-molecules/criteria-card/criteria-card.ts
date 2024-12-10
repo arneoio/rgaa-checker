@@ -144,8 +144,8 @@ export default class CriteriaCard {
   // }
 
   saveStatus(newStatus: string) {
-    let host = document.querySelector('.js-summary__host')?.textContent;
-    let url = document.querySelector('.js-summary__url')?.textContent;
+    let host = document.querySelector('.js-summary__host')?.textContent.trim();
+    let url = document.querySelector('.js-summary__url')?.textContent.trim();
 
     if(!host || !url) {
       return;

@@ -106,7 +106,7 @@ export default abstract class BaseCriterion implements ICriterion {
    * @returns string content to display, default similar to highlightLabel
    */
   getHighlightListContent($element: HTMLElement) {
-    let text = $element.textContent;
+    let text = $element.textContent.trim();
     return text.length > this.HIGHLIGHT_CONTENT_MAX_LENGTH ? text.substring(0, this.HIGHLIGHT_CONTENT_MAX_LENGTH) + '...' : text;
   }
 

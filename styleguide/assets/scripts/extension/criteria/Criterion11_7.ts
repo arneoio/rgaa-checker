@@ -53,14 +53,14 @@ export default class Criterion11_7 extends BaseCriterion {
     // Affiche le libellé du regroupement de champ
     let label = '';
     if ($element.tagName === 'FIELDSET') {
-      label = $element.querySelector('legend')?.textContent || '';
+      label = $element.querySelector('legend')?.textContent.trim() || '';
     } else if ($element.getAttribute('aria-label')) {
       label = $element.getAttribute('aria-label') || '';
     } else if ($element.getAttribute('aria-labelledby')) {
       const id = $element.getAttribute('aria-labelledby');
       const labelElement = document.getElementById(id);
       if (labelElement) {
-        label = labelElement.textContent || '';
+        label = labelElement.textContent.trim();
       }
     }
 

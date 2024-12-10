@@ -40,9 +40,9 @@ export default class Summary {
     let resultList: any[] = [];
     const $criteriaCardList = Array.from(document.querySelectorAll('.js-criteriaCard'));
     $criteriaCardList.forEach(($criteriaCard: HTMLElement) => {
-      let criteriaNumber: string = $criteriaCard.dataset.criteria;
+      let criteriaNumber: string = $criteriaCard.dataset.criteria || '';
       let criteriaLabel: string = ($criteriaCard.querySelector('.js-criteriaCard__text') as HTMLElement)?.textContent?.trim() || '';
-      let status: string = ($criteriaCard.querySelector('.js-criteriaSelector__toggler') as HTMLElement).dataset.status;
+      let status: string = ($criteriaCard.querySelector('.js-criteriaSelector__toggler') as HTMLElement).dataset.status || '';
       let message: string = $criteriaCard.querySelector('.js-criteriaCard__verification')?.textContent?.trim() || '';
       let result = {
         criteriaNumber: criteriaNumber,
