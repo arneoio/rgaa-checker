@@ -32,6 +32,10 @@ export default class Criterion6_2 extends BaseCriterion {
     }
   }
 
+  getHighlightSwitchLabel(): string {
+    return this.status === 'C' ? '' : this.DEFAULT_HIGHLIGHT_TEXT;
+  }
+
   getHighlightedElements(): Array<HTMLElement> {
     // Sélectionnez tous les liens sans intitulé
     const linkListWithoutLabel: any = [];

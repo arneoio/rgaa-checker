@@ -38,9 +38,9 @@
             </span>
 {% endif %}
 {% if isEmpty or highlight.text is defined %}
-            <p class="o-highlightList__text js-highlightList__itemText">
+            <span class="o-highlightList__text js-highlightList__itemText">
                 {{ highlight.text }}
-            </p>
+            </span>
 {% endif %}
             {% include '@atom/form/checkbox/checkbox.html.twig' with {
               attributeList: {

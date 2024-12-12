@@ -11,6 +11,7 @@ const SVG_ICON_PATH = path.resolve(ASSETS_PATH, 'icons/');
 let BUILD_FOLDER = path.resolve(__dirname, process.env.FRACTAL_STATIC_FOLDER);
 const ENTRY_FILE = `${STYLEGUIDE_PATH}/components/app.ts`;
 const POPUP_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/popup.ts`;
+const SYNTHESIS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/synthesis.ts`;
 const BACKGROUND_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/background.ts`;
 const CONTENT_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/content.ts`;
 
@@ -19,15 +20,20 @@ module.exports = (env, argv) => {
   let builtExtension = 'chrome';
 
   if (!devMode) {
-    if(!argv.env || !argv.env.app || ['chrome', 'firefox'].indexOf(argv.env.app) < 0)
-    {
-      throw new Error('Please specify the extension type in the environment variable "app"');
+    if (
+      !argv.env ||
+      !argv.env.app ||
+      ['chrome', 'firefox'].indexOf(argv.env.app) < 0
+    ) {
+      throw new Error(
+        'Please specify the extension type in the environment variable "app"',
+      );
     }
     builtExtension = argv.env.app;
     BUILD_FOLDER = `${BUILD_FOLDER}/${builtExtension}`;
   }
 
-  const DEVTOOLS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/devtools_${builtExtension}.ts`;
+  const DEVTOOLS_ENTRY_FILE = `${STYLEGUIDE_PATH}/components/25-templates/devtools/devtools_${builtExtension}.ts`;
 
   const copyPatterns = [
     {
@@ -66,6 +72,7 @@ module.exports = (env, argv) => {
     entry: {
       app: ENTRY_FILE,
       popup: POPUP_ENTRY_FILE,
+      synthesis: SYNTHESIS_ENTRY_FILE,
       devtools: DEVTOOLS_ENTRY_FILE,
       background: BACKGROUND_ENTRY_FILE,
       content: CONTENT_ENTRY_FILE,

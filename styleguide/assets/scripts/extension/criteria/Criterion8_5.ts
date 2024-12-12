@@ -29,6 +29,10 @@ export default class Criterion8_5 extends BaseCriterion {
     }
   }
 
+  getHighlightSwitchLabel(): string {
+    return '';
+  }
+
   runTest() {
     // Retrouver dans le document le titre structuré au moyen d’un élément <title> ;
     let isCriteriaValid = true;

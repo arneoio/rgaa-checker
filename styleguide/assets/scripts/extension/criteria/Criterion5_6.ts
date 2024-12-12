@@ -17,16 +17,18 @@
 import BaseCriterion from '../common/BaseCriterion';
 
 /**
- * Pour chaque tableau de données ayant un titre, celui-ci est-il pertinent ?
- * Traite: NA, NT
+ * Pour chaque tableau de données, chaque en-tête de colonne et chaque en-tête de ligne sont-ils correctement déclarés ?
+ * Traite: NA, NC, NT
  */
 export default class Criterion5_6 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
-    this.querySelector = 'table:not([role="presentation"])';
+    this.querySelector = 'table:not([role="presentation"]), [role="table"]';
     this.messageList = {
-      'NT': "Vérifiez si les tableaux de données ont un titre pertinent.",
-      'NA': "Aucun tableau de données n'a été trouvé."
+      'NT': "Vérifiez si les tableaux de données ont des entêtes de colonne et/ou de ligne.",
+      'NC': "Tous les tableaux de données n'ont pas d'en-tête de colonne ou de ligne correctement déclaré.",
+      'NA': "Aucun tableau de données n'a été trouvé.",
+      'C': 'Tous les tableaux de données ont des en-têtes de colonne et/ou de ligne correctement déclarés.'
     }
   }
 
@@ -35,15 +37,25 @@ export default class Criterion5_6 extends BaseCriterion {
 
     let $tableList = document.querySelectorAll(this.querySelector);
     if ($tableList.length) {
-      this.status = 'NT';
+      // Checks if table has at least one header
+      Array.from($tableList).forEach(($table: HTMLTableElement) => {
+        if ($table.querySelectorAll('th, [role="columnheader"], [role="rowheader"]').length > 0) {
+          this.status = 'NT';
+        } else {
+          this.status = 'NC';
+        }
+      });
     }
 
     if ($tableList.length > 0) {
-      this.logResults('5.5 - Liste des tableaux de données', $tableList);
+      this.logResults('5.6 - Liste des tableaux de données', $tableList);
     }
 
     this.testList = {
-      '1': this.status
+      '1': this.status,
+      '2': this.status,
+      '3': this.status,
+      '4': this.status,
     }
 
     this.elementList = Array.from($tableList) as Array<HTMLElement>;

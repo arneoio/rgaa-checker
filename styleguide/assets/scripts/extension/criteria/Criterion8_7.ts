@@ -18,7 +18,7 @@ import BaseCriterion from '../common/BaseCriterion';
 
 /**
  * Dans chaque page web, chaque changement de langue est-il indiqué dans le code source (hors cas particuliers) ?
- * Traite: NC, NT (validation manuelle)
+ * Traite: NC, NA, NT (validation manuelle)
  */
 export default class Criterion8_7 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
@@ -26,7 +26,6 @@ export default class Criterion8_7 extends BaseCriterion {
     this.querySelector = '*[lang]:not(html), *[xml\\:lang]:not(html)';
     this.messageList = {
       'NT': 'Vérifiez si les changements de langue sont correctement indiqués.',
-      'NA': "Aucun changement de langue n'a été détecté. Vérifiez si les changements de langue sont correctement indiqués."
     }
   }
 
@@ -43,6 +42,10 @@ export default class Criterion8_7 extends BaseCriterion {
     }
 
     this.elementList = Array.from($elementList) as Array<HTMLElement>;
+
+    if($elementList.length) {
+      this.messageList['NT'] = `Certains changements de langue sont indiqués. Vérifiez s'il le sont tous correctement.`;
+    }
 
     return this.status;
   }

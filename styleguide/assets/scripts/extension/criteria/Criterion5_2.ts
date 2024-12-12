@@ -56,6 +56,11 @@ export default class Criterion5_2 extends BaseCriterion {
 
     if (describedTableList.length > 0) {
       this.logResults('5.2 - Description des tableaux complexes', describedTableList);
+    } else {
+      if($complexTableList.length > 0) {
+        // If pages got tables but none of them are described, criteria is not applicable
+        this.status = 'NA';
+      }
     }
 
     this.testList = {

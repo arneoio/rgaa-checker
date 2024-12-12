@@ -19,16 +19,16 @@ import TableUtils from '../utils/TableUtils';
 
 /**
  * Pour chaque tableau de données ayant un titre, le titre est-il correctement associé au tableau de données ?
- * Traite: NA, C, NC
+ * Traite: NA, C, NT
  */
 export default class Criterion5_4 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
-    this.querySelector = 'table:not([role="presentation"])';
+    this.querySelector = 'table:not([role="presentation"]), [role="table"]';
     this.messageList = {
       'C': 'Tous les tableaux de données ont un titre correctement associé.',
-      'NC': "Tous les tableaux de données n'ont pas de titre correctement associé.",
-      'NA': "Aucun tableau de données n'a été trouvé."
+      'NA': "Aucun tableau de données n'a été trouvé.",
+      'NT': "Tous les tableaux de données n'ont pas de titre associé. Vérifiez si ça devrait être le cas."
     }
   }
 
@@ -57,11 +57,11 @@ export default class Criterion5_4 extends BaseCriterion {
 
     let $tableListWithoutCaption = this.getHighlightedElements();
     if ($tableListWithoutCaption.length > 0) {
-      this.status = 'NC';
+      this.status = 'NT';
     }
 
     if ($tableListWithoutCaption.length > 0) {
-      this.logResults('5.4 - Liste des tableaux de données sans titre', $tableListWithoutCaption);
+      this.logResults('5.4 - Liste des tableaux de données sans titre associé', $tableListWithoutCaption);
     }
 
     this.testList = {

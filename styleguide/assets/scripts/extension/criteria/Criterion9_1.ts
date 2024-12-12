@@ -45,7 +45,7 @@ export default class Criterion9_1 extends BaseCriterion {
     // Récupère le niveau et le titre de chaque heading
     $headingList.forEach(($heading) => {
       const level = $heading.getAttribute('aria-level') || parseInt($heading.tagName.charAt(1), 10);
-      const title = $heading.textContent;
+      const title = $heading.textContent.trim();
       headingList.push({ level, title, isValid: true });
     });
 

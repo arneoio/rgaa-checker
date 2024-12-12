@@ -71,7 +71,7 @@ export default class FormUtils {
     if (ariaLabelledby) {
       const describedByElement: HTMLElement = document.getElementById(ariaLabelledby);
       if (describedByElement) {
-        return describedByElement.textContent || '';
+        return describedByElement.textContent.trim();
       }
     }
 
@@ -86,14 +86,14 @@ export default class FormUtils {
     if (id) {
       const labelElement: HTMLElement = document.querySelector(`label[for="${id}"]`);
       if (labelElement) {
-        return labelElement.textContent || '';
+        return labelElement.textContent.trim();
       }
     }
 
     // On vérifie si le champ de formulaire est inclus dans un label
     const parentLabelElement: HTMLElement = $formField.closest('label');
     if (parentLabelElement) {
-      return parentLabelElement.textContent || '';
+      return parentLabelElement.textContent.trim();
     }
 
     // Sinon, on vérifie si le champ de formulaire a un titre
@@ -118,7 +118,7 @@ export default class FormUtils {
     if (ariaLabelledby) {
       const describedByElement: HTMLElement = document.getElementById(ariaLabelledby);
       if (describedByElement) {
-        return describedByElement.textContent || '';
+        return describedByElement.textContent.trim();
       }
     }
 
@@ -147,7 +147,7 @@ export default class FormUtils {
 
     // Sinon pour un button ou role="button", on récupère le contenu textuel
     if (['button', '[role="button"]'].includes(tagName)) {
-      return $button.textContent || '';
+      return $button.textContent.trim();
     }
 
     // Sinon on récupère l'attribut title
@@ -173,7 +173,7 @@ export default class FormUtils {
 
     // Sinon pour un button ou role="button", on récupère le contenu textuel
     if (['button', '[role="button"]'].includes(tagName)) {
-      return $button.textContent || '';
+      return $button.textContent.trim();
     }
 
     return '';

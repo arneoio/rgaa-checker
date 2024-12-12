@@ -29,6 +29,10 @@ export default class Criterion8_6 extends BaseCriterion {
     }
   }
 
+  getHighlightSwitchLabel(): string {
+    return '';
+  }
+
   runTest() {
     // Pour chaque page web ayant un titre de page (balise <title>), le contenu de cette balise est-il pertinent ?
     let title = '';

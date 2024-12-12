@@ -29,6 +29,10 @@ export default class Criterion8_1 extends BaseCriterion {
     }
   }
 
+  getHighlightSwitchLabel(): string {
+    return '';
+  }
+
   runTest() {
     let isCriteriaValid = true;
     const htmlDocument = document.documentElement;

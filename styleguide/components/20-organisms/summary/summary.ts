@@ -40,9 +40,9 @@ export default class Summary {
     let resultList: any[] = [];
     const $criteriaCardList = Array.from(document.querySelectorAll('.js-criteriaCard'));
     $criteriaCardList.forEach(($criteriaCard: HTMLElement) => {
-      let criteriaNumber: string = $criteriaCard.dataset.criteria;
+      let criteriaNumber: string = $criteriaCard.dataset.criteria || '';
       let criteriaLabel: string = ($criteriaCard.querySelector('.js-criteriaCard__text') as HTMLElement)?.textContent?.trim() || '';
-      let status: string = ($criteriaCard.querySelector('.js-criteriaSelector__toggler') as HTMLElement).dataset.status;
+      let status: string = ($criteriaCard.querySelector('.js-criteriaSelector__toggler') as HTMLElement).dataset.status || '';
       let message: string = $criteriaCard.querySelector('.js-criteriaCard__verification')?.textContent?.trim() || '';
       let result = {
         criteriaNumber: criteriaNumber,
@@ -56,14 +56,9 @@ export default class Summary {
 
     const csvContent = resultList.map(result => `${result.criteriaNumber}\t${result.criteriaLabel}\t${result.status}\tN\t${result.message}`).join('\n');
     this.$textArea.value = csvContent;
-
-    if(navigator.clipboard) {
-      navigator.clipboard.writeText(csvContent);
-    } else {
-      this.$textArea.select();
-      // Commande dépréciée mais fonctionne sur tous les navigateurs
-      document.execCommand('copy');
-    }
+    this.$textArea.select();
+    // Deprecated, but still work in most browsers. navigator.clipboard.writeText breaks policy in devtools
+    document.execCommand('copy');
   }
 
   updateCompletion() {

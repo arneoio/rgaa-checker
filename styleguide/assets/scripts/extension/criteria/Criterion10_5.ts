@@ -33,6 +33,10 @@ import BaseCriterion from '../common/BaseCriterion';
     };
   }
 
+  getHighlightSwitchLabel(): string {
+    return this.status === 'C' ? '' : this.DEFAULT_HIGHLIGHT_TEXT;
+  }
+
   getHighlightedElements(): Array<HTMLElement> {
     return this.getElementWithBackgroundImageList(document.body);
   }

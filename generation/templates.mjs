@@ -42,6 +42,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const panelTemplate = `../styleguide/components/25-templates/panel/panel.html.twig`;
 const devtoolsTemplate = `../styleguide/components/25-templates/devtools/devtools.html.twig`;
 const popupTemplate = `../styleguide/components/25-templates/popup/popup.html.twig`;
+const synthesisTemplate = `../styleguide/components/25-templates/synthesis/synthesis.html.twig`;
 
 /**
  * Build Index page
@@ -50,6 +51,7 @@ const buildExtension = (params) => {
   console.warn('Build extension template...');
   buildTemplate(panelTemplate, 'rgaa-checker-panel.html', params);
   buildTemplate(popupTemplate, 'rgaa-checker-popup.html', params);
+  buildTemplate(synthesisTemplate, 'rgaa-checker-synthesis.html', params);
   buildTemplate(devtoolsTemplate, 'rgaa-checker-devtools.html', params, false);
   updateManifestVersion();
 };
@@ -81,9 +83,11 @@ const buildTemplate = (templateName, outputFileName, params = {}, hasDependencie
 
     let templateRender = '';
     let isPopupTemplate = templateName === popupTemplate;
+    let isSynthesisTemplate = templateName === synthesisTemplate;
+
     if(hasDependencies)
     {
-      templateRender += getHtmlHeader(isPopupTemplate ? 'popup' : 'app');
+      templateRender += getHtmlHeader(isPopupTemplate ? 'popup' : (isSynthesisTemplate ? 'synthesis' : 'app'));
 
       // Adds footer params to every templates
       params.footer = {
@@ -93,7 +97,7 @@ const buildTemplate = (templateName, outputFileName, params = {}, hasDependencie
       templateRender += template.render(params);
       if(!isPopupTemplate)
       {
-        templateRender += getHtmlFooter();
+        templateRender += getHtmlFooter(isSynthesisTemplate ? 'synthesis' : 'app');
       }
     } else {
       templateRender = template.render(params);
@@ -144,9 +148,9 @@ const getHtmlHeader = (cssFile = 'app') => {
 /**
  * Gets the HTML for pages footer, like in preview.html.twig
  */
-const getHtmlFooter = () => {
+const getHtmlFooter = (jsfile = 'app') => {
   return `
-        <script src="app.js"></script>
+        <script src="${jsfile}.js"></script>
     `;
 };
 
