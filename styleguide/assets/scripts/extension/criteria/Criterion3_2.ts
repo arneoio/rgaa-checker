@@ -28,7 +28,11 @@ export default class Criterion3_2 extends BaseCriterion {
       'C': 'Le contraste entre la couleur du texte et la couleur de son arrière-plan est suffisamment élevé pour tous les éléments textuels.',
       'NC': 'Le contraste entre la couleur du texte et la couleur de son arrière-plan n\'est pas suffisamment élevé pour tous les éléments textuels.'
     }
-    this.querySelector = 'p, div, span, a, button, h1, h2, h3, h4, h5, h6';
+    this.querySelector = 'p, div, li, td, span, a, button, h1, h2, h3, h4, h5, h6';
+  }
+
+  getHighlightSwitchLabel(): string {
+    return this.status === 'C' ? '' : this.DEFAULT_HIGHLIGHT_TEXT;
   }
 
   getHighlightedElements(): Array<HTMLElement> {
@@ -57,7 +61,8 @@ export default class Criterion3_2 extends BaseCriterion {
         title="Couleur: ${color}; Couleur de fond: ${backgroundColor}">
         <span class="-sr-only">Couleur : ${color}; Couleur de fond : ${backgroundColor}</span>
       </span>
-      Ratio: ${ColorUtils.getContrast(color, backgroundColor).toFixed(2)}
+      Ratio: ${ColorUtils.getContrast(color, backgroundColor).toFixed(2)}<br />
+      Texte: ${this.getDirectTextContent($element)}
     </span>`;
   }
 
@@ -118,19 +123,16 @@ export default class Criterion3_2 extends BaseCriterion {
   }
 
   private getDirectTextContent($element: HTMLElement): string {
-    // Clone the element to avoid modifying the DOM
-    let clonedElement = $element.cloneNode(true) as HTMLElement;
+    let textContent = '';
 
-    // Remove all other matching children that are not text or text-containing elements
-    Array.from(clonedElement.childNodes).forEach(child => {
-      const childElement = child as HTMLElement;
-      if (['DIV', 'P', 'SPAN', 'A', 'BUTTON', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(childElement.tagName)) {
-        childElement.remove();
-      }
+    // Find text content of direct children
+    Array.from($element.childNodes).forEach(child => {
+        if (child.nodeType === Node.TEXT_NODE) {
+            textContent += child.textContent?.trim() || '';
+        }
     });
 
-    // Check if the cloned element has text content remaining
-    return clonedElement.textContent?.trim() || '';
+    return textContent;
   }
 }
 
