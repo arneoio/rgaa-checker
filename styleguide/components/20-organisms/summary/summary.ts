@@ -56,14 +56,9 @@ export default class Summary {
 
     const csvContent = resultList.map(result => `${result.criteriaNumber}\t${result.criteriaLabel}\t${result.status}\tN\t${result.message}`).join('\n');
     this.$textArea.value = csvContent;
-
-    if(navigator.clipboard) {
-      navigator.clipboard.writeText(csvContent);
-    } else {
-      this.$textArea.select();
-      // Commande dépréciée mais fonctionne sur tous les navigateurs
-      document.execCommand('copy');
-    }
+    this.$textArea.select();
+    // Deprecated, but still work in most browsers. navigator.clipboard.writeText breaks policy in devtools
+    document.execCommand('copy');
   }
 
   updateCompletion() {
