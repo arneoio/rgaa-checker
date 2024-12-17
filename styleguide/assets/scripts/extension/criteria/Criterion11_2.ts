@@ -82,5 +82,10 @@ export default class Criterion11_2 extends BaseCriterion {
     // Affiche l'étiquette du champ de formulaire
     return FormUtils.getFormFieldLabel($element);
   }
+
+  getHighlightListContent($element: HTMLElement) {
+    let text = FormUtils.getFormFieldLabel($element);;
+    return text.length > this.HIGHLIGHT_CONTENT_MAX_LENGTH ? text.substring(0, this.HIGHLIGHT_CONTENT_MAX_LENGTH) + '...' : text;
+  }
 }
 
