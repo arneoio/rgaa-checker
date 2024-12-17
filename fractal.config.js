@@ -84,6 +84,11 @@ const twigAdapter = require('@frctl/twig')({
     markdown_to_html: function (str) {
       return str;
     },
+    filterStatus: function (statusList, statusesToRemove) {
+      return statusList.filter(
+        (status) => !statusesToRemove.includes(status.slug),
+      );
+    },
   },
 });
 

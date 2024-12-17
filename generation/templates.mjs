@@ -25,7 +25,7 @@ let BUILDER_FOLDER = `${process.env.WEBPACK_BUILDER_FOLDER}`;
 
 const args = process.argv.slice(2);
 const applicationType = args[0];
-if(applicationType) {
+if (applicationType) {
   BUILDER_FOLDER = `${process.env.WEBPACK_BUILDER_FOLDER}/${applicationType}`;
 }
 
@@ -34,6 +34,10 @@ const ASSETS_FOLDER = `${process.env.WEBPACK_BUILDER_FOLDER}`;
 Twig.extendFilter('path', function (path) {
   path = path.replace('icons.svg', '');
   return path.replace(`/${ASSETS_FOLDER}/`, '');
+});
+
+Twig.extendFilter('filterStatus', function (statusList, statusesToRemove) {
+  return statusList.filter((status) => !statusesToRemove.includes(status.slug));
 });
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -62,7 +66,12 @@ const buildExtension = (params) => {
  * @param {string} outputFileName name of the file to create
  * @param {object} params additional data to pass to the template
  */
-const buildTemplate = (templateName, outputFileName, params = {}, hasDependencies = true) => {
+const buildTemplate = (
+  templateName,
+  outputFileName,
+  params = {},
+  hasDependencies = true,
+) => {
   const templatePath = path.join(__dirname, templateName);
   fs.readFile(templatePath, 'utf8', (err, data) => {
     if (err) {
@@ -85,9 +94,10 @@ const buildTemplate = (templateName, outputFileName, params = {}, hasDependencie
     let isPopupTemplate = templateName === popupTemplate;
     let isSynthesisTemplate = templateName === synthesisTemplate;
 
-    if(hasDependencies)
-    {
-      templateRender += getHtmlHeader(isPopupTemplate ? 'popup' : (isSynthesisTemplate ? 'synthesis' : 'app'));
+    if (hasDependencies) {
+      templateRender += getHtmlHeader(
+        isPopupTemplate ? 'popup' : isSynthesisTemplate ? 'synthesis' : 'app',
+      );
 
       // Adds footer params to every templates
       params.footer = {
@@ -95,9 +105,10 @@ const buildTemplate = (templateName, outputFileName, params = {}, hasDependencie
         versionNumber: getAppVersion(),
       };
       templateRender += template.render(params);
-      if(!isPopupTemplate)
-      {
-        templateRender += getHtmlFooter(isSynthesisTemplate ? 'synthesis' : 'app');
+      if (!isPopupTemplate) {
+        templateRender += getHtmlFooter(
+          isSynthesisTemplate ? 'synthesis' : 'app',
+        );
       }
     } else {
       templateRender = template.render(params);
@@ -124,7 +135,7 @@ const buildTemplate = (templateName, outputFileName, params = {}, hasDependencie
  */
 let htmlHeader;
 const getHtmlHeader = (cssFile = 'app') => {
-    // Includes icons sprite inline
+  // Includes icons sprite inline
   const icons = fs.readFileSync(`./${BUILDER_FOLDER}/icons.svg`, {
     encoding: 'utf8',
     flag: 'r',
