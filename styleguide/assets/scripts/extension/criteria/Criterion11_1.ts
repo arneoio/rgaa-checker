@@ -66,7 +66,6 @@ export default class Criterion11_1 extends BaseCriterion {
       const id = $formField.getAttribute('id');
       if (id) {
         const labelElement: HTMLElement = document.querySelector(`label[for="${id}"]`);
-        console.log(`11.1.2: field has id: ${id}`, labelElement);
         if (!labelElement) {
           areLabelsValid = false;
         }

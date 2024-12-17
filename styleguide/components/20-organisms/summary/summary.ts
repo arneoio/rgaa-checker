@@ -42,7 +42,7 @@ export default class Summary {
     $criteriaCardList.forEach(($criteriaCard: HTMLElement) => {
       let criteriaNumber: string = $criteriaCard.dataset.criteria || '';
       let criteriaLabel: string = ($criteriaCard.querySelector('.js-criteriaCard__text') as HTMLElement)?.textContent?.trim() || '';
-      let status: string = ($criteriaCard.querySelector('.js-criteriaSelector__toggler') as HTMLElement).dataset.status || '';
+      let status: string = ($criteriaCard.querySelector('.js-criteriaSelector__input:checked') as HTMLInputElement).value || '';
       let message: string = $criteriaCard.querySelector('.js-criteriaCard__verification')?.textContent?.trim() || '';
       let result = {
         criteriaNumber: criteriaNumber,
@@ -71,7 +71,7 @@ export default class Summary {
     }
 
     $criteriaCards.forEach(($criteriaCard) => {
-      let status = ($criteriaCard.querySelector('.js-criteriaSelector__toggler') as HTMLElement).dataset.status;
+      let status = ($criteriaCard.querySelector('.js-criteriaSelector__input:checked') as HTMLInputElement).value;
 
       if (typeof status !== 'undefined') {
         ++scoreList[status];

@@ -8,8 +8,7 @@ interface StorageData {
 
 export default class CriteriaCard {
   $element: HTMLElement;
-  $statusSelector: HTMLElement;
-  $toggler: HTMLElement;
+  $statusSelector: HTMLElement | null;
   topicNumber: number;
   criteriaNumber: number;
   criteriaUpdatedEvent: Event;
@@ -20,8 +19,7 @@ export default class CriteriaCard {
     this.$element = $element;
     this.localStorageKey = 'rgaaCheckerResults';
     this.$statusSelector = this.$element.querySelector('.js-criteriaSelector');
-    this.$toggler = this.$statusSelector.querySelector('.js-criteriaSelector__toggler');
-    let criteriaSplit = this.$element.dataset.criteria.split('.');
+    let criteriaSplit: string[] = (this.$element?.dataset?.criteria || '').split('.');
     this.topicNumber = parseInt(criteriaSplit.shift());
     this.criteriaNumber = parseInt(criteriaSplit.pop());
 
@@ -34,10 +32,10 @@ export default class CriteriaCard {
   }
 
   bindEvents() {
-    Array.from(this.$statusSelector.querySelectorAll('.js-criteriaSelector__link')).forEach(($link: HTMLElement) => {
-      $link.addEventListener('click', () => {
-        this.updateCardStatus($link);
-        this.saveStatus($link.dataset.status || 'NT');
+    Array.from(this.$statusSelector?.querySelectorAll('.js-criteriaSelector__input') as NodeListOf<HTMLInputElement>).forEach(($input: HTMLInputElement) => {
+      $input.addEventListener('change', () => {
+        this.updateCardStatus($input);
+        this.saveStatus($input.value || 'NT');
         document.dispatchEvent(this.criteriaUpdatedEvent);
       });
     });
@@ -50,8 +48,9 @@ export default class CriteriaCard {
     this.$element.classList.add('-checked');
     this.messageList = criterionData.messageList || {'C': '', 'NC': '', 'NA': '', 'NT': ''};
 
-    let $statusLink = this.$statusSelector.querySelector(`.js-criteriaSelector__link[data-status="${status}"]`) as HTMLElement;
-    this.updateCardStatus($statusLink);
+    let $statusRadioInput = this.$statusSelector?.querySelector(`.js-criteriaSelector__input[value="${status}"]`) as HTMLInputElement;
+    console.log('loadData', this.$statusSelector, status, $statusRadioInput);
+    this.updateCardStatus($statusRadioInput);
     this.updateTests(criterionData.testList);
     this.setHighlightSwitch(criterionData);
     this.loadUserStatus(host, url);
@@ -61,22 +60,22 @@ export default class CriteriaCard {
       LocalStorage.getUserData(host, url).then((userStoredData: any) => {
         let userStatus = userStoredData[this.topicNumber + '.' + this.criteriaNumber];
         if (userStatus) {
-          let $statusLink = this.$statusSelector.querySelector(`.js-criteriaSelector__link[data-status="${userStatus}"]`) as HTMLElement;
-          this.updateCardStatus($statusLink);
+          let $statusRadioInput = this.$statusSelector?.querySelector(`.js-criteriaSelector__input[value="${userStatus}"]`) as HTMLInputElement;
+          this.updateCardStatus($statusRadioInput);
           // TODO: if user status is different from the one in the runner, display a warning
         }
     });
   }
 
-  updateCardStatus($link: HTMLElement) {
-    let newStatus = $link.dataset.status;
+  updateCardStatus($input: HTMLInputElement) {
+    let newStatus = $input.value;
 
-    this.$toggler.setAttribute('aria-expanded', 'false');
-    this.$toggler.dataset.status = newStatus;
-    (this.$toggler.querySelector('.js-criteriaSelector__togglerText') as HTMLElement).innerHTML = $link.innerHTML;
-    this.$statusSelector.querySelector('.js-criteriaSelector__content').classList.remove('-expanded');
     this.$element.dataset.status = newStatus;
-    this.$element.querySelector('.js-criteriaCard__verification').innerHTML = this.messageList[newStatus] || '';
+    $input.checked = true;
+    let $verificationText = this.$element?.querySelector('.js-criteriaCard__verification');
+    if ($verificationText) {
+      $verificationText.innerHTML = this.messageList[newStatus] || '';
+    }
   }
 
   updateTests(testList: any) {
@@ -123,25 +122,6 @@ export default class CriteriaCard {
       }
     });
   }
-
-  // loadUserResults() {
-  //   const results = JSON.parse(localStorage.getItem(this.localStorageKey));
-  //   const userResults = results.user[window.location.pathname] || {};
-
-  //   // TODO: à améliorer. Si possible appeler la méthode updateCriteria de chaque critère plutôt que de faire ça à la main
-  //   // Mais if faut dans ce cas une classe définie pour chaque critère
-  //   // TODO: s'il y a un conflit entre les résultats de l'utilisateur et ceux du runner suite au chargement, il faut indiquer le conflit
-  //   Object.keys(userResults).forEach((key: string) => {
-  //     let $criteriaCard: HTMLElement = document.querySelector(`.js-criteriaCard[data-criteria="${key}"]`);
-  //     if ($criteriaCard) {
-  //       let $toggler: HTMLElement = $criteriaCard.querySelector(`.js-criteriaSelector__toggler`);
-  //       let $togglerText: HTMLElement = $criteriaCard.querySelector(`.js-criteriaSelector__togglerText`);
-  //       $criteriaCard.dataset.status = userResults[key];
-  //       $toggler.dataset.status = userResults[key];
-  //       $togglerText.innerText = userResults[key];
-  //     }
-  //   });
-  // }
 
   saveStatus(newStatus: string) {
     let host = document.querySelector('.js-summary__host')?.textContent.trim();

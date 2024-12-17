@@ -74,17 +74,6 @@ var App = {
       });
     }
 
-    // When click outisde a criteriaSelector, reset its aria-expanded to false
-    document.addEventListener('click', (event: MouseEvent) => {
-      const $criteriaSelectorList = Array.from(document.querySelectorAll('.js-criteriaSelector')) as HTMLElement[];
-      $criteriaSelectorList.forEach(($criteriaSelector: HTMLElement) => {
-        if (!$criteriaSelector.contains(event.target as Node)) {
-          $criteriaSelector?.querySelector('.js-criteriaSelector__toggler')?.setAttribute('aria-expanded', 'false');
-          $criteriaSelector?.querySelector('.js-criteriaSelector__content')?.classList.remove('-expanded');
-        }
-      });
-    });
-
     // Set sticky title on list
     this.$topicList = Array.from(document.querySelectorAll('.js-topic'));
     this.setStickyTitle();
