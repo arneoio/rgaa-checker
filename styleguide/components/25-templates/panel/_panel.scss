@@ -103,7 +103,6 @@
 }
 
 .l-extension__highlightList {
-    overflow: auto;
     grid-area: highlight;
 
     @include tablet-down {
