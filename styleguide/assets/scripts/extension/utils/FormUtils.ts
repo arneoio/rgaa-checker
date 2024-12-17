@@ -36,8 +36,6 @@ export default class FormUtils {
     input[type="datetime-local"],
     select,
     datalist,
-    optgroup,
-    option,
     input[type="file"],
     output,
     progress,
@@ -65,6 +63,7 @@ export default class FormUtils {
   }
 
   static getFormFieldLabel($formField: HTMLElement): string {
+    console.log('getFormFieldLabel', $formField);
     // On récupère l'intitulé du champ de formulaire en suivant l'ordre spécifié dans le RGAA
     // D'abord, on vérifie si aria-labelledby est défini
     const ariaLabelledby = $formField.getAttribute('aria-labelledby');
@@ -84,7 +83,9 @@ export default class FormUtils {
     // Sinon, on vérifie si le champ de formulaire a un label associé
     const id = $formField.getAttribute('id');
     if (id) {
+      console.log('field has id', id);
       const labelElement: HTMLElement = document.querySelector(`label[for="${id}"]`);
+      console.log('field has label with for', labelElement);
       if (labelElement) {
         return labelElement.textContent.trim();
       }

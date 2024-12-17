@@ -33,6 +33,21 @@ export default class Criterion11_1 extends BaseCriterion {
     };
   }
 
+  getHighlightedElements(): Array<HTMLElement> {
+    let $elementList = document.querySelectorAll(this.querySelector);
+    let $highlightedElementList: Array<HTMLElement> = [];
+
+    // Highlight only form fields without labels
+    $elementList.forEach(($formField: HTMLElement) => {
+      let label = FormUtils.getFormFieldLabel($formField);
+      if (!label) {
+        $highlightedElementList.push($formField);
+      }
+    });
+
+    return $highlightedElementList;
+  }
+
   runTest() {
     this.status = 'NA';
     let statusTest1 = 'NA';
@@ -43,7 +58,7 @@ export default class Criterion11_1 extends BaseCriterion {
 
     $elementList.forEach(($formField: HTMLElement) => {
       let label = FormUtils.getFormFieldLabel($formField);
-      if (label.trim() === '') {
+      if (!label) {
         isCriteriaValid = false;
       }
 
@@ -51,6 +66,7 @@ export default class Criterion11_1 extends BaseCriterion {
       const id = $formField.getAttribute('id');
       if (id) {
         const labelElement: HTMLElement = document.querySelector(`label[for="${id}"]`);
+        console.log(`11.1.2: field has id: ${id}`, labelElement);
         if (!labelElement) {
           areLabelsValid = false;
         }
