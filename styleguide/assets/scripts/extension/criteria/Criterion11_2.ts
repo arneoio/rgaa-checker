@@ -50,10 +50,18 @@ export default class Criterion11_2 extends BaseCriterion {
     this.status = 'NA';
     let $elementList = document.querySelectorAll(this.querySelector);
     const labelFieldList: any = [];
+    let isPlaceholderAndTitleEqualStatus = 'NA';
 
     $elementList.forEach(($formField: HTMLElement) => {
       let label = FormUtils.getFormFieldLabel($formField);
       labelFieldList.push({ label: label, field: $formField });
+      const placeholderAndTitle = FormUtils.getPlaceholderAndTitle($formField);
+      if (placeholderAndTitle) {
+        const { placeholder, title } = placeholderAndTitle;
+        if (placeholder && title) {
+          isPlaceholderAndTitleEqualStatus = (placeholder === title && isPlaceholderAndTitleEqualStatus != 'NC') ? 'C' : 'NC';
+        }
+      }
     });
 
     if ($elementList.length > 0) {
@@ -66,7 +74,8 @@ export default class Criterion11_2 extends BaseCriterion {
       '3': this.status,
       '4': this.status,
       '5': this.status,
-      '6': this.status
+      '6': this.status,
+      '7': isPlaceholderAndTitleEqualStatus,
     };
 
     if ($elementList.length > 0) {
@@ -84,7 +93,7 @@ export default class Criterion11_2 extends BaseCriterion {
   }
 
   getHighlightListContent($element: HTMLElement) {
-    let text = FormUtils.getFormFieldLabel($element);;
+    let text = FormUtils.getFormFieldLabel($element);
     return text.length > this.HIGHLIGHT_CONTENT_MAX_LENGTH ? text.substring(0, this.HIGHLIGHT_CONTENT_MAX_LENGTH) + '...' : text;
   }
 }
