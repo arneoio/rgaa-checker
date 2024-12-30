@@ -127,6 +127,10 @@ export default class Panel {
     if($url) {
       $url.textContent = url;
     }
+
+    // Save current host name in local storage
+    console.log('updateUrl Save current host:', host);
+    LocalStorage.saveCurrentHost(host);
   }
 
   showDiff(diff: any) {

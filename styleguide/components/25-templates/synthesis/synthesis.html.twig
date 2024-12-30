@@ -7,14 +7,58 @@
                 class: 'o-header__logo'
               }
             } only %}
-            <p href="https://github.com/arneoio/rgaa-checker/blob/main/README.md" class="o-header__externalLink">
+            <h1 href="https://github.com/arneoio/rgaa-checker/blob/main/README.md" class="o-header__externalLink">
                 RGAA Checker - Synthèse
-            </p>
+            </h1>
             <span class="o-header__version">v{{ version }}</span>
+        </div>
+        <div class="o-header__right">
+            <a class="o-header__button" title="Retour aux tests de la page" href="/rgaa-checker-panel.html">
+                {% include '@atom/icon/icon.html.twig' with {
+                  name: 'arrow-left',
+                  attributeList: {
+                    class: 'o-header__buttonIcon'
+                  }
+                } only %}
+            </a>
+            {# <button class="o-header__settingsButton" title="Paramètres">
+                {% include '@atom/icon/icon.html.twig' with {
+                  name: 'settings',
+                  attributeList: {
+                    class: 'o-header__buttonIcon'
+                  }
+                } only %}
+            </button> #}
         </div>
     </header>
     <main role="main" class="t-synthesis__main">
-      <p class="t-synthesis__text">Pour lancer l'analyse, ouvrez les outils de développement, puis rendez vous dans l'onglet <strong>RGAA Checker</strong></p>
-      <p class="t-synthesis__text">Pour en savoir plus, visitez le <a href="https://github.com/arneoio/rgaa-checker/blob/release/MANUAL.md" target="_blank" title="Github du RGAA Checker (nouvelle fenêtre)">Github du RGAA Checker</a></p>
+        <h2 class="t-synthesis__title">Synthèse pour le domaine <span class="js-synthesis__hostname"></span></h2>
+        <h3 class="t-synthesis__subtitle">URL testées</h3>
+        <ul class="t-synthesis__urlList js-synthesis__urlList"></ul>
+        <h3 class="t-synthesis__subtitle">Synthèse</h3>
+        <table class="t-synthesis__table">
+            <thead>
+                <tr>
+                    <th>Page</th>
+                    <th><acronym title="Conforme" class="t-synthesis__status -status-c">C</acronym></th>
+                    <th><acronym title="Non conforme" class="t-synthesis__status -status-nc">NC</acronym></th>
+                    <th><acronym title="Non applicable" class="t-synthesis__status -status-na">NA</acronym></th>
+                    <th><acronym title="Non traité" class="t-synthesis__status -status-nt">NT</acronym></th>
+                </tr>
+            </thead>
+            <tbody class="js-synthesis__tableBody">
+            </tbody>
+        </table>
+
+        {# Template for table row #}
+        <template id="js-synthesis__rowTemplate">
+            <tr>
+                <td class="js-synthesis__row__pageName"></td>
+                <td class="js-synthesis__row__c"></td>
+                <td class="js-synthesis__row__nc"></td>
+                <td class="js-synthesis__row__na"></td>
+                <td class="js-synthesis__row__nt"></td>
+            </tr>
+        </template>
     </main>
 </div>

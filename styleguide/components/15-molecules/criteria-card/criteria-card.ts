@@ -49,7 +49,6 @@ export default class CriteriaCard {
     this.messageList = criterionData.messageList || {'C': '', 'NC': '', 'NA': '', 'NT': ''};
 
     let $statusRadioInput = this.$statusSelector?.querySelector(`.js-criteriaSelector__input[value="${status}"]`) as HTMLInputElement;
-    console.log('loadData', this.$statusSelector, status, $statusRadioInput);
     this.updateCardStatus($statusRadioInput);
     this.updateTests(criterionData.testList);
     this.setHighlightSwitch(criterionData);
