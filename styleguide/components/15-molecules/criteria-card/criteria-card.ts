@@ -41,29 +41,17 @@ export default class CriteriaCard {
     });
   }
 
-  loadData(criterionData: any, host: string, url: string) {
+  loadData(criterionData: any) {
     // Update criterion status
     let status = criterionData.status;
     this.$element.dataset.status = status;
-    this.$element.classList.add('-checked');
+    this.$element.classList.add('-checked'); // Adds a checkmark to the card to notify the user that the criterion has been checked by the extension
     this.messageList = criterionData.messageList || {'C': '', 'NC': '', 'NA': '', 'NT': ''};
 
     let $statusRadioInput = this.$statusSelector?.querySelector(`.js-criteriaSelector__input[value="${status}"]`) as HTMLInputElement;
     this.updateCardStatus($statusRadioInput);
     this.updateTests(criterionData.testList);
     this.setHighlightSwitch(criterionData);
-    this.loadUserStatus(host, url);
-  }
-
-  loadUserStatus(host: string, url: string) {
-      LocalStorage.getUserData(host, url).then((userStoredData: any) => {
-        let userStatus = userStoredData[this.topicNumber + '.' + this.criteriaNumber];
-        if (userStatus) {
-          let $statusRadioInput = this.$statusSelector?.querySelector(`.js-criteriaSelector__input[value="${userStatus}"]`) as HTMLInputElement;
-          this.updateCardStatus($statusRadioInput);
-          // TODO: if user status is different from the one in the runner, display a warning
-        }
-    });
   }
 
   updateCardStatus($input: HTMLInputElement) {

@@ -26,7 +26,6 @@ export default class LocalStorage {
       });
     } else {
       return chrome.storage.local.get(key).then((data: StorageData) => {
-        console.log('getStorageData', data);
         return data[key] || {};
       });
     }

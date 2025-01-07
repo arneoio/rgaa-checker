@@ -34,7 +34,6 @@
     flex-direction: column;
     gap: 8px;
     padding: 8px;
-    max-height: min(calc(100vh - 64px * 2), 500px);
     overflow: auto;
 }
 
