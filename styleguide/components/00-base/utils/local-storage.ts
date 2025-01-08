@@ -135,4 +135,14 @@ export default class LocalStorage {
   static saveCurrentHost(host: string): Promise<any> {
     return this.saveStorageData({ [this.CURRENT_HOST_KEY]: host });
   }
+
+  static removeUrl(host: string, url: string): Promise<any> {
+    return this.getStorageResults().then((data: any) => {
+      if(data[host] && data[host][url]) {
+        delete data[host][url];
+      }
+
+      return this.saveStorageData({ [this.RESULTS_KEY]: data });
+    });
+  }
 }

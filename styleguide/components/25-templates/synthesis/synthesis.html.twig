@@ -33,9 +33,28 @@
     </header>
     <main role="main" class="t-synthesis__main">
         <h2 class="t-synthesis__title">Synthèse pour le domaine <span class="js-synthesis__hostname"></span></h2>
+        <h3 class="t-synthesis__subtitle">Progression de l'audit</h3>
+        <progress class="t-synthesis__progress js-synthesis__progress" value="0" max="100"></progress>
+        <p class="js-synthesis__progressValue"></p>
+
         <h3 class="t-synthesis__subtitle">URL testées</h3>
-        <ul class="t-synthesis__urlList js-synthesis__urlList"></ul>
-        <h3 class="t-synthesis__subtitle">Synthèse</h3>
+        <ul class="t-synthesis__list js-synthesis__urlList"></ul>
+
+        <template id="js-synthesis__urlItem__template">
+            <li>
+                <span class="js-synthesis__urlItem__slug"></span> -
+                <a class="js-synthesis__urlItem__link"></a>
+                <button class="js-synthesis__urlItem__removeButton t-synthesis__list__button">
+                  {% include '@atom/icon/icon.html.twig' with {
+                    name: 'cross',
+                    attributeList: {
+                      class: 't-synthesis__list__icon'
+                    }
+                  } only %}
+                </button>
+            </li>
+        </template>
+        <h3 class="t-synthesis__subtitle">Synthèse par page</h3>
         <table class="t-synthesis__table">
             <thead>
                 <tr>
@@ -49,7 +68,6 @@
             <tbody class="js-synthesis__tableBody">
             </tbody>
         </table>
-
         {# Template for table row #}
         <template id="js-synthesis__rowTemplate">
             <tr>
@@ -60,5 +78,42 @@
                 <td class="js-synthesis__row__nt"></td>
             </tr>
         </template>
+
+        <h3 class="t-synthesis__subtitle">Synthèse par thématique</h3>
+
+        <table class="t-synthesis__table">
+            <thead>
+                <tr>
+                    <th>Thématique</th>
+                    <th><acronym title="Conforme" class="t-synthesis__status -status-c">C</acronym></th>
+                    <th><acronym title="Non conforme" class="t-synthesis__status -status-nc">NC</acronym></th>
+                    <th><acronym title="Non applicable" class="t-synthesis__status -status-na">NA</acronym></th>
+                </tr>
+            </thead>
+            <tbody>
+{% for topic in topicList %}
+                <tr>
+                    <td>{{ topic.number }}. {{ topic.topic }}</td>
+                    <td class="js-synthesis__thematicCell" data-topic="{{ topic.number }}" data-status="c">0</td>
+                    <td class="js-synthesis__thematicCell" data-topic="{{ topic.number }}" data-status="nc">0</td>
+                    <td class="js-synthesis__thematicCell" data-topic="{{ topic.number }}" data-status="na">0</td>
+                </tr>
+{% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="t-synthesis__subtitle">Déclaration d'accessibilité</h2>
+
+        <h3 class="t-synthesis__subtitle">Critères non accessibles</h3>
+
+        <ul class="t-synthesis__list js-synthesis__criteriaList">
+{% for topic in topicList %}
+    {% for criteria in topic.criteria %}
+            <li class="t-synthesis__criteriaList__item js-synthesis__criteriaList__item" data-criterium="{{ topic.number ~ '.' ~ criteria.criterium.number }}">
+                {{ topic.number ~ '.' ~ criteria.criterium.number }} - {{ criteria.criterium.title | striptags }}
+            </li>
+    {% endfor %}
+{% endfor %}
+        </ul>
     </main>
 </div>

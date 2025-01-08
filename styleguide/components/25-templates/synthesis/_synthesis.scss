@@ -22,22 +22,54 @@
     margin-bottom: 12px;
 }
 
-.t-synthesis__urlList {
+.t-synthesis__list {
     padding-left: 24px;
     margin-bottom: 16px;
     font-size: 14px;
+    line-height: 1.4;
+
+    li {
+        list-style: disc;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        &:not(:last-child) {
+            margin-bottom: 8px;
+        }
+    }
+
+    a {
+        text-decoration: underline;
+    }
+}
+
+.t-synthesis__list__button {
+    display: inline-flex;
+    padding: 4px;
+}
+
+.t-synthesis__list__icon {
+    width: 16px;
+    height: 16px;
+    color: $color-red;
 }
 
 .t-synthesis__table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
+    margin-bottom: 16px;
 
     th,
     td {
         padding: 4px 8px;
         border: 1px solid $color-grey-medium;
         text-align: right;
+
+        &:first-child {
+            text-align: left;
+        }
     }
 
     th {

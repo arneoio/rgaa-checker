@@ -69,25 +69,21 @@ export default class Panel {
     let criteriaList = request.result || {};
 
     if(!host || !url) {
-      console.log('no host or url found, skip');
       return;
     }
 
     await LocalStorage.getUserData(host, url).then((userStoredData: any) => {
-      console.log('parse rsults userStoredData', userStoredData);
       this.criteriaCardList.forEach((criterion: any) => {
         let criterionData = criteriaList[criterion.topicNumber + '.' + criterion.criteriaNumber];
 
         // First load data from the runner if available
         if(criterionData) {
-          console.log(`criteria ${criterion.topicNumber}.${criterion.criteriaNumber} found in runner data`, criterionData);
           criterion.loadData(criterionData);
         }
 
         // Then check if user data is available to override the status
         let userStatus = userStoredData[criterion.topicNumber + '.' + criterion.criteriaNumber];
         if (userStatus) {
-          console.log(`criteria ${criterion.topicNumber}.${criterion.criteriaNumber} found in user data`, userStatus);
           let $statusRadioInput = criterion.$statusSelector?.querySelector(`.js-criteriaSelector__input[value="${userStatus}"]`) as HTMLInputElement;
           criterion.updateCardStatus($statusRadioInput);
           // TODO: if user status is different from the one in the runner, display a warning
