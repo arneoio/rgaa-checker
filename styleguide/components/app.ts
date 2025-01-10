@@ -31,7 +31,7 @@ var App = {
     this.HIGHLIGHT_ID = 'arneo-browser-highlight';
 
     this.$main = document.querySelector('.js-main');
-    this.criteriaCardList = [];
+    this.criteriaCardList = [] as CriteriaCard[];
 
     // Inits elements common to every pages
     this.initLayout();

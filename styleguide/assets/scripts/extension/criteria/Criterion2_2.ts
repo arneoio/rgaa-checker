@@ -62,5 +62,10 @@ export default class Criterion2_2 extends BaseCriterion {
   getHighlightLabel($element: HTMLElement) {
     return $element.getAttribute('title');
   }
+
+  getHighlightListContent($element: HTMLElement) {
+    // Display the title of the frame
+    return $element.getAttribute('title');
+  }
 }
 

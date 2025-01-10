@@ -52,6 +52,9 @@ class Background {
       case "devtools_runTests":
         this.sendMessageToContent({ action: "background_runTests" }, sendResponse);
         break;
+      case "devtools_openUrl":
+        this.sendMessageToContent({ action: "background_openUrl", url: request.url }, sendResponse);
+        break;
       case "devtools_enableHighlight":
         request.action = "background_enableHighlight";
         this.sendMessageToContent(request, sendResponse);

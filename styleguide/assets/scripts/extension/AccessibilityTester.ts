@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import Criterion1_1 from "./criteria/Criterion1_1";
+import Criterion1_9 from "./criteria/Criterion1_9";
 import Criterion2_1 from "./criteria/Criterion2_1";
 import Criterion2_2 from "./criteria/Criterion2_2";
 import Criterion4_1 from "./criteria/Criterion4_1";
@@ -85,6 +86,7 @@ export default class AccessibilityTester {
 
     this.criterionList = {
       "1.1": new Criterion1_1(),
+      "1.9": new Criterion1_9(),
       "2.1": new Criterion2_1(),
       "2.2": new Criterion2_2(),
       "3.2": new Criterion3_2(),

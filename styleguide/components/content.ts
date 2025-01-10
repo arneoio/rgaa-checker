@@ -42,6 +42,9 @@ class RGAACheckerContent {
       case "background_runTests":
         this.runTests(sendResponse);
         break;
+      case "background_openUrl":
+        window.location.href = request.url;
+        break;
       case "background_enableHighlight":
         this.enableHighlight(request.topicNumber, request.criteriaNumber, sendResponse);
         break;

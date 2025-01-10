@@ -24,7 +24,7 @@ import LinkUtils from '../utils/LinkUtils';
 export default class Criterion6_2 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
-    this.querySelector = 'a:not([aria-hidden="true"]), [role="link"]:not([aria-hidden="true"])';
+    this.querySelector = LinkUtils.querySelector;
     this.messageList = {
       'C': 'Tous les liens ont un intitulé.',
       'NC': "Certains liens n'ont pas d'intitulé.",

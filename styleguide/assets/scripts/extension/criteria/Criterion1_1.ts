@@ -24,7 +24,7 @@ import ImageUtils from '../utils/ImageUtils';
 export default class Criterion1_1 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
-    this.querySelector = 'img, [role="img"], area, input[type="image"], img[ismap], object[type^="image/"], embed[type^="image/"]';
+    this.querySelector = ImageUtils.querySelector;
     let warningMessage = "/!\\ En l'état actuel, la distinction entre images porteuses et non porteuses d'information n'est pas faite. Nous listons ici toutes les images sans alternative textuelle.";
     this.messageList = {
       'NT': 'Toutes les images de la page ont une alternative textuelle.' + warningMessage,

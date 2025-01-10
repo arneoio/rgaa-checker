@@ -104,6 +104,8 @@
 
 .l-extension__highlightList {
     grid-area: highlight;
+    display: flex;
+    flex-direction: column;
 
     @include tablet-down {
         width: 100%;

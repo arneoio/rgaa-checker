@@ -16,30 +16,35 @@
 import { StorageData } from '../../00-base/types/storage';
 
 export default class LocalStorage {
-  private static STORAGE_KEY: string = 'rgaachecker-results';
+  private static RESULTS_KEY: string = 'rgaachecker-results';
+  private static CURRENT_HOST_KEY: string = 'rgaachecker-current-host';
 
-  private static getStorageData(): Promise<any> {
+  private static getStorageData(key: string): Promise<any> {
     if (typeof browser !== 'undefined' && browser) {
-      return browser.storage.local.get(this.STORAGE_KEY).then((data: StorageData) => {
-        return data['rgaachecker-results'] || {};
+      return browser.storage.local.get(key).then((data: StorageData) => {
+        return data[key] || {};
       });
     } else {
-      return chrome.storage.local.get(this.STORAGE_KEY).then((data: StorageData) => {
-        return data['rgaachecker-results'] || {};
+      return chrome.storage.local.get(key).then((data: StorageData) => {
+        return data[key] || {};
       });
     }
+  }
+
+  static getStorageResults(): Promise<any> {
+    return this.getStorageData(this.RESULTS_KEY);
   }
 
   private static saveStorageData(data: any): Promise<any> {
     if (typeof browser !== 'undefined' && browser) {
-      return browser.storage.local.set({ 'rgaachecker-results': data });
+      return browser.storage.local.set(data);
     } else {
-      return chrome.storage.local.set({ 'rgaachecker-results': data });
+      return chrome.storage.local.set(data);
     }
   }
 
   static getUserData(host: string, url: string): Promise<any> {
-    return this.getStorageData().then((data: any) => {
+    return this.getStorageResults().then((data: any) => {
       if(!data[host] || !data[host][url]) {
         return {};
       }
@@ -55,7 +60,7 @@ export default class LocalStorage {
   }
 
   static saveUserData(host: string, url: string, topicNumber: number, criteriaNumber: number, status: string): Promise<any> {
-    return this.getStorageData().then((data: any) => {
+    return this.getStorageResults().then((data: any) => {
       if(!data[host]) {
         data[host] = {};
       }
@@ -78,12 +83,12 @@ export default class LocalStorage {
 
       data[host][url]['user'] = JSON.stringify(userResults);
 
-      return this.saveStorageData(data);
+      return this.saveStorageData({ [this.RESULTS_KEY]: data });
     });
   }
 
   static getRunnerData(host: string, url: string): Promise<any> {
-    return this.getStorageData().then((data: any) => {
+    return this.getStorageResults().then((data: any) => {
       if(!data[host] || !data[host][url]) {
         return {};
       }
@@ -99,7 +104,7 @@ export default class LocalStorage {
   }
 
   static saveRunnerData(host: string, url: string, criteriaList: any): Promise<any> {
-    return this.getStorageData().then((data: any) => {
+    return this.getStorageResults().then((data: any) => {
       if(!host || !url) {
         return;
       }
@@ -119,18 +124,25 @@ export default class LocalStorage {
 
       data[host][url]['runner'] = JSON.stringify(resultList);
 
-      this.saveStorageData(data);
+      this.saveStorageData({ [this.RESULTS_KEY]: data });
     });
   }
 
+  static getCurrentHost(): Promise<any> {
+    return this.getStorageData(this.CURRENT_HOST_KEY);
+  }
 
-  // static async getSynthesis(): StorageData {
-  //   let storageData = {}
-  //   const storedData = await this.getStorageData('rgaachecker-synthesis') as StorageData;
-  //   if (storedData) {
-  //     storageData = storedData;
-  //   }
+  static saveCurrentHost(host: string): Promise<any> {
+    return this.saveStorageData({ [this.CURRENT_HOST_KEY]: host });
+  }
 
-  //   return storageData;
-  // }
+  static removeUrl(host: string, url: string): Promise<any> {
+    return this.getStorageResults().then((data: any) => {
+      if(data[host] && data[host][url]) {
+        delete data[host][url];
+      }
+
+      return this.saveStorageData({ [this.RESULTS_KEY]: data });
+    });
+  }
 }
