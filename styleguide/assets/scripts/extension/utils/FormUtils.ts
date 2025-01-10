@@ -176,4 +176,10 @@ export default class FormUtils {
 
     return '';
   }
+
+  static getPlaceholderAndTitle($formField: HTMLElement): {placeholder: string, title: string} | null {
+    const placeholder = $formField.getAttribute('placeholder')?.trim() || '';
+    const title = $formField.getAttribute('title')?.trim() || '';
+    return (placeholder && title) ? { placeholder, title } : null;
+  }
 }
