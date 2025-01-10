@@ -64,6 +64,8 @@
         padding: 4px;
         border-radius: 4px;
         font-weight: 700;
+        background-color: var(--color-grey-6);
+        color: var(--color-grey-3);
 
         &.-status-c {
             background-color: var(--secondary-color-green-soft);

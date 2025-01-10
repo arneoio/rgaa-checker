@@ -38,9 +38,7 @@ export default class Criterion11_2 extends BaseCriterion {
       // Highlight only form fields with labels
       $elementList.forEach(($formField: HTMLElement) => {
         let label = FormUtils.getFormFieldLabel($formField);
-        if (label) {
-          $highlightedElementList.push($formField);
-        }
+        $highlightedElementList.push($formField);
       });
 
       return $highlightedElementList;

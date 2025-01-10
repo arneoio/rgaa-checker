@@ -17,6 +17,8 @@
 import LinkUtils from "./LinkUtils";
 
 export default class ImageUtils {
+  static querySelector = 'img, [role="img"], area, input[type="image"], object[type^="image/"], embed[type^="image/"]';
+
   static isImageElement($image: HTMLElement): boolean {
     // vérifie qu'on a <img>, [role="img"], <area>, <input type="image">, <object type="image/…">, <svg>, <canvas> ou <embed type="images/…">
     const tagName = $image.tagName.toLowerCase();
