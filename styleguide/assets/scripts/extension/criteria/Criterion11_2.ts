@@ -19,7 +19,7 @@ import FormUtils from '../utils/FormUtils';
 
 /**
  * Chaque étiquette associée à un champ de formulaire est-elle pertinente (hors cas particuliers) ?
- * Traite: NA, NT (validation manuelle)
+ * Traite: NA, NC, NT (validation manuelle)
  */
 export default class Criterion11_2 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
@@ -31,26 +31,26 @@ export default class Criterion11_2 extends BaseCriterion {
     };
   }
 
-    getHighlightedElements(): Array<HTMLElement> {
-      let $elementList = document.querySelectorAll(this.querySelector);
-      let $highlightedElementList: Array<HTMLElement> = [];
+  getHighlightedElements(): Array<HTMLElement> {
+    let $elementList = document.querySelectorAll(this.querySelector);
+    let $highlightedElementList: Array<HTMLElement> = [];
 
-      // Highlight only form fields with labels
-      $elementList.forEach(($formField: HTMLElement) => {
-        let label = FormUtils.getFormFieldLabel($formField);
-        if (label) {
-          $highlightedElementList.push($formField);
-        }
-      });
+    // Highlight only form fields with labels
+    $elementList.forEach(($formField: HTMLElement) => {
+      let label = FormUtils.getFormFieldLabel($formField);
+      if (label) {
+        $highlightedElementList.push($formField);
+      }
+    });
 
-      return $highlightedElementList;
-    }
+    return $highlightedElementList;
+  }
 
   runTest() {
     this.status = 'NA';
     let $elementList = document.querySelectorAll(this.querySelector);
     const labelFieldList: any = [];
-    let isPlaceholderAndTitleEqualStatus = 'NA';
+    let isPlaceholderAndTitleEqual = true;
 
     $elementList.forEach(($formField: HTMLElement) => {
       let label = FormUtils.getFormFieldLabel($formField);
@@ -58,14 +58,18 @@ export default class Criterion11_2 extends BaseCriterion {
       const placeholderAndTitle = FormUtils.getPlaceholderAndTitle($formField);
       if (placeholderAndTitle) {
         const { placeholder, title } = placeholderAndTitle;
-        if (placeholder && title) {
-          isPlaceholderAndTitleEqualStatus = (placeholder === title && isPlaceholderAndTitleEqualStatus != 'NC') ? 'C' : 'NC';
+        if (placeholder && title && placeholder !== title) {
+          isPlaceholderAndTitleEqual = false;
         }
       }
     });
 
     if ($elementList.length > 0) {
       this.status = 'NT';
+    }
+
+    if (!isPlaceholderAndTitleEqual) {
+      this.status = 'NC';
     }
 
     this.testList = {
@@ -75,7 +79,6 @@ export default class Criterion11_2 extends BaseCriterion {
       '4': this.status,
       '5': this.status,
       '6': this.status,
-      '7': isPlaceholderAndTitleEqualStatus,
     };
 
     if ($elementList.length > 0) {
