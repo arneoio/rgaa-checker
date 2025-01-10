@@ -24,7 +24,7 @@ import LinkUtils from '../utils/LinkUtils';
 export default class Criterion6_1 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
     super(isTestMode);
-    this.querySelector = 'a:not([role]), [role="link"]';
+    this.querySelector = LinkUtils.querySelector;
     this.messageList = {
       'NT': 'Vérifiez la pertinence des intitulés des liens.',
       'NA': "Aucun lien n'a été trouvé dans la page."

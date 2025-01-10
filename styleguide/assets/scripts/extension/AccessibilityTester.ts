@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import Criterion1_1 from "./criteria/Criterion1_1";
+import Criterion1_9 from "./criteria/Criterion1_9";
 import Criterion2_1 from "./criteria/Criterion2_1";
 import Criterion2_2 from "./criteria/Criterion2_2";
 import Criterion4_1 from "./criteria/Criterion4_1";
@@ -64,6 +65,7 @@ import Criterion11_12 from "./criteria/Criterion11_12";
 import Criterion11_13 from "./criteria/Criterion11_13";
 import Criterion5_6 from "./criteria/Criterion5_6";
 import Criterion5_7 from "./criteria/Criterion5_7";
+import Criterion5_8 from './criteria/Criterion5_8';
 import Criterion13_3 from "./criteria/Criterion13_3";
 import Criterion3_2 from "./criteria/Criterion3_2";
 
@@ -84,6 +86,7 @@ export default class AccessibilityTester {
 
     this.criterionList = {
       "1.1": new Criterion1_1(),
+      "1.9": new Criterion1_9(),
       "2.1": new Criterion2_1(),
       "2.2": new Criterion2_2(),
       "3.2": new Criterion3_2(),
@@ -101,6 +104,7 @@ export default class AccessibilityTester {
       "5.5": new Criterion5_5(),
       "5.6": new Criterion5_6(),
       "5.7": new Criterion5_7(),
+      "5.8": new Criterion5_8(),
       "6.1": new Criterion6_1(),
       "6.2": new Criterion6_2(),
       "8.1": new Criterion8_1(),

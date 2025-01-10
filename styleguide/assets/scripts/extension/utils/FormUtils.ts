@@ -36,8 +36,6 @@ export default class FormUtils {
     input[type="datetime-local"],
     select,
     datalist,
-    optgroup,
-    option,
     input[type="file"],
     output,
     progress,
@@ -177,5 +175,11 @@ export default class FormUtils {
     }
 
     return '';
+  }
+
+  static getPlaceholderAndTitle($formField: HTMLElement): {placeholder: string, title: string} | null {
+    const placeholder = $formField.getAttribute('placeholder')?.trim() || '';
+    const title = $formField.getAttribute('title')?.trim() || '';
+    return (placeholder && title) ? { placeholder, title } : null;
   }
 }

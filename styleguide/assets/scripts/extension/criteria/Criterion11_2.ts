@@ -19,7 +19,7 @@ import FormUtils from '../utils/FormUtils';
 
 /**
  * Chaque étiquette associée à un champ de formulaire est-elle pertinente (hors cas particuliers) ?
- * Traite: NA, NT (validation manuelle)
+ * Traite: NA, NC, NT (validation manuelle)
  */
 export default class Criterion11_2 extends BaseCriterion {
   constructor(isTestMode: boolean = false) {
@@ -31,18 +31,45 @@ export default class Criterion11_2 extends BaseCriterion {
     };
   }
 
+  getHighlightedElements(): Array<HTMLElement> {
+    let $elementList = document.querySelectorAll(this.querySelector);
+    let $highlightedElementList: Array<HTMLElement> = [];
+
+    // Highlight only form fields with labels
+    $elementList.forEach(($formField: HTMLElement) => {
+      let label = FormUtils.getFormFieldLabel($formField);
+      if (label) {
+        $highlightedElementList.push($formField);
+      }
+    });
+
+    return $highlightedElementList;
+  }
+
   runTest() {
     this.status = 'NA';
     let $elementList = document.querySelectorAll(this.querySelector);
     const labelFieldList: any = [];
+    let isPlaceholderAndTitleEqual = true;
 
     $elementList.forEach(($formField: HTMLElement) => {
       let label = FormUtils.getFormFieldLabel($formField);
       labelFieldList.push({ label: label, field: $formField });
+      const placeholderAndTitle = FormUtils.getPlaceholderAndTitle($formField);
+      if (placeholderAndTitle) {
+        const { placeholder, title } = placeholderAndTitle;
+        if (placeholder && title && placeholder !== title) {
+          isPlaceholderAndTitleEqual = false;
+        }
+      }
     });
 
     if ($elementList.length > 0) {
       this.status = 'NT';
+    }
+
+    if (!isPlaceholderAndTitleEqual) {
+      this.status = 'NC';
     }
 
     this.testList = {
@@ -51,7 +78,7 @@ export default class Criterion11_2 extends BaseCriterion {
       '3': this.status,
       '4': this.status,
       '5': this.status,
-      '6': this.status
+      '6': this.status,
     };
 
     if ($elementList.length > 0) {
@@ -66,6 +93,11 @@ export default class Criterion11_2 extends BaseCriterion {
   getHighlightLabel($element: HTMLElement) {
     // Affiche l'étiquette du champ de formulaire
     return FormUtils.getFormFieldLabel($element);
+  }
+
+  getHighlightListContent($element: HTMLElement) {
+    let text = FormUtils.getFormFieldLabel($element);
+    return text.length > this.HIGHLIGHT_CONTENT_MAX_LENGTH ? text.substring(0, this.HIGHLIGHT_CONTENT_MAX_LENGTH) + '...' : text;
   }
 }
 

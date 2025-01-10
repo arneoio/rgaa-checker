@@ -65,10 +65,10 @@ export default class TopicList {
       }
 
       let $relatedTopic = document.querySelector(`.js-topic[data-topic="${selectedTopic}"]`) as HTMLElement;
-      let $criteriaList = $relatedTopic.querySelectorAll('.js-criteriaSelector__toggler');
+      let $criteriaList: NodeListOf<HTMLInputElement> = $relatedTopic.querySelectorAll('.js-criteriaSelector__input:checked');
       let completedCriteriaNumber: number = 0;
-      Array.from($criteriaList).forEach(($criteria: HTMLElement) => {
-        if($criteria.dataset.status != 'NT') {
+      Array.from($criteriaList).forEach(($criteria: HTMLInputElement) => {
+        if($criteria.value != 'NT') {
           ++completedCriteriaNumber;
 
           return;

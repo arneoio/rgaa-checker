@@ -17,6 +17,8 @@
 import ImageUtils from "./ImageUtils";
 
 export default class LinkUtils {
+  static querySelector = 'a[href]:not([aria-hidden="true"]), [role="link"]:not([aria-hidden="true"])';
+
   /**
    * Vérifiez si le lien a un intitulé valide en suivant l'ordre spécifié dans le RGAA
    *

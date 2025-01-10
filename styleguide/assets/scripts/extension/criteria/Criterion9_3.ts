@@ -26,7 +26,7 @@ export default class Criterion9_3 extends BaseCriterion {
     this.querySelector = 'ul, ol, dl, [role="list"]';
     this.messageList = {
       'NT': 'Vérifiez si les éléments mis en liste sont corrects et s\'il n\'en manque pas.',
-      'NA': "Aucune liste n'a été trouvée"
+      'NA': "Aucune liste n'a été trouvée. Veuillez vous assurer qu'il n'y a pas de liste dans la page."
     };
   }
 
@@ -59,6 +59,12 @@ export default class Criterion9_3 extends BaseCriterion {
   getHighlightLabel($element: HTMLElement) {
     // Affiche le tag de l'élément
     return `${$element.tagName}`;
+  }
+
+  getHighlightListContent($element: HTMLElement) {
+    return Array.from($element.children)
+      .map((child, index) => child.textContent)
+      .join('<br>');
   }
 }
 

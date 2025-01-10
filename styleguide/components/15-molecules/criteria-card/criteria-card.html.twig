@@ -1,8 +1,9 @@
 {% set componentClass = 'm-criteriaCard js-criteriaCard' %}
 {% set defaultTag = 'div' %}
 {% set status = criteriaCard.status | default('NT') %}
+{% set criteriaFullNumber = criteriaCard.topicNumber ~ '.' ~ criteriaCard.criterium.number %}
 {% set attributeList = attributeList is defined ? attributeList : {} %}
-{% set attributeList = attributeList|merge({'data-status': status, 'data-criteria': criteriaCard.topicNumber ~ '.' ~ criteriaCard.criterium.number , 'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
+{% set attributeList = attributeList|merge({'data-status': status, 'data-criteria': criteriaFullNumber , 'class': (attributeList.class is defined ? componentClass ~ ' ' ~ attributeList.class : componentClass)}) %}
 {% set tag = tag is defined ? tag : defaultTag %}
 {% set id = criteriaCard.topic ~ '-' ~ criteriaCard.criterium.number %}
 
@@ -24,6 +25,17 @@
     title: 'Non traité',
   },
 ] %}
+
+{# For some criteriums, remove some status #}
+{% if criteriaFullNumber in ['3.2', '8.1', '8.3', '8.5'] %}
+  {% set statusList = statusList|filterStatus('NA', 'NT') %}
+{% endif %}
+{% if criteriaFullNumber in ['10.1', '10.3', '10.4', '10.7'] %}
+  {% set statusList = statusList|filterStatus('NA') %}
+{% endif %}
+{% if criteriaFullNumber in ['2.1', '5.1', '6.2', '11.1'] %}
+  {% set statusList = statusList|filterStatus('NT') %}
+{% endif %}
 
 <{{ tag }}{% for attribute, value in attributeList %} {{ attribute }}="{{ value }}"{% endfor %}>
     {% include '@atom/icon/icon.html.twig' with {
@@ -47,7 +59,6 @@
           }
         } only %}
     </div>
-    <div class="m-criteriaCard__verification js-criteriaCard__verification" rows="4"></div>
     <div class="m-criteriaCard__text js-criteriaCard__text">
         {{ criteriaCard.criterium.title }}
     </div>
@@ -74,6 +85,7 @@
             } only %}
         </button>
     </div>
+    <div class="m-criteriaCard__verification js-criteriaCard__verification"></div>
     <div class="m-criteriaCard__testListWrapper" id="criteria-card-{{ id }}-test-list">
         <ul class="m-criteriaCard__testList">
 {% for test in criteriaCard.criterium.tests %}

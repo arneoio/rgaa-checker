@@ -24,6 +24,9 @@ export interface ICriterion {
   // get the highlight selector to use in querySelector
   getHighlightSwitchLabel(): string;
 
+  // get the content displayed for each highlighted element
+  getHighlightListContent($element: HTMLElement): string;
+
   // reset highlight
   resetHighlight(): void;
 
