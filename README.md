@@ -22,6 +22,7 @@ L'extension teste actuellement 48 critères complets sur un total de 106. Certai
 - Analyse automatisée : Évaluez automatiquement une sélection de critères RGAA, respectant scrupuleusement les critères et tests du RGAA
 - Analyse simplifiée : Pour les critères ne pouvant être automatisés, mettez en avant dans la page les éléments impactés pour les vérifier facilement sans en oublier
 - Rapports détaillés : Visualisez les résultats directement dans votre navigateur, avec la possibilité de filtrer, consulter, et comprendre chaque problème d'accessibilité identifié.
+- Synthèse des résultats par domaine : Consultez un résumé des résultats par domaine, pour une vue d'ensemble rapide des problèmes d'accessibilité sur un site.
 - Validation des critères : Grâce à la liste complète des critères à jour avec des raccourcis par thématique, vous pouvez valider ou invalider les critères. vos choix sont sauvegardés si vous revenez plus tard sur la page.
 - Export vers la grille : En un clic vous pouvez exporter les résultats de chaque page pour remplir les grilles d'audit officielles du RGAA
 - Compatibilité étendue : Fonctionne sur toutes les pages web, y compris les intranets, les pages protégées par mot de passe, et les contenus dynamiquement générés.
@@ -41,8 +42,10 @@ Que vous travailliez sur des sites en développement ou que vous souhaitiez éva
 | Critère |  C  | NC  | NA  | Assistance | Commentaire                                                                                                            |
 | :------ | :-: | :-: | :-: | :--------: | :--------------------------------------------------------------------------------------------------------------------- |
 | 1.1     |     |     |     |            | /!\ Récupération des images sans texte alternatif. Partiellement implémenté, ne distingue pas les images de décoration |
+| 1.9     |     | ✅  |     |            | Dans le cas d'images légendées, vérifie que les attributs role et aria-label sont corrects                             |
 | 2.1     | ✅  | ✅  | ✅  |            |                                                                                                                        |
-| 2.2     |     |     | ✅  |     ✅     | Liste les cadres et leur titre dans la console                                                                         |
+| 2.2     |     |     | ✅  |     ✅     | Liste les cadres et leur titre                                                                                         |
+| 3.2     | ✅  | ✅  |     |            | Vérifie automatiquement les contrastes entre texte et couleur de fond                                                  |
 | 4.1     |     |     | ✅  |            | Pour la partie multimédia, vérifie juste s'il y en a dans la page                                                      |
 | 4.2     |     |     | ✅  |            |                                                                                                                        |
 | 4.3     |     |     | ✅  |            |                                                                                                                        |
@@ -56,6 +59,8 @@ Que vous travailliez sur des sites en développement ou que vous souhaitiez éva
 | 5.4     |     | ✅  | ✅  |            |                                                                                                                        |
 | 5.5     |     |     | ✅  |            |                                                                                                                        |
 | 5.6     |     |     | ✅  |            |                                                                                                                        |
+| 5.7     |     | ✅  | ✅  |            |                                                                                                                        |
+| 5.8     |     | ✅  | ✅  |            |                                                                                                                        |
 | 6.1     |     |     | ✅  |     ✅     | Mise en avant des liens et de leur intitulé                                                                            |
 | 6.2     | ✅  | ✅  |     |            |                                                                                                                        |
 | 8.1     | ✅  | ✅  |     |            |                                                                                                                        |
@@ -89,6 +94,7 @@ Que vous travailliez sur des sites en développement ou que vous souhaitiez éva
 | 11.11   |     | ✅  |     |     ✅     |                                                                                                                        |
 | 11.12   |     | ✅  |     |     ✅     |                                                                                                                        |
 | 11.13   |     | ✅  |     |     ✅     |                                                                                                                        |
+| 13.3    |     |     |     |     ✅     | Récupère les liens qui pointent vers des fichiers bureautiques ou contenant "Télécharger" dans leur libellé            |
 
 ## Installation
 

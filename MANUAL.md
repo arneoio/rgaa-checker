@@ -126,6 +126,14 @@ Le fichier sera ainsi pré-rempli avec les données et messages d'indications.
 
 ![alt text](doc/manual/grid-filled.png)
 
+## Synthèse par domaine
+
+En cliquant sur l'url de la page testée, en haut de la page, vous pouvez accéder à un résumé des critères par domaine. Cela permet de voir rapidement l'état des critères par page et par thématique sur le domaine, ainsi que la liste des critères non conformes pour aider à la réalisation des déclarations d'accessibilité.
+
+Depuis la synthèse vous pouvez cliquer sur les urls des pages auditées pour y accéder rapidement, ou supprimer les données de ces pages si vous souhaitez l'exclure de votre audit.
+
+![alt text](doc/manual/synthesis.png)
+
 ## Filtres
 
 Par défaut tous les critères son visibles, mais vous pouvez masquer ou afficher les critères en fonction de leur état. Cela permet de se concentrer sur les critères qui sont non conformes ou non traités par exemple.
