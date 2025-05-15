@@ -116,5 +116,5 @@ Pour signaler un bug ou proposer une fonctionnalité, créez un [rapport d'anoma
 
 ## Liens
 
-- [Arneo](https://www.arneo.io)
+- [Arneo](https://arneo.io)
 - [Site officiel du RGAA](https://accessibilite.numerique.gouv.fr/)
